@@ -93,13 +93,13 @@ The Parkshark project is supposed to be organized as a project following the SCR
 **Project kickoff guidelines:**
 - Choose a team name and create a Slack channel for your team
 - Define team rules
-    - Daily standup at X
-    - Scrummaster role (fixed, rotating)
-    - Ownership of stories
-    - Pairing/repairing
-    - Code review sessions
+    - Daily standup at X -> **9am following the regular schedule**
+    - Scrummaster role (fixed, rotating) -> **rotating (Dominique, Herwig, Jordy, Jordan, Fatih)**
+    - Ownership of stories -> **Decided on Trello**
+    - Pairing/repairing -> **Starting 3 stories with branches working in 2 pairs of 2 and 1 alone.** 
+    - Code review sessions -> **code review after finishing of a story. If other groups needs a little more time, the group waiting will use this time for refactoring or preparation of the next story.**
 - Review/discuss the project (board session)
-    - General understanding of the functionality (stories)
+    - General understanding of the functionality (stories) 
     - General understanding of the technical set-up
     - Domain modelling
 - Create a Kanban board (Trello) to visualize work
