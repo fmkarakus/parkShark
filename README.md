@@ -332,3 +332,7 @@ with status stopped should be collected and used (you don't have to check the cu
 - The Invoice's status should be set to closed.
 - Prioritization: Nice-To-Have
 
+### story points
+**Sprint 1**
+- 62 story points
+- 6 stories and 1 additional implementation 
