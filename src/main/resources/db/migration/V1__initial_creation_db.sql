@@ -1,3 +1,5 @@
+create sequence division_seq start with 1 increment by 1;
+
 create table division
 (
     id            integer primary key,
@@ -13,6 +15,8 @@ create table postal_code
     label       varchar(32) not null unique
 );
 
+create sequence contact_person_seq start with 1 increment by 1;
+
 create table contact_person
 (
     id                  integer primary key,
@@ -24,6 +28,8 @@ create table contact_person
     street_number       varchar(8),
     postal_code         varchar(16) references postal_code
 );
+
+create sequence parking_lot_seq start with 1 increment by 1;
 
 create table parking_lot
 (
@@ -37,6 +43,8 @@ create table parking_lot
     street_number     varchar(8),
     postal_code       varchar(16) references postal_code
 );
+
+create sequence member_seq start with 1 increment by 1;
 
 create table member
 (
