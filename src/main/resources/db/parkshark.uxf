@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="15.0.0">
+  <zoom_level>7</zoom_level>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>525</x>
+      <y>91</y>
+      <w>112</w>
+      <h>77</h>
+    </coordinates>
+    <panel_attributes>division
+--
+id: long [PK]
+name: varchar
+original_name: varchar
+director: varchar
+parent_id: long [FK]</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>504</x>
+      <y>238</y>
+      <w>154</w>
+      <h>126</h>
+    </coordinates>
+    <panel_attributes>parking_lot
+--
+id: long [PK]
+name: varchar
+category: varchar
+max_capacity: integer
+contact_person_id: long [FK]
+street_name: varchar
+street_number: varchar
+postal_code: varchar [FK]
+price_per_hour: double precision</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>630</x>
+      <y>112</y>
+      <w>49</w>
+      <h>70</h>
+    </coordinates>
+    <panel_attributes>m1=1
+m2=0..1</panel_attributes>
+    <additional_attributes>10.0;10.0;40.0;10.0;40.0;70.0;10.0;70.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>245</x>
+      <y>245</y>
+      <w>154</w>
+      <h>112</h>
+    </coordinates>
+    <panel_attributes>contact_person
+--
+id: long [PK]
+name: varchar
+email: varchar
+mobile_phone_number: varchar
+telephone_number: varchar
+street_name: varchar
+street_number: varchar
+postal_code: varchar [FK] </panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>392</x>
+      <y>441</y>
+      <w>126</w>
+      <h>49</h>
+    </coordinates>
+    <panel_attributes>postal_code
+--
+postal_code: varchar [PK]
+label: varchar</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>392</x>
+      <y>294</y>
+      <w>126</w>
+      <h>28</h>
+    </coordinates>
+    <panel_attributes>m1=1
+m2=1..*</panel_attributes>
+    <additional_attributes>10.0;10.0;160.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>315</x>
+      <y>350</y>
+      <w>91</w>
+      <h>140</h>
+    </coordinates>
+    <panel_attributes>m1=1
+m2=1</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;170.0;110.0;170.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>511</x>
+      <y>357</y>
+      <w>91</w>
+      <h>133</h>
+    </coordinates>
+    <panel_attributes>m1=1
+m2=1</panel_attributes>
+    <additional_attributes>100.0;10.0;100.0;160.0;10.0;160.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>371</x>
+      <y>595</y>
+      <w>154</w>
+      <h>147</h>
+    </coordinates>
+    <panel_attributes>member
+--
+id: long [PK]
+first_name: varchar
+last_name: varchar
+street_name: varchar
+street_number: varchar
+postal_code: varchar [FK]
+telephone_number: varchar
+email_address: varchar
+license_plate_number: varchar
+license_plate_country: varchar
+registration_date: date</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>441</x>
+      <y>483</y>
+      <w>28</w>
+      <h>126</h>
+    </coordinates>
+    <panel_attributes>m1=1
+m2=1</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;80.0;10.0;160.0</additional_attributes>
+  </element>
+</diagram>
