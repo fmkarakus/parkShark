@@ -40,16 +40,16 @@ create table parking_lot
 
 create table member
 (
-    id                  integer primary key,
-    first_name                varchar(64) not null,
-    last_name                varchar(64) not null,
-    street_name         varchar(32),
-    street_number       varchar(8),
-    postal_code         varchar(16) references postal_code,
-    telephone_number    varchar(16),
-    email               varchar(64) not null,
-    license_plate_number varchar(16) not null,
+    id                    integer primary key,
+    first_name            varchar(64) not null,
+    last_name             varchar(64) not null,
+    street_name           varchar(32),
+    street_number         varchar(8),
+    postal_code           varchar(16) references postal_code,
+    telephone_number      varchar(16),
+    email                 varchar(64) not null,
+    license_plate_number  varchar(16) not null,
     license_plate_country varchar(32) not null,
-    registration_date date not null,
-    role varchar(16) not null
+    registration_date     date        not null,
+    role                  varchar(16) not null
 );
