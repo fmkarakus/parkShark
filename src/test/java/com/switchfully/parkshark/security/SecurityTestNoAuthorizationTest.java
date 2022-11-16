@@ -1,18 +1,17 @@
-package com.switchfully.parkshark.divisionTests;
+package com.switchfully.parkshark.security;
 
+import io.restassured.RestAssured;
+import io.restassured.http.ContentType;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
-import io.restassured.RestAssured;
-import io.restassured.http.ContentType;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureTestDatabase
-public class DivisionIntegrationTest {
-
+public class SecurityTestNoAuthorizationTest {
     @LocalServerPort
     private int port;
     private final static String URL = "https://keycloak.switchfully.com/auth/realms/parkShark-babyshark/protocol/openid-connect/token";
@@ -25,7 +24,7 @@ public class DivisionIntegrationTest {
                 .given()
                 .contentType("application/x-www-form-urlencoded; charset=utf-8")
                 .formParam("grant_type", "password")
-                .formParam("username", "testManager")
+                .formParam("username", "testMember")
                 .formParam("password", "password")
                 .formParam("client_id", "parkShark")
                 .formParam("client_secret", "3592b0b2-c26c-4529-9ffa-c2d0b58687a5")
@@ -37,8 +36,8 @@ public class DivisionIntegrationTest {
                 .toString();
     }
     @Test
-    void addDivisionByManager1_DivisionAlreadyExists() {
-        String body = "{\"name\":\"Division5\",\"originalName\":\"QPark\",\"director\":\"Director01\"}";
+    void addDivisionByMember_NotAllowed() {
+        String body = "{\"name\":\"Division25\",\"originalName\":\"QPark\",\"director\":\"Director01\"}";
         RestAssured
                 .given()
                 .header("Authorization", "Bearer " + response)
@@ -51,24 +50,6 @@ public class DivisionIntegrationTest {
                 .post("/divisions")
                 .then()
                 .assertThat()
-                .statusCode(HttpStatus.CREATED.value());
-    }
-
-    @Test
-    void addDivisionByManager2_HappyPath() {
-        String body = "{\"name\":\"Division5\",\"originalName\":\"QPark\",\"director\":\"Director01\"}";
-        RestAssured
-                .given()
-                .header("Authorization", "Bearer " + response)
-                .baseUri("http://localhost")
-                .port(port)
-                .when()
-                .accept(ContentType.JSON)
-                .body(body)
-                .contentType(ContentType.JSON)
-                .post("/divisions")
-                .then()
-                .assertThat()
-                .statusCode(HttpStatus.UNPROCESSABLE_ENTITY.value());
+                .statusCode(HttpStatus.FORBIDDEN.value());
     }
 }
