@@ -199,7 +199,7 @@ These companies were never fully merged with ParkShark, they became divisions.
 - The returned members should contain the id, name, license plate (just the number), telephone number, email-address and registration date (nothing else)
 - Prioritization: Must-Have
 
-### Story ME3: get a Member
+### Story ME3: get a Member cx
 **As a Manager I want to get a single, identified, Member**
 - The returned member should include all the data we have of a single member
 - Prioritization: Nice-To-Have
