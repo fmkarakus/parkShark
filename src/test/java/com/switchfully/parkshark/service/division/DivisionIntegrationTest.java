@@ -1,4 +1,4 @@
-package com.switchfully.parkshark.divisionTests;
+package com.switchfully.parkshark.service.division;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -37,8 +37,8 @@ public class DivisionIntegrationTest {
                 .toString();
     }
     @Test
-    void addDivisionByManager_HappyPath() {
-        String body = "{\"name\":\"Division25\",\"originalName\":\"QPark\",\"director\":\"Director01\"}";
+    void addDivisionByManager1_DivisionAlreadyExists() {
+        String body = "{\"name\":\"Division5\",\"originalName\":\"QPark\",\"director\":\"Director01\"}";
         RestAssured
                 .given()
                 .header("Authorization", "Bearer " + response)
@@ -52,5 +52,23 @@ public class DivisionIntegrationTest {
                 .then()
                 .assertThat()
                 .statusCode(HttpStatus.CREATED.value());
+    }
+
+    @Test
+    void addDivisionByManager2_HappyPath() {
+        String body = "{\"name\":\"Division5\",\"originalName\":\"QPark\",\"director\":\"Director01\"}";
+        RestAssured
+                .given()
+                .header("Authorization", "Bearer " + response)
+                .baseUri("http://localhost")
+                .port(port)
+                .when()
+                .accept(ContentType.JSON)
+                .body(body)
+                .contentType(ContentType.JSON)
+                .post("/divisions")
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.UNPROCESSABLE_ENTITY.value());
     }
 }
