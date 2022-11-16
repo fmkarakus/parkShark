@@ -1,5 +1,8 @@
 package com.switchfully.parkshark.domain.parkinglot;
 
+import com.switchfully.parkshark.domain.contactperson.ContactPerson;
+import com.switchfully.parkshark.domain.postalcode.PostalCode;
+
 import javax.persistence.*;
 
 @Entity

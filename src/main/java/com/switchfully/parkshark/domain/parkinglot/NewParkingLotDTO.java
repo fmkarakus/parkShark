@@ -18,7 +18,7 @@ public class NewParkingLotDTO {
     private double pricePerHour;
 
 
-    private ContactPerson contactPerson;
+    private Long contactPersonId;
 
 
     private String streetName;
@@ -27,14 +27,14 @@ public class NewParkingLotDTO {
     private String streetNumber;
 
 
-    private PostalCode postalCode;
+    private String postalCode;
 
-    public NewParkingLotDTO(String name, Category category, int maxCapacity, double pricePerHour, ContactPerson contactPerson, String streetName, String streetNumber, PostalCode postalCode) {
+    public NewParkingLotDTO(String name, Category category, int maxCapacity, double pricePerHour, Long contactPersonId, String streetName, String streetNumber, String postalCode) {
         this.name = name;
         this.category = category;
         this.maxCapacity = maxCapacity;
         this.pricePerHour = pricePerHour;
-        this.contactPerson = contactPerson;
+        this.contactPersonId = contactPersonId;
         this.streetName = streetName;
         this.streetNumber = streetNumber;
         this.postalCode = postalCode;
@@ -56,8 +56,8 @@ public class NewParkingLotDTO {
         return pricePerHour;
     }
 
-    public ContactPerson getContactPerson() {
-        return contactPerson;
+    public Long getContactPersonId() {
+        return contactPersonId;
     }
 
     public String getStreetName() {
@@ -68,7 +68,7 @@ public class NewParkingLotDTO {
         return streetNumber;
     }
 
-    public PostalCode getPostalCode() {
+    public String getPostalCode() {
         return postalCode;
     }
 }

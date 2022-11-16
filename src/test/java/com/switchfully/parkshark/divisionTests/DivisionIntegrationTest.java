@@ -28,7 +28,7 @@ public class DivisionIntegrationTest {
                 .formParam("username", "testManager")
                 .formParam("password", "password")
                 .formParam("client_id", "parkShark")
-                .formParam("client_secret", "3592b0b2-c26c-4529-9ffa-c2d0b58687a5")
+                .formParam("client_secret", "d7692741-2a2f-42e3-8ac0-163ef4f247b9")
                 .when()
                 .post(URL)
                 .then()
