@@ -18,6 +18,9 @@ public class DivisionService {
 
     public void createDivision(CreateDivisionDTO createDivisionDTO) {
         divisionValidator.CheckRequiredFields(createDivisionDTO);
+        if(divisionRepository.existsDivisionByName(createDivisionDTO.getName())) {
+            throw new IllegalArgumentException("This division name is already in use");
+        }
         divisionRepository.save(divisionMapper.toDivision(createDivisionDTO));
     }
 }
