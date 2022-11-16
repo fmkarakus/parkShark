@@ -1,20 +1,26 @@
 -- ALTER TABLES SO FIELD ARE NOT NULL
 alter table division
-    alter column original_name set not null,
+    alter column original_name set not null;
+alter table division
     alter column director set not null;
 
 alter table contact_person
-    alter column street_name set not null,
+    alter column street_name set not null;
+alter table contact_person
     alter column street_number set not null;
 
 alter table parking_lot
-    alter column street_name set not null,
+    alter column street_name set not null;
+alter table parking_lot
     alter column street_number set not null;
 
 alter table member
-    alter column street_name set not null,
-    alter column street_number set not null,
-    alter column telephone_number set not null,
+    alter column street_name set not null;
+alter table member
+    alter column street_number set not null;
+alter table member
+    alter column telephone_number set not null;
+alter table member
     alter column email set not null;
 
 -- INSERT VALUES INTO POSTAL_CODE
