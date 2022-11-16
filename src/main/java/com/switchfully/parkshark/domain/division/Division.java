@@ -1,4 +1,4 @@
-package com.switchfully.parkshark.domain.Division;
+package com.switchfully.parkshark.domain.division;
 
 
 import javax.persistence.*;

@@ -1,7 +1,6 @@
-package com.switchfully.parkshark.service.Division;
+package com.switchfully.parkshark.service.division;
 
-import com.switchfully.parkshark.domain.Division.CreateDivisionDTO;
-import com.switchfully.parkshark.domain.Division.DivisionRepository;
+import com.switchfully.parkshark.domain.division.DivisionRepository;
 import org.springframework.stereotype.Service;
 
 

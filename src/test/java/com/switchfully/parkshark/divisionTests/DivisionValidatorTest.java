@@ -1,14 +1,11 @@
 package com.switchfully.parkshark.divisionTests;
 
-import com.switchfully.parkshark.domain.Division.CreateDivisionDTO;
-import com.switchfully.parkshark.service.Division.DivisionService;
-import com.switchfully.parkshark.service.Division.DivisionValidator;
+import com.switchfully.parkshark.service.division.CreateDivisionDTO;
+import com.switchfully.parkshark.service.division.DivisionService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 class DivisionValidatorTest {

@@ -1,6 +1,6 @@
-package com.switchfully.parkshark.service.Division;
+package com.switchfully.parkshark.service.division;
 
-import com.switchfully.parkshark.domain.Division.CreateDivisionDTO;
+import com.switchfully.parkshark.service.exceptions.MissingArgumentException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

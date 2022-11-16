@@ -1,4 +1,4 @@
-package com.switchfully.parkshark.domain.Division;
+package com.switchfully.parkshark.domain.division;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
