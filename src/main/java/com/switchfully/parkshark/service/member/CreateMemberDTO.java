@@ -6,6 +6,7 @@ public record CreateMemberDTO (
     String streetName,
     String streetNumber,
     String postalCode,
+    String label,
     String telephoneNumber,
     String emailAddress,
     String licensePlateNumber,
