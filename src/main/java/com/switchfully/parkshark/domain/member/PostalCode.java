@@ -28,4 +28,9 @@ public class PostalCode {
     public String getLabel() {
         return label;
     }
+
+    @Override
+    public String toString() {
+        return String.format("%s %s", postal_code, label);
+    }
 }

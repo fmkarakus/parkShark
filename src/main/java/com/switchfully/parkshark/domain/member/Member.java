@@ -59,6 +59,10 @@ public class Member {
         return address;
     }
 
+    public String getAddressAsString() {
+        return String.format("%s %s, %s", address.getStreetName(), address.getStreetNumber(), address.getPostalCode());
+    }
+
     public String getTelephoneNumber() {
         return telephoneNumber;
     }
@@ -69,6 +73,10 @@ public class Member {
 
     public LicensePlate getLicensePlate() {
         return licensePlate;
+    }
+
+    public String getLicensePlateAsString() {
+        return licensePlate.toString();
     }
 
     public LocalDate getRegistrationDate() {

@@ -4,13 +4,10 @@ public record MemberDTO(
         long id,
         String firstName,
         String lastName,
-        String streetName,
-        String streetNumber,
-        String postalCode,
+        String address,
         String telephoneNumber,
         String emailAddress,
-        String licensePlateNumber,
-        String licensePlateCountry
+        String licensePlate
 ) {
 
 }

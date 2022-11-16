@@ -28,6 +28,14 @@ public class MemberMapper {
     }
 
     public MemberDTO mapMemberToDTO(Member member) {
-        return new MemberDTO( );
+        return new MemberDTO(
+                member.getId(),
+                member.getFirstName(),
+                member.getLastName(),
+                member.getAddressAsString(),
+                member.getTelephoneNumber(),
+                member.getEmail(),
+                member.getLicensePlateAsString()
+        );
     }
 }

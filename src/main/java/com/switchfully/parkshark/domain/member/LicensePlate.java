@@ -28,6 +28,11 @@ public class LicensePlate {
     }
 
     @Override
+    public String toString() {
+        return String.format("%s %s", licensePlateCountry, licensePlateNumber);
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
