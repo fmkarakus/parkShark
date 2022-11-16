@@ -74,6 +74,11 @@
             <version>4.5.1</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>42.3.7</version>
+        </dependency>
     </dependencies>
 
     <build>

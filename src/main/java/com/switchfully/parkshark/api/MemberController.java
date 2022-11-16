@@ -1,15 +1,14 @@
 package com.switchfully.parkshark.api;
 
+import com.switchfully.parkshark.service.exceptions.EmailNotValidException;
 import com.switchfully.parkshark.service.member.CreateMemberDTO;
 import com.switchfully.parkshark.service.member.MemberDTO;
 import com.switchfully.parkshark.service.member.MemberService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("members")
@@ -22,6 +21,7 @@ public class MemberController {
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.CREATED)
     public MemberDTO registerANewMember(@RequestBody CreateMemberDTO createMemberDTO) {
         log.debug("Request to add new member");
         return memberService.registerANewMember(createMemberDTO);
