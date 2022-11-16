@@ -5,8 +5,12 @@ import org.keycloak.adapters.springboot.KeycloakSpringBootConfigResolver;
 import org.keycloak.adapters.springsecurity.KeycloakConfiguration;
 import org.keycloak.adapters.springsecurity.authentication.KeycloakAuthenticationProvider;
 import org.keycloak.adapters.springsecurity.config.KeycloakWebSecurityConfigurerAdapter;
+import org.keycloak.adapters.springsecurity.management.HttpSessionManager;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Import;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.Profile;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -25,7 +29,13 @@ import java.util.stream.Collectors;
 @KeycloakConfiguration
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 @Profile("!test")
+
+
+
+
 class SecurityConfig extends KeycloakWebSecurityConfigurerAdapter {
+
+
 
     /**
      * This is meant to add the role mapper to keycloak allowing you to map keycloak roles to your own features
