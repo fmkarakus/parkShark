@@ -1,7 +1,7 @@
 package com.switchfully.parkshark.api;
 
-import com.switchfully.parkshark.domain.CreateDivisionDTO;
-import com.switchfully.parkshark.service.DivisionService;
+import com.switchfully.parkshark.domain.Division.CreateDivisionDTO;
+import com.switchfully.parkshark.service.Division.DivisionService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;

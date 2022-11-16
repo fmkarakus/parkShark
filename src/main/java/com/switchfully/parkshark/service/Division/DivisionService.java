@@ -1,8 +1,7 @@
-package com.switchfully.parkshark.service;
+package com.switchfully.parkshark.service.Division;
 
-import com.switchfully.parkshark.domain.CreateDivisionDTO;
-import com.switchfully.parkshark.domain.Division;
-import com.switchfully.parkshark.domain.DivisionRepository;
+import com.switchfully.parkshark.domain.Division.CreateDivisionDTO;
+import com.switchfully.parkshark.domain.Division.DivisionRepository;
 import org.springframework.stereotype.Service;
 
 
@@ -10,8 +9,8 @@ import org.springframework.stereotype.Service;
 public class DivisionService {
 
     DivisionRepository divisionRepository;
-    DivisionMapper divisionMapper;
-    DivisionValidator divisionValidator;
+    DivisionMapper divisionMapper = new DivisionMapper();
+    DivisionValidator divisionValidator = new DivisionValidator();
 
     public DivisionService(DivisionRepository divisionRepository) {
         this.divisionRepository = divisionRepository;

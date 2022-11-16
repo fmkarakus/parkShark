@@ -1,6 +1,6 @@
-package com.switchfully.parkshark.service;
+package com.switchfully.parkshark.service.Division;
 
-import com.switchfully.parkshark.domain.CreateDivisionDTO;
+import com.switchfully.parkshark.domain.Division.CreateDivisionDTO;
 
 public class DivisionValidator {
 
@@ -8,7 +8,7 @@ public class DivisionValidator {
         if (createDivisionDTO.getName() == null || createDivisionDTO.getName().equals("")) {
             throw new IllegalArgumentException("Division name not provided");
         }
-        if (createDivisionDTO.getOriginal_name() == null || createDivisionDTO.getOriginal_name().equals("")) {
+        if (createDivisionDTO.getOriginalName() == null || createDivisionDTO.getOriginalName().equals("")) {
             throw new IllegalArgumentException("Original name not provided");
         }
         if (createDivisionDTO.getDirector() == null || createDivisionDTO.getDirector().equals("")) {
