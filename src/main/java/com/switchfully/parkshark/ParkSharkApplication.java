@@ -23,8 +23,9 @@ public class ParkSharkApplication {
         return KeycloakBuilder.builder()
                 .serverUrl("https://keycloak.switchfully.com/auth")
                 .grantType(OAuth2Constants.PASSWORD)
-                .realm("parkShark-babyshark")
-                .clientId("parkShark")
+                //TODO: check with Christophe if this is correct or should be realm: parkShark-babyshark, clientId: parkShark
+                .realm("master")
+                .clientId("admin-cli")
                 .username(adminUsername)
                 .password(adminPassword)
                 .resteasyClient(

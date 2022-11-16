@@ -6,6 +6,7 @@ import org.keycloak.adapters.springsecurity.config.KeycloakWebSecurityConfigurer
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Profile;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -29,7 +30,7 @@ class SecurityConfig extends KeycloakWebSecurityConfigurerAdapter {
      * This is meant to add the role mapper to keycloak allowing you to map keycloak roles to your own features
      */
     @Autowired
-    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+    public void configureGlobal(AuthenticationManagerBuilder auth) {
         KeycloakAuthenticationProvider keycloakAuthenticationProvider = keycloakAuthenticationProvider();
         keycloakAuthenticationProvider.setGrantedAuthoritiesMapper(collection ->
                 collection.stream()
@@ -89,7 +90,7 @@ class SecurityConfig extends KeycloakWebSecurityConfigurerAdapter {
      * Configure here the endpoints that need to be anonymously available
      */
     @Override
-    public void configure(WebSecurity web) throws Exception {
-        web.ignoring().antMatchers("/public-hello-world");
+    public void configure(WebSecurity web) {
+        web.ignoring().antMatchers(HttpMethod.POST, "/members");
     }
 }
