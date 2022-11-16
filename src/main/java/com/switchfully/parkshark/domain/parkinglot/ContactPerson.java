@@ -6,8 +6,8 @@ import javax.persistence.*;
 @Table(name = "CONTACT_PERSON")
 public class ContactPerson {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "parkinglot_seq")
-    @SequenceGenerator(name = "parkinglot_seq", sequenceName = "parkinglot_seq",allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "contact_person_seq")
+    @SequenceGenerator(name = "contact_person_seq", sequenceName = "contact_person_seq",allocationSize = 1)
     private Long id;
 
     @Column(name = "NAME")
@@ -25,10 +25,43 @@ public class ContactPerson {
     @Column(name= "STREET_NUMBER")
     private String streetNumber;
 
-    @OneToOne
-    @JoinColumn(name = "CONTACT_PERSON_ID")
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "POSTAL_CODE")
+
     private PostalCode postalCode;
 
     public ContactPerson() {
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public String getMobilePhoneNumber() {
+        return mobilePhoneNumber;
+    }
+
+    public String getTelephoneNumber() {
+        return telephoneNumber;
+    }
+
+    public String getStreetName() {
+        return streetName;
+    }
+
+    public String getStreetNumber() {
+        return streetNumber;
+    }
+
+    public PostalCode getPostalCode() {
+        return postalCode;
     }
 }

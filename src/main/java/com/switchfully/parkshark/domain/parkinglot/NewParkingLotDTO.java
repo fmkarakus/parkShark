@@ -1,7 +1,7 @@
 package com.switchfully.parkshark.domain.parkinglot;
 
 
-import javax.persistence.*;
+
 
 public class NewParkingLotDTO {
 
@@ -28,6 +28,17 @@ public class NewParkingLotDTO {
 
 
     private PostalCode postalCode;
+
+    public NewParkingLotDTO(String name, Category category, int maxCapacity, double pricePerHour, ContactPerson contactPerson, String streetName, String streetNumber, PostalCode postalCode) {
+        this.name = name;
+        this.category = category;
+        this.maxCapacity = maxCapacity;
+        this.pricePerHour = pricePerHour;
+        this.contactPerson = contactPerson;
+        this.streetName = streetName;
+        this.streetNumber = streetNumber;
+        this.postalCode = postalCode;
+    }
 
     public String getName() {
         return name;

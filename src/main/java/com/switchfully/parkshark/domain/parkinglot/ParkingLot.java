@@ -6,8 +6,8 @@ import javax.persistence.*;
 @Table(name = "PARKING_LOT")
 public class ParkingLot {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "parkinglot_seq")
-    @SequenceGenerator(name = "parkinglot_seq", sequenceName = "parkinglot_seq",allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "parking_lot_seq")
+    @SequenceGenerator(name = "parking_lot_seq", sequenceName = "parking_lot_seq",allocationSize = 1)
     private long id;
 
     @Column(name = "NAME")
@@ -24,7 +24,7 @@ public class ParkingLot {
     private double pricePerHour;
 
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "CONTACT_PERSON_ID")
     private ContactPerson contactPerson;
 
@@ -34,7 +34,7 @@ public class ParkingLot {
     @Column(name = "STREET_NUMBER")
     private String streetNumber;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "POSTAL_CODE")
     private PostalCode postalCode;
 
