@@ -1,4 +1,4 @@
-package com.switchfully.parkshark.divisionTests;
+package com.switchfully.parkshark.service.division;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
