@@ -9,6 +9,7 @@ public record CreateMemberDTO (
     String label,
     String telephoneNumber,
     String emailAddress,
+    String password,
     String licensePlateNumber,
     String licensePlateCountry
 ) {
