@@ -10,10 +10,10 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping(path = "/allocations")
-public class AllocationController {
+public class ParkingSpotAllocationController {
         private final AllocationService allocationService;
 
-        public AllocationController(AllocationService allocationService) {
+        public ParkingSpotAllocationController(AllocationService allocationService) {
                 this.allocationService = allocationService;
         }
 

@@ -32,16 +32,4 @@ public class LicensePlate {
         return String.format("%s %s", licensePlateCountry, licensePlateNumber);
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        LicensePlate that = (LicensePlate) o;
-        return Objects.equals(licensePlateNumber, that.licensePlateNumber) && Objects.equals(licensePlateCountry, that.licensePlateCountry);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(licensePlateNumber, licensePlateCountry);
-    }
 }
