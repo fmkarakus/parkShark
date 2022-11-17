@@ -1,7 +1,7 @@
 package com.switchfully.parkshark.domain.parkinglot;
 
 import com.switchfully.parkshark.domain.contactperson.ContactPerson;
-import com.switchfully.parkshark.domain.postalcode.PostalCode;
+import com.switchfully.parkshark.domain.member.Address;
 
 import javax.persistence.*;
 
@@ -31,30 +31,22 @@ public class ParkingLot {
     @JoinColumn(name = "CONTACT_PERSON_ID")
     private ContactPerson contactPerson;
 
-    @Column(name = "STREET_NAME")
-    private String streetName;
-
-    @Column(name = "STREET_NUMBER")
-    private String streetNumber;
-
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "POSTAL_CODE")
-    private PostalCode postalCode;
+    @Embedded
+    private Address address;
 
     public ParkingLot() {
     }
 
     public ParkingLot(String name, Category category,
                       int maxCapacity, double pricePerHour, ContactPerson contactPerson,
-                      String streetName, String streetNumber, PostalCode postalCode) {
+                      Address address) {
 
         this.name = name;
         this.category = category;
         this.maxCapacity = maxCapacity;
         this.pricePerHour = pricePerHour;
         this.contactPerson = contactPerson;
-        this.streetName = streetName;
-        this.streetNumber = streetNumber;
-        this.postalCode = postalCode;
+        this.address = address;
     }
+
 }
