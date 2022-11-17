@@ -2,6 +2,7 @@ package com.switchfully.parkshark.api;
 
 import com.switchfully.parkshark.domain.contactperson.ContactPerson;
 import com.switchfully.parkshark.domain.contactperson.ContactPersonRepository;
+import com.switchfully.parkshark.domain.division.DivisionRepository;
 import com.switchfully.parkshark.domain.parkinglot.Category;
 import com.switchfully.parkshark.domain.parkinglot.NewParkingLotDTO;
 import com.switchfully.parkshark.domain.postalcode.PostalCodeRepository;
@@ -34,6 +35,8 @@ class ParkingLotControllerTest {
     PostalCodeRepository postalCodeRepository;
     @Autowired
     ContactPersonRepository contactPersonRepository;
+    @Autowired
+    DivisionRepository divisionRepository;
 
     ParkingLotValidation parkingLotValidation;
 

@@ -38,6 +38,9 @@ public class ParkingLot {
     @JoinColumn(name = "DIVISION_ID")
     private Division division;
 
+    @Column(name = "AVAILABLE_CAPACITY")
+    private int availableCapacity;
+
     public ParkingLot() {
     }
 
