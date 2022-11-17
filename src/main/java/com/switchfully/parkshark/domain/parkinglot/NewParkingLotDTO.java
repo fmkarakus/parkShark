@@ -30,7 +30,9 @@ public class NewParkingLotDTO {
 
     private String postalCode;
 
-    public NewParkingLotDTO(String name, String category, int maxCapacity, double pricePerHour, Long contactPersonId, String streetName, String streetNumber, String postalCode) {
+    private Long divisionId;
+
+    public NewParkingLotDTO(String name, String category, int maxCapacity, double pricePerHour, Long contactPersonId, String streetName, String streetNumber, String postalCode, Long divisionId) {
         this.name = name;
         this.category = category;
         this.maxCapacity = maxCapacity;
@@ -39,6 +41,7 @@ public class NewParkingLotDTO {
         this.streetName = streetName;
         this.streetNumber = streetNumber;
         this.postalCode = postalCode;
+        this.divisionId = divisionId;
     }
 
     public String getName() {
@@ -71,5 +74,9 @@ public class NewParkingLotDTO {
 
     public String getPostalCode() {
         return postalCode;
+    }
+
+    public Long getDivisionId() {
+        return divisionId;
     }
 }

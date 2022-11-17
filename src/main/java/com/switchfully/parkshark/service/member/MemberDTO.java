@@ -7,7 +7,8 @@ public record MemberDTO(
         String address,
         String telephoneNumber,
         String emailAddress,
-        String licensePlate
+        String licensePlate,
+        String membershipLevel
 ) {
 
 }

@@ -1,6 +1,9 @@
 package com.switchfully.parkshark.domain.parkinglot;
 
+import com.switchfully.parkshark.domain.division.Division;
 import com.switchfully.parkshark.domain.member.Address;
+
+import java.io.DataInput;
 
 public class ReturnParkingLotDTO {
     private long id;
@@ -22,7 +25,9 @@ public class ReturnParkingLotDTO {
 
     private Address address;
 
-    public ReturnParkingLotDTO(long id, String name, Category category, int maxCapacity, double pricePerHour, Long contactPersonId, Address address) {
+    private Division division;
+
+    public ReturnParkingLotDTO(long id, String name, Category category, int maxCapacity, double pricePerHour, Long contactPersonId, Address address,Division division) {
         this.id = id;
         this.name = name;
         this.category = category;
@@ -30,6 +35,7 @@ public class ReturnParkingLotDTO {
         this.pricePerHour = pricePerHour;
         this.contactPersonId = contactPersonId;
         this.address = address;
+        this.division=division;
     }
 
     public long getId() {
@@ -58,5 +64,9 @@ public class ReturnParkingLotDTO {
 
     public Address getAddress() {
         return address;
+    }
+
+    public Division getDivision() {
+        return division;
     }
 }

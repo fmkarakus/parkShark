@@ -12,6 +12,7 @@ public enum Role {
             GET_ALL_DIVISIONS,
             GET_A_DIVISION_BY_ID,
             CREATE_PARKING_LOT,
+            VIEW_ALL_PARKINGLOTS,
             CREATE_SUBDIVISION),
     MEMBER("member");
 
