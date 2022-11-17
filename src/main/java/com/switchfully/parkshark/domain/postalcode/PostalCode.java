@@ -1,4 +1,4 @@
-package com.switchfully.parkshark.domain.member;
+package com.switchfully.parkshark.domain.postalcode;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

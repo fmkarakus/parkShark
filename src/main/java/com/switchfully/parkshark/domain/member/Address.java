@@ -1,6 +1,6 @@
 package com.switchfully.parkshark.domain.member;
 
-import org.hibernate.annotations.ColumnTransformer;
+import com.switchfully.parkshark.domain.postalcode.PostalCode;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;

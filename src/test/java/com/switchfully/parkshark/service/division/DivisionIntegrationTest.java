@@ -1,13 +1,22 @@
 package com.switchfully.parkshark.service.division;
 
+import com.switchfully.parkshark.service.division.DTO.CreateDivisionDTO;
+import com.switchfully.parkshark.service.division.DTO.DivisionDTO;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
+
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureTestDatabase
@@ -17,6 +26,9 @@ public class DivisionIntegrationTest {
     private int port;
     private final static String URL = "https://keycloak.switchfully.com/auth/realms/parkShark-babyshark/protocol/openid-connect/token";
     private static String response;
+
+    @Autowired
+    private DivisionService divisionService;
 
     @BeforeAll
     static void setUp() {
@@ -28,16 +40,18 @@ public class DivisionIntegrationTest {
                 .formParam("username", "testManager")
                 .formParam("password", "password")
                 .formParam("client_id", "parkShark")
-                .formParam("client_secret", "3592b0b2-c26c-4529-9ffa-c2d0b58687a5")
+                .formParam("client_secret", "d7692741-2a2f-42e3-8ac0-163ef4f247b9")
                 .when()
                 .post(URL)
                 .then()
                 .extract()
                 .path("access_token")
                 .toString();
+
+
     }
     @Test
-    void addDivisionByManager1_DivisionAlreadyExists() {
+    void addDivisionByManager_HappyPath() {
         String body = "{\"name\":\"Division5\",\"originalName\":\"QPark\",\"director\":\"Director01\"}";
         RestAssured
                 .given()
@@ -55,8 +69,10 @@ public class DivisionIntegrationTest {
     }
 
     @Test
-    void addDivisionByManager2_HappyPath() {
-        String body = "{\"name\":\"Division5\",\"originalName\":\"QPark\",\"director\":\"Director01\"}";
+    void addDivisionByManager2_DivisionALreadyExists() {
+        divisionService.createDivision(new CreateDivisionDTO("test", "Qpark", "me"));
+
+        String body = "{\"name\":\"test\",\"originalName\":\"QPark\",\"director\":\"Director01\"}";
         RestAssured
                 .given()
                 .header("Authorization", "Bearer " + response)
@@ -69,6 +85,53 @@ public class DivisionIntegrationTest {
                 .post("/divisions")
                 .then()
                 .assertThat()
-                .statusCode(HttpStatus.UNPROCESSABLE_ENTITY.value());
+                .statusCode(HttpStatus.BAD_REQUEST.value());
     }
+
+    @Test
+    void getAllDivisionsByManager_HappyPath() {
+        divisionService.createDivision(new CreateDivisionDTO("test1", "Qpark", "me"));
+        divisionService.createDivision(new CreateDivisionDTO("test2", "Qpark", "me"));
+
+
+        List<String> expectedList = new ArrayList<>(List.of("test1", "test2"));
+
+        DivisionDTO[] actualList = RestAssured
+                .given()
+                .header("Authorization", "Bearer " + response)
+                .baseUri("http://localhost")
+                .port(port)
+                .when()
+                .contentType(ContentType.JSON)
+                .get("/divisions")
+                .then()
+                .extract()
+                .as(DivisionDTO[].class);
+
+        Assertions.assertThat(Arrays.stream(actualList).map(divisionDTO -> divisionDTO.name())).containsAll(expectedList);
+    }
+
+
+    @Test
+    void getADivisionByManager_HappyPath() {
+        divisionService.createDivision(new CreateDivisionDTO("testDivision", "Qpark", "me"));
+
+        String expected = "testDivision";
+
+        DivisionDTO actual = RestAssured
+                .given()
+                .header("Authorization", "Bearer " + response)
+                .baseUri("http://localhost")
+                .port(port)
+                .when()
+                .accept(ContentType.JSON)
+                .contentType(ContentType.JSON)
+                .get("/divisions?divisionId=5")
+                .then()
+                .extract()
+                .as(DivisionDTO.class);
+
+        org.junit.jupiter.api.Assertions.assertEquals(expected, actual.name());
+    }
+
 }

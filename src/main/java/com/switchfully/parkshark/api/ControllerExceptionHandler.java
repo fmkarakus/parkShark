@@ -2,6 +2,7 @@ package com.switchfully.parkshark.api;
 
 import com.switchfully.parkshark.security.UserAlreadyExistsException;
 import com.switchfully.parkshark.service.exceptions.EmailNotValidException;
+import com.switchfully.parkshark.service.exceptions.ObjectAlreadyExistsException;
 import org.postgresql.util.PSQLException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,7 +20,7 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
 
     private final Logger log = LoggerFactory.getLogger(ControllerExceptionHandler.class);
 
-    @ExceptionHandler({NoSuchElementException.class, IllegalArgumentException.class, UserAlreadyExistsException.class, EmailNotValidException.class})
+    @ExceptionHandler({NoSuchElementException.class, IllegalArgumentException.class, UserAlreadyExistsException.class, EmailNotValidException.class, ObjectAlreadyExistsException.class})
     protected void badRequestExceptions(Exception exception, HttpServletResponse response) throws IOException {
         log.error(exception.getMessage());
         response.sendError(HttpStatus.BAD_REQUEST.value(), exception.getMessage());
