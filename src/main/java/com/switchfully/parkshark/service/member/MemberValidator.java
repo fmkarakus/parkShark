@@ -1,5 +1,6 @@
 package com.switchfully.parkshark.service.member;
 
+import com.switchfully.parkshark.domain.member.MembershipLevel;
 import com.switchfully.parkshark.service.exceptions.EmailNotValidException;
 
 import javax.mail.internet.AddressException;
@@ -19,6 +20,7 @@ public class MemberValidator {
         assertFieldNotNullOrEmpty("Password", createMemberDTO.password());
         assertFieldNotNullOrEmpty("License plate number", createMemberDTO.licensePlateNumber());
         assertFieldNotNullOrEmpty("License plate country", createMemberDTO.licensePlateCountry());
+        validateMembershipLevel(createMemberDTO.memberShipLevel());
     }
 
     private void assertFieldNotNullOrEmpty(String fieldName, String value) {
@@ -37,5 +39,14 @@ public class MemberValidator {
         } catch (AddressException ex) {
             throw new EmailNotValidException();
         }
+    }
+
+    private void validateMembershipLevel(String membershipLevel) {
+        for (MembershipLevel level : MembershipLevel.values()) {
+            if (level.toString().equals(membershipLevel.toUpperCase())) {
+                return;
+            }
+        }
+        throw new IllegalArgumentException("The provided membership level does not exist");
     }
 }

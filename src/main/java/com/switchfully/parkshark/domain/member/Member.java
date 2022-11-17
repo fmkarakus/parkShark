@@ -32,12 +32,12 @@ public class Member {
 
     @Column(name = "membership_level") //TODO: add column membership_level to member table in V3
     @Enumerated(value =EnumType.STRING)
-    private MemberShipLevel memberShipLevel;
+    private MembershipLevel memberShipLevel;
 
     public Member() {
     }
 
-    public Member(String firstName, String lastName, Address address, String telephoneNumber, String email, LicensePlate licensePlate, MemberShipLevel memberShipLevel) {
+    public Member(String firstName, String lastName, Address address, String telephoneNumber, String email, LicensePlate licensePlate, MembershipLevel memberShipLevel) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.address = address;
