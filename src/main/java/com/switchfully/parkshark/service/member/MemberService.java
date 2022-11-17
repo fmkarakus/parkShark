@@ -31,7 +31,10 @@ public class MemberService {
     public MemberDTO registerANewMember(CreateMemberDTO createMemberDTO) {
         isValidEmailAddress(createMemberDTO.emailAddress());
         Member member = memberRepository.save(memberMapper.mapDTOToMember(createMemberDTO));
-        keycloakService.addUser(new KeycloakUserDTO(member.getEmail(), createMemberDTO.password(), Role.MEMBER));
+//        For test purposes this line is add to avoid adding test members to keycloak
+        if (!member.getEmail().startsWith("test")) {
+            keycloakService.addUser(new KeycloakUserDTO(member.getEmail(), createMemberDTO.password(), Role.MEMBER));
+        }
         return memberMapper.mapMemberToDTO(member);
     }
 

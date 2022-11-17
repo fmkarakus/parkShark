@@ -34,7 +34,7 @@ class MemberControllerIntegrationTest {
                 "1111",
                 "city",
                 "012 34 56 78",
-                "new@test.be",
+                "test@email.be",
                 "password",
                 "123-abc",
                 "B"

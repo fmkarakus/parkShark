@@ -4,17 +4,17 @@
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>567</x>
+      <x>539</x>
       <y>0</y>
-      <w>126</w>
+      <w>154</w>
       <h>77</h>
     </coordinates>
     <panel_attributes>division
 --
 id: long [PK]
 name: varchar(32) [NN]
-original_name: varchar(32)
-director: varchar(32)
+original_name: varchar(32) [NN]
+director: varchar(32) [NN]
 parent_id: integer [FK]</panel_attributes>
     <additional_attributes/>
   </element>
@@ -34,8 +34,8 @@ category: varchar(32) [NN]
 max_capacity: integer [NN]
 price_per_hour: double precision [NN]
 contact_person_id: integer [FK]
-street_name: varchar(32)
-street_number: varchar(8)
+street_name: varchar(32) [NN]
+street_number: varchar(8) [NN]
 postal_code: varchar [FK]</panel_attributes>
     <additional_attributes/>
   </element>
@@ -66,8 +66,8 @@ name: varchar(64) [NN]
 email: varchar(64) [NN]
 mobile_phone_number: varchar(16)
 telephone_number: varchar(16)
-street_name: varchar(32)
-street_number: varchar(16)
+street_name: varchar(32) [NN]
+street_number: varchar(16) [NN]
 postal_code: varchar [FK] </panel_attributes>
     <additional_attributes/>
   </element>
@@ -134,11 +134,11 @@ m2=1</panel_attributes>
 id: intger [PK]
 first_name: varchar(64) [NN]
 last_name: varchar(64) [NN]
-street_name: varchar(32)
-street_number: varchar(8)
+street_name: varchar(32) [NN]
+street_number: varchar(8) [NN]
 postal_code: varchar(16) [FK]
-telephone_number: varchar(16)
-email: varchar(64)
+telephone_number: varchar(16) [NN]
+email: varchar(64) [NN]
 license_plate_number: varchar(16) [NN]
 license_plate_country: varchar(32) [NN]
 registration_date: date [NN]
