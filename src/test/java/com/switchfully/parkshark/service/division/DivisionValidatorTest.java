@@ -1,5 +1,6 @@
 package com.switchfully.parkshark.service.division;
 
+import com.switchfully.parkshark.service.division.DTO.CreateDivisionDTO;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

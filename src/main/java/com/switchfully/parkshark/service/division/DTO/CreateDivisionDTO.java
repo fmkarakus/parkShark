@@ -1,9 +1,9 @@
-package com.switchfully.parkshark.service.division;
+package com.switchfully.parkshark.service.division.DTO;
 
 public class CreateDivisionDTO {
-    private String name;
-    private String originalName;
-    private String director;
+    private final String name;
+    private final String originalName;
+    private final String director;
 
 
 
