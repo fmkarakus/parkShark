@@ -22,7 +22,6 @@ import java.util.List;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureTestDatabase
-@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 public class DivisionIntegrationTest {
 
     @LocalServerPort
@@ -159,8 +158,8 @@ public class DivisionIntegrationTest {
 
     @Test
     void addSubdivisionByManager_whenGivenWrongId() {
-        divisionService.createDivision(new CreateDivisionDTO("testParentName","testoriginalName","bosser shark"));
-        CreateDivisionDTO body=new CreateDivisionDTO("testSubName","testoriginalName","boss shark");
+        divisionService.createDivision(new CreateDivisionDTO("testParentName2","testoriginalName","bosser shark"));
+        CreateDivisionDTO body=new CreateDivisionDTO("testSubName2","testoriginalName","boss shark");
         RestAssured
                 .given()
                 .header("Authorization", "Bearer " + response)
