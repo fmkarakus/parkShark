@@ -8,27 +8,29 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "POSTAL_CODE")
 public class PostalCode {
-
     @Id
-    private String postalCode;
-
+    private String postal_code;
     @Column(name = "LABEL")
     private String label;
 
-    public PostalCode(String postalCode, String label) {
-        this.postalCode = postalCode;
+    public PostalCode() {
+    }
+
+    public PostalCode(String postal_code, String label) {
+        this.postal_code = postal_code;
         this.label = label;
     }
 
-    public PostalCode() {
-
-    }
-
-    public String getPostalCode() {
-        return postalCode;
+    public String getPostal_code() {
+        return postal_code;
     }
 
     public String getLabel() {
         return label;
+    }
+
+    @Override
+    public String toString() {
+        return String.format("%s %s", postal_code, label);
     }
 }
