@@ -30,10 +30,14 @@ public class Member {
     @Enumerated(value = EnumType.STRING)
     private Role role;
 
+    @Column(name = "membership_level") //TODO: add column membership_level to member table in V3
+    @Enumerated(value =EnumType.STRING)
+    private MemberShipLevel memberShipLevel;
+
     public Member() {
     }
 
-    public Member(String firstName, String lastName, Address address, String telephoneNumber, String email, LicensePlate licensePlate) {
+    public Member(String firstName, String lastName, Address address, String telephoneNumber, String email, LicensePlate licensePlate, MemberShipLevel memberShipLevel) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.address = address;
@@ -42,6 +46,7 @@ public class Member {
         this.licensePlate = licensePlate;
         registrationDate = LocalDate.now();
         role = Role.MEMBER;
+        this.memberShipLevel = memberShipLevel;
     }
 
     public long getId() {
