@@ -40,7 +40,7 @@ class MemberControllerIntegrationTest {
                 "password",
                 "123-abc",
                 "B",
-                "BRONZE"
+                "SILVER"
         );
 
         MemberDTO result = RestAssured
