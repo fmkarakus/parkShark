@@ -1,5 +1,6 @@
 package com.switchfully.parkshark.domain.contactperson;
 
+import com.switchfully.parkshark.domain.member.Address;
 import com.switchfully.parkshark.domain.postalcode.PostalCode;
 
 import javax.persistence.*;
@@ -22,15 +23,13 @@ public class ContactPerson {
     private String mobilePhoneNumber;
     @Column(name= "TELEPHONE_NUMBER")
     private String telephoneNumber;
-    @Column(name= "STREET_NAME")
-    private String streetName;
-    @Column(name= "STREET_NUMBER")
-    private String streetNumber;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "POSTAL_CODE")
+    @Embedded
+    private Address address;
 
-    private PostalCode postalCode;
+    public Address getAddress() {
+        return address;
+    }
 
     public ContactPerson() {
     }
@@ -55,15 +54,5 @@ public class ContactPerson {
         return telephoneNumber;
     }
 
-    public String getStreetName() {
-        return streetName;
-    }
 
-    public String getStreetNumber() {
-        return streetNumber;
-    }
-
-    public PostalCode getPostalCode() {
-        return postalCode;
-    }
 }

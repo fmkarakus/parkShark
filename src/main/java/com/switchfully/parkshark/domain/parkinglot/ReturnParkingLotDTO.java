@@ -1,5 +1,7 @@
 package com.switchfully.parkshark.domain.parkinglot;
 
+import com.switchfully.parkshark.domain.member.Address;
+
 public class ReturnParkingLotDTO {
     private long id;
 
@@ -18,24 +20,16 @@ public class ReturnParkingLotDTO {
     private Long contactPersonId;
 
 
-    private String streetName;
+    private Address address;
 
-
-    private String streetNumber;
-
-
-    private String postalCode;
-
-    public ReturnParkingLotDTO(Long id,String name, Category category, int maxCapacity, double pricePerHour, Long contactPersonId, String streetName, String streetNumber, String postalCode) {
+    public ReturnParkingLotDTO(long id, String name, Category category, int maxCapacity, double pricePerHour, Long contactPersonId, Address address) {
         this.id = id;
         this.name = name;
         this.category = category;
         this.maxCapacity = maxCapacity;
         this.pricePerHour = pricePerHour;
         this.contactPersonId = contactPersonId;
-        this.streetName = streetName;
-        this.streetNumber = streetNumber;
-        this.postalCode = postalCode;
+        this.address = address;
     }
 
     public long getId() {
@@ -62,15 +56,7 @@ public class ReturnParkingLotDTO {
         return contactPersonId;
     }
 
-    public String getStreetName() {
-        return streetName;
-    }
-
-    public String getStreetNumber() {
-        return streetNumber;
-    }
-
-    public String getPostalCode() {
-        return postalCode;
+    public Address getAddress() {
+        return address;
     }
 }
