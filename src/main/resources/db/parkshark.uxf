@@ -76,7 +76,7 @@ postal_code: varchar [FK] </panel_attributes>
     <coordinates>
       <x>448</x>
       <y>350</y>
-      <w>126</w>
+      <w>140</w>
       <h>49</h>
     </coordinates>
     <panel_attributes>postal_code
@@ -112,14 +112,14 @@ m2=1</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>567</x>
+      <x>581</x>
       <y>266</y>
-      <w>98</w>
+      <w>84</w>
       <h>133</h>
     </coordinates>
     <panel_attributes>m1=1
 m2=1</panel_attributes>
-    <additional_attributes>110.0;10.0;110.0;160.0;10.0;160.0</additional_attributes>
+    <additional_attributes>90.0;10.0;90.0;160.0;10.0;160.0</additional_attributes>
   </element>
   <element>
     <id>UMLClass</id>
@@ -138,7 +138,7 @@ street_name: varchar(32)
 street_number: varchar(8)
 postal_code: varchar(16) [FK]
 telephone_number: varchar(16)
-email_address: varchar(64)
+email: varchar(64)
 license_plate_number: varchar(16) [NN]
 license_plate_country: varchar(32) [NN]
 registration_date: date [NN]

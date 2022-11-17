@@ -1,5 +1,7 @@
-package com.switchfully.parkshark.divisionTests;
+package com.switchfully.parkshark.service.division;
 
+import com.switchfully.parkshark.service.division.DTO.DivisionDTO;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -8,6 +10,10 @@ import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureTestDatabase
@@ -37,8 +43,8 @@ public class DivisionIntegrationTest {
                 .toString();
     }
     @Test
-    void addDivisionByManager_HappyPath() {
-        String body = "{\"name\":\"Division25\",\"originalName\":\"QPark\",\"director\":\"Director01\"}";
+    void addDivisionByManager1_DivisionAlreadyExists() {
+        String body = "{\"name\":\"Division5\",\"originalName\":\"QPark\",\"director\":\"Director01\"}";
         RestAssured
                 .given()
                 .header("Authorization", "Bearer " + response)
@@ -52,5 +58,45 @@ public class DivisionIntegrationTest {
                 .then()
                 .assertThat()
                 .statusCode(HttpStatus.CREATED.value());
+    }
+
+    @Test
+    void addDivisionByManager2_HappyPath() {
+        String body = "{\"name\":\"Division5\",\"originalName\":\"QPark\",\"director\":\"Director01\"}";
+        RestAssured
+                .given()
+                .header("Authorization", "Bearer " + response)
+                .baseUri("http://localhost")
+                .port(port)
+                .when()
+                .accept(ContentType.JSON)
+                .body(body)
+                .contentType(ContentType.JSON)
+                .post("/divisions")
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.UNPROCESSABLE_ENTITY.value());
+    }
+
+    @Test
+    void getAllDivisionsBymanager_HappyPath() {
+        String body = "{\"name\":\"Division5\",\"originalName\":\"QPark\",\"director\":\"Director01\"}";
+        List<String> expectedList = new ArrayList<>(List.of("Division5"));
+
+        DivisionDTO[] actualList =RestAssured
+                .given()
+                .header("Authorization", "Bearer " + response)
+                .baseUri("http://localhost")
+                .port(port)
+                .when()
+                .accept(ContentType.JSON)
+                .body(body)
+                .contentType(ContentType.JSON)
+                .get("/divisions")
+                .then()
+                .extract()
+                .as(DivisionDTO[].class);
+
+        Assertions.assertThat(Arrays.stream(actualList).map(divisionDTO -> divisionDTO.name())).containsAll(expectedList);
     }
 }

@@ -25,4 +25,20 @@ public class Division {
         this.originalName = originalName;
         this.director = director;
     }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getOriginalName() {
+        return originalName;
+    }
+
+    public String getDirector() {
+        return director;
+    }
 }
