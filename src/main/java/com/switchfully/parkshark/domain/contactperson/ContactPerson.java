@@ -1,7 +1,7 @@
 package com.switchfully.parkshark.domain.contactperson;
 
 import com.switchfully.parkshark.domain.member.Address;
-import com.switchfully.parkshark.domain.postalcode.PostalCode;
+
 
 import javax.persistence.*;
 
