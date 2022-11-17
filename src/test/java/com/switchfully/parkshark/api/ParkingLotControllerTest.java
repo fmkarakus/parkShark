@@ -1,10 +1,15 @@
 package com.switchfully.parkshark.api;
 
+import com.switchfully.parkshark.domain.contactperson.ContactPerson;
 import com.switchfully.parkshark.domain.contactperson.ContactPersonRepository;
+import com.switchfully.parkshark.domain.parkinglot.Category;
+import com.switchfully.parkshark.domain.parkinglot.NewParkingLotDTO;
 import com.switchfully.parkshark.domain.postalcode.PostalCodeRepository;
 import com.switchfully.parkshark.service.parkinglot.ParkingLotService;
+import com.switchfully.parkshark.service.parkinglot.ParkingLotValidation;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +32,8 @@ class ParkingLotControllerTest {
     PostalCodeRepository postalCodeRepository;
     @Autowired
     ContactPersonRepository contactPersonRepository;
+
+    ParkingLotValidation parkingLotValidation;
 
 
     private final static String URL = "https://keycloak.switchfully.com/auth/realms/parkShark-babyshark/protocol/openid-connect/token";
@@ -54,8 +61,6 @@ class ParkingLotControllerTest {
 
     @Test
    void createNewParkingLot_HappyPath(){
-
-
        String requestedBody= "{\"name\":\"name\",\"category\":\"UNDERGROUND\",\"maxCapacity\":100,\"pricePerHour\":10,\"contactPersonId\":1,\"streetName\":\"street\",\"streetNumber\":\"5\",\"postalCode\":\"1111\"}";
         RestAssured
                 .given()
@@ -71,8 +76,55 @@ class ParkingLotControllerTest {
                 .assertThat()
                 .statusCode(HttpStatus.CREATED.value());
 
-
-
     }
 
+    @Test
+    void validateNameOfParkingLot(){
+        ContactPerson contactPerson = contactPersonRepository.findById(1L).orElseThrow();
+        NewParkingLotDTO newParkingLotDTO = new NewParkingLotDTO("", Category.ABOVE_GROUND,100,10,contactPerson.getId(),"street","5","1111");
+        Assertions.assertThrows(IllegalArgumentException.class, () -> parkingLotService.createParkingLot(newParkingLotDTO));
+    }
+
+    @Test
+    void validateCategoryOfParkingLot(){
+        ContactPerson contactPerson = contactPersonRepository.findById(1L).orElseThrow();
+        NewParkingLotDTO newParkingLotDTO = new NewParkingLotDTO("name", null,100,10,contactPerson.getId(),"street","5","1111");
+        Assertions.assertThrows(IllegalArgumentException.class, () -> parkingLotService.createParkingLot(newParkingLotDTO));
+    }
+    @Test
+    void validateCapacityNotNegativeOfParkingLot(){
+        ContactPerson contactPerson = contactPersonRepository.findById(1L).orElseThrow();
+        NewParkingLotDTO newParkingLotDTO = new NewParkingLotDTO("name", Category.ABOVE_GROUND,-1,10,contactPerson.getId(),"street","5","1111");
+        Assertions.assertThrows(IllegalArgumentException.class, () -> parkingLotService.createParkingLot(newParkingLotDTO));
+    }
+    @Test
+    void validatePricePerHourNotNegativeOfParkingLot(){
+        ContactPerson contactPerson = contactPersonRepository.findById(1L).orElseThrow();
+        NewParkingLotDTO newParkingLotDTO = new NewParkingLotDTO("name", Category.ABOVE_GROUND,100,-10,contactPerson.getId(),"street","5","1111");
+        Assertions.assertThrows(IllegalArgumentException.class, () -> parkingLotService.createParkingLot(newParkingLotDTO));
+    }
+    @Test
+    void validateContactPersonExistInParkingLot(){
+        NewParkingLotDTO newParkingLotDTO = new NewParkingLotDTO("name", Category.ABOVE_GROUND,100,10,5L,"street","5","1111");
+        Assertions.assertThrows(IllegalArgumentException.class, () -> parkingLotService.createParkingLot(newParkingLotDTO));
+    }
+    @Test
+    void validateStreetNameOfParkingLot(){
+        ContactPerson contactPerson = contactPersonRepository.findById(1L).orElseThrow();
+        NewParkingLotDTO newParkingLotDTO = new NewParkingLotDTO("name", Category.ABOVE_GROUND,100,10,contactPerson.getId(),"","5","1111");
+        Assertions.assertThrows(IllegalArgumentException.class, () -> parkingLotService.createParkingLot(newParkingLotDTO));
+    }
+    @Test
+    void validateStreetNumberOfParkingLot(){
+        ContactPerson contactPerson = contactPersonRepository.findById(1L).orElseThrow();
+        NewParkingLotDTO newParkingLotDTO = new NewParkingLotDTO("name", Category.ABOVE_GROUND,100,10,contactPerson.getId(),"street",null,"1111");
+        Assertions.assertThrows(IllegalArgumentException.class, () -> parkingLotService.createParkingLot(newParkingLotDTO));
+    }
+
+    @Test
+    void validatePostalCodeExistInParkingLot(){
+        ContactPerson contactPerson = contactPersonRepository.findById(1L).orElseThrow();
+        NewParkingLotDTO newParkingLotDTO = new NewParkingLotDTO("name", Category.ABOVE_GROUND,100,10,contactPerson.getId(),"street","5","6666");
+        Assertions.assertThrows(IllegalArgumentException.class, () -> parkingLotService.createParkingLot(newParkingLotDTO));
+    }
 }

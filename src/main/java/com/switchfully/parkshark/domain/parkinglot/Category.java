@@ -4,3 +4,4 @@ public enum Category {
     UNDERGROUND,
     ABOVE_GROUND
 }
+

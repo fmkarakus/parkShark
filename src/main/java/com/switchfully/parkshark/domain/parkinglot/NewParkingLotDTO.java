@@ -1,14 +1,15 @@
 package com.switchfully.parkshark.domain.parkinglot;
 
 
-
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 
 public class NewParkingLotDTO {
 
 
     private String name;
 
-
+    @Enumerated(EnumType.STRING)
     private Category category;
 
 

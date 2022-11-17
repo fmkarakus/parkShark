@@ -3,7 +3,6 @@ package com.switchfully.parkshark.service.parkinglot;
 import com.switchfully.parkshark.domain.parkinglot.NewParkingLotDTO;
 import com.switchfully.parkshark.domain.parkinglot.ParkingLot;
 import com.switchfully.parkshark.domain.parkinglot.ParkingLotRepository;
-import com.switchfully.parkshark.domain.postalcode.PostalCodeValidator;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -15,18 +14,16 @@ public class ParkingLotService {
 
     ParkingLotRepository parkingLotRepository;
     ParkingLotValidation parkingLotValidation;
-    PostalCodeValidator postalCodeValidator;
     ParkingLotMapper parkingLotMapper;
 
-    public ParkingLotService(ParkingLotRepository parkingLotRepository, ParkingLotValidation parkingLotValidation, PostalCodeValidator postalCodeValidator, ParkingLotMapper parkingLotMapper) {
+    public ParkingLotService(ParkingLotRepository parkingLotRepository, ParkingLotValidation parkingLotValidation, ParkingLotMapper parkingLotMapper) {
         this.parkingLotRepository = parkingLotRepository;
         this.parkingLotValidation = parkingLotValidation;
-        this.postalCodeValidator = postalCodeValidator;
         this.parkingLotMapper = parkingLotMapper;
     }
 
     public void createParkingLot(NewParkingLotDTO newParkingLotDTO) {
-        postalCodeValidator.isPostalCodeInDatabase(newParkingLotDTO.getPostalCode());
+        parkingLotValidation.checkRequiredFields(newParkingLotDTO);
         ParkingLot parkingLot = parkingLotMapper.newParkingLotDTOToParkingLot(newParkingLotDTO);
         parkingLotRepository.save(parkingLot);
 
