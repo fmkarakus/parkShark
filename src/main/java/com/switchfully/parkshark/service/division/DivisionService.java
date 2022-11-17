@@ -1,19 +1,23 @@
 package com.switchfully.parkshark.service.division;
 
+import com.switchfully.parkshark.domain.division.Division;
 import com.switchfully.parkshark.domain.division.DivisionRepository;
 import com.switchfully.parkshark.service.division.DTO.CreateDivisionDTO;
 import com.switchfully.parkshark.service.division.DTO.DivisionDTO;
+import com.switchfully.parkshark.service.division.DTO.SubdivisionDTO;
 import com.switchfully.parkshark.service.exceptions.ObjectAlreadyExistsException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
 
 @Service
+@Transactional
 public class DivisionService {
 
     DivisionRepository divisionRepository;
@@ -25,13 +29,14 @@ public class DivisionService {
         this.divisionRepository = divisionRepository;
     }
 
-    public void createDivision(CreateDivisionDTO createDivisionDTO) {
+    public DivisionDTO createDivision(CreateDivisionDTO createDivisionDTO) {
         divisionValidator.CheckRequiredFields(createDivisionDTO);
         if (divisionRepository.existsDivisionByName(createDivisionDTO.getName())) {
             logger.error("Division already exists");
             throw new ObjectAlreadyExistsException("This division name is already in use");
         }
-        divisionRepository.save(divisionMapper.toDivision(createDivisionDTO));
+        Division division= divisionRepository.save(divisionMapper.toDivision(createDivisionDTO));
+        return divisionMapper.toDivisionDTO(division);
     }
 
     public List<DivisionDTO> getAllDivisions() {
@@ -42,5 +47,12 @@ public class DivisionService {
 
     public DivisionDTO getADivisionById(Long divisionId) {
         return divisionMapper.toDivisionDTO(divisionRepository.findById(divisionId).orElseThrow(() -> new NoSuchElementException("Division by id " + divisionId + " was not found")));
+    }
+
+    public SubdivisionDTO createSubdivision(Long parentId, CreateDivisionDTO createDivisionDTO) {
+        Division parentDivision=divisionRepository.findById(parentId).orElseThrow(()->new IllegalArgumentException("No division found with the id: "+parentId));
+        DivisionDTO divisionDTO=createDivision(createDivisionDTO);
+        divisionRepository.findById(divisionDTO.id()).ifPresent(division -> division.setParentDivision(parentDivision));
+        return divisionMapper.toSubdivisionDTO(divisionRepository.findById(divisionDTO.id()).get());
     }
 }

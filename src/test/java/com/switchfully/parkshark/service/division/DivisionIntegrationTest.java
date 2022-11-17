@@ -2,6 +2,7 @@ package com.switchfully.parkshark.service.division;
 
 import com.switchfully.parkshark.service.division.DTO.CreateDivisionDTO;
 import com.switchfully.parkshark.service.division.DTO.DivisionDTO;
+import com.switchfully.parkshark.service.division.DTO.SubdivisionDTO;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -12,6 +13,7 @@ import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
+import org.springframework.test.annotation.DirtiesContext;
 
 
 import java.util.ArrayList;
@@ -132,4 +134,45 @@ public class DivisionIntegrationTest {
         org.junit.jupiter.api.Assertions.assertEquals(expected, actual.name());
     }
 
+    @Test
+    void addSubdivisionByManager_HappyPath() {
+        divisionService.createDivision(new CreateDivisionDTO("testParentName","testoriginalName","bosser shark"));
+        CreateDivisionDTO body=new CreateDivisionDTO("testSubName","testoriginalName","boss shark");
+        SubdivisionDTO subdivisionDTO= RestAssured
+                .given()
+                .header("Authorization", "Bearer " + response)
+                .baseUri("http://localhost")
+                .port(port)
+                .when()
+                .accept(ContentType.JSON)
+                .body(body)
+                .contentType(ContentType.JSON)
+                .post("/divisions/1")
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.CREATED.value())
+                .extract()
+                .as(SubdivisionDTO.class);
+        Assertions.assertThat(subdivisionDTO.parentId()).isEqualTo(1);
+    }
+
+    @Test
+    void addSubdivisionByManager_whenGivenWrongId() {
+        divisionService.createDivision(new CreateDivisionDTO("testParentName2","testoriginalName","bosser shark"));
+        CreateDivisionDTO body=new CreateDivisionDTO("testSubName2","testoriginalName","boss shark");
+        RestAssured
+                .given()
+                .header("Authorization", "Bearer " + response)
+                .baseUri("http://localhost")
+                .port(port)
+                .when()
+                .accept(ContentType.JSON)
+                .body(body)
+                .contentType(ContentType.JSON)
+                .post("/divisions/100000")
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.BAD_REQUEST.value());
+
+    }
 }
