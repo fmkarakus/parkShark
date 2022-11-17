@@ -1,4 +1,4 @@
-package com.switchfully.parkshark.service.member;
+package com.switchfully.parkshark.service.member.memberDTO;
 
 public record CreateMemberDTO (
     String firstName,

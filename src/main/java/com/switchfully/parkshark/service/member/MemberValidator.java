@@ -2,6 +2,7 @@ package com.switchfully.parkshark.service.member;
 
 import com.switchfully.parkshark.domain.member.MembershipLevel;
 import com.switchfully.parkshark.service.exceptions.EmailNotValidException;
+import com.switchfully.parkshark.service.member.memberDTO.CreateMemberDTO;
 
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;

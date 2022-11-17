@@ -13,7 +13,8 @@ public enum Role {
             GET_A_DIVISION_BY_ID,
             CREATE_PARKING_LOT,
             VIEW_ALL_PARKINGLOTS,
-            CREATE_SUBDIVISION),
+            CREATE_SUBDIVISION,
+            GET_ALL_MEMBERS),
     MEMBER("member");
 
     private final String label;
