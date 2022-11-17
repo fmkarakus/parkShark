@@ -233,4 +233,35 @@ class MemberControllerIntegrationTest {
                 .assertThat()
                 .statusCode(HttpStatus.BAD_REQUEST.value());
     }
+
+    @Test
+    void addNewMember_givenInvalidMembership() {
+        CreateMemberDTO createMemberDTO = new CreateMemberDTO(
+                "first",
+                "last",
+                "streetname",
+                "1",
+                "1111",
+                "city",
+                "012 34 56 78",
+                "test@email.com",
+                "password",
+                "123-abc",
+                "B",
+                "invalid"
+        );
+
+        RestAssured
+                .given()
+                .baseUri(BASE_URI)
+                .port(port)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .accept(MediaType.APPLICATION_JSON_VALUE)
+                .body(createMemberDTO)
+                .when()
+                .post("members")
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.BAD_REQUEST.value());
+    }
 }
