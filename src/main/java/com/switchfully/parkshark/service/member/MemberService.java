@@ -36,4 +36,8 @@ public class MemberService {
         }
         return memberMapper.mapMemberToDTO(member);
     }
+
+    public Member findMemberById(Long memberId) {
+        return memberRepository.findById(memberId).orElseThrow(()->new IllegalArgumentException("Member id does not exist"));
+    }
 }

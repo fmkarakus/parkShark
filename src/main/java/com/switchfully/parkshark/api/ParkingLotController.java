@@ -26,15 +26,15 @@ public class ParkingLotController {
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
-   @PreAuthorize("hasAuthority('CREATE_PARKING_LOT')")
-    public void createParkingLot(@RequestBody NewParkingLotDTO newParkingLotDTO){
+    @PreAuthorize("hasAuthority('CREATE_PARKING_LOT')")
+    public void createParkingLot(@RequestBody NewParkingLotDTO newParkingLotDTO) {
         parkingLotService.createParkingLot(newParkingLotDTO);
     }
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     @PreAuthorize("hasAuthority('VIEW_ALL_PARKINGLOTS')")
-    public List<ParkingLotSimplifiedDTO> returnAllParkingLots(){
-       return parkingLotService.getAllParkingLotsSimplified();
+    public List<ParkingLotSimplifiedDTO> returnAllParkingLots() {
+        return parkingLotService.getAllParkingLotsSimplified();
     }
 }

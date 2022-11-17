@@ -14,7 +14,8 @@ public enum Role {
             CREATE_PARKING_LOT,
             VIEW_ALL_PARKINGLOTS,
             CREATE_SUBDIVISION),
-    MEMBER("member");
+    MEMBER("member",
+            START_PARKING);
 
     private final String label;
     private final List<Feature> featureList;

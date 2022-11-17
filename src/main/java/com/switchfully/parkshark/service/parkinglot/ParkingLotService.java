@@ -39,4 +39,8 @@ public class ParkingLotService {
                 .map(parkingLot -> parkingLotMapper.parkingLotToParkingLotSimplifiedDTO(parkingLot))
                 .collect(Collectors.toList());
     }
+
+    public ParkingLot findParkingLotId(Long parkingLotId) {
+        return parkingLotRepository.findById(parkingLotId).orElseThrow(()->new IllegalArgumentException(String.format("Parking lot with the id %d does not exist.",parkingLotId)));
+    }
 }

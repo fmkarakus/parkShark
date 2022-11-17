@@ -93,4 +93,8 @@ public class ParkingLot {
     public int getAvailableCapacity() {
         return availableCapacity;
     }
+
+    public void decreaseAvailableCapacity(){
+        availableCapacity--;
+    }
 }
