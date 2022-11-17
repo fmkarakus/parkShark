@@ -37,6 +37,6 @@ public class ParkingLotMapper {
     }
 
     public ReturnParkingLotDTO mapParkingLotToReturnParkingLotDTO(ParkingLot parkingLot) {
-        return new ReturnParkingLotDTO(parkingLot.getId(), parkingLot.getName(), parkingLot.getCategory(), parkingLot.getMaxCapacity(), parkingLot.getAvailableCapacity(), parkingLot.getPricePerHour(), parkingLot.getContactPersonId(), parkingLot.getAddress(), parkingLot.getDivision());
+        return new ReturnParkingLotDTO(parkingLot.getId(), parkingLot.getName(), parkingLot.getCategory().toString(), parkingLot.getMaxCapacity(), parkingLot.getAvailableCapacity(), parkingLot.getPricePerHour(), parkingLot.getContactPersonId(), parkingLot.getAddress().toString(), parkingLot.getDivision().toString());
     }
 }

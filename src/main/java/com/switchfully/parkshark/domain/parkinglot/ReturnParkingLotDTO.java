@@ -1,20 +1,17 @@
 package com.switchfully.parkshark.domain.parkinglot;
 
-import com.switchfully.parkshark.domain.division.Division;
-import com.switchfully.parkshark.domain.member.Address;
-
 public class ReturnParkingLotDTO {
     private long id;
     private String name;
-    private Category category;
+    private String category;
     private int maxCapacity;
     private int availableCapacity;
     private double pricePerHour;
     private Long contactPersonId;
-    private Address address;
-    private Division division;
+    private String address;
+    private String division;
 
-    public ReturnParkingLotDTO(long id, String name, Category category, int maxCapacity, int availableCapacity, double pricePerHour, Long contactPersonId, Address address,Division division) {
+    public ReturnParkingLotDTO(long id, String name, String category, int maxCapacity, int availableCapacity, double pricePerHour, Long contactPersonId, String address, String division) {
         this.id = id;
         this.name = name;
         this.category = category;
@@ -23,7 +20,7 @@ public class ReturnParkingLotDTO {
         this.pricePerHour = pricePerHour;
         this.contactPersonId = contactPersonId;
         this.address = address;
-        this.division=division;
+        this.division = division;
     }
 
     public long getId() {
@@ -34,7 +31,7 @@ public class ReturnParkingLotDTO {
         return name;
     }
 
-    public Category getCategory() {
+    public String getCategory() {
         return category;
     }
 
@@ -54,11 +51,11 @@ public class ReturnParkingLotDTO {
         return contactPersonId;
     }
 
-    public Address getAddress() {
+    public String getAddress() {
         return address;
     }
 
-    public Division getDivision() {
+    public String getDivision() {
         return division;
     }
 }
