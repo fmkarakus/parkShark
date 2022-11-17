@@ -1,7 +1,7 @@
 package com.switchfully.parkshark.service.parkinglot;
 
 import com.switchfully.parkshark.domain.contactperson.ContactPersonRepository;
-import com.switchfully.parkshark.domain.parkinglot.Category;
+import com.switchfully.parkshark.domain.division.DivisionRepository;
 import com.switchfully.parkshark.domain.parkinglot.NewParkingLotDTO;
 import com.switchfully.parkshark.domain.parkinglot.ParkingLotRepository;
 import com.switchfully.parkshark.domain.postalcode.PostalCodeRepository;
@@ -15,13 +15,15 @@ public class ParkingLotValidation {
     private final ParkingLotRepository parkingLotRepository;
     private final PostalCodeRepository postalCodeRepository;
     private final ContactPersonRepository contactPersonRepository;
+    private final DivisionRepository divisionRepository;
     private final Logger logger = LoggerFactory.getLogger(ParkingLotValidation.class);
 
 
-    public ParkingLotValidation(PostalCodeRepository postalCodeRepository, ParkingLotRepository parkingLotRepository, ContactPersonRepository contactPersonRepository) {
+    public ParkingLotValidation(PostalCodeRepository postalCodeRepository, ParkingLotRepository parkingLotRepository, ContactPersonRepository contactPersonRepository, DivisionRepository divisionRepository) {
         this.postalCodeRepository = postalCodeRepository;
         this.parkingLotRepository = parkingLotRepository;
         this.contactPersonRepository = contactPersonRepository;
+        this.divisionRepository = divisionRepository;
     }
 
 
@@ -61,6 +63,10 @@ public class ParkingLotValidation {
             throw new IllegalArgumentException("This Postal Code doesn't exist");
         }
 
+        if (!divisionRepository.existsById(newParkingLotDTO.getDivisionId())){
+            logger.error("This division doesn't exist");
+            throw new IllegalArgumentException("This division doesn't exist");
+        }
     }
 
 }
