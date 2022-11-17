@@ -1,9 +1,15 @@
 package com.switchfully.parkshark.service.parkinglot;
 
+import com.switchfully.parkshark.domain.contactperson.ContactPerson;
+import com.switchfully.parkshark.domain.contactperson.ContactPersonRepository;
+import com.switchfully.parkshark.domain.division.Division;
+import com.switchfully.parkshark.domain.division.DivisionRepository;
 import com.switchfully.parkshark.domain.parkinglot.NewParkingLotDTO;
 import com.switchfully.parkshark.domain.parkinglot.ParkingLot;
 import com.switchfully.parkshark.domain.parkinglot.ParkingLotRepository;
 import com.switchfully.parkshark.domain.parkinglot.ParkingLotSimplifiedDTO;
+import com.switchfully.parkshark.domain.postalcode.PostalCode;
+import com.switchfully.parkshark.domain.postalcode.PostalCodeRepository;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -15,12 +21,17 @@ import java.util.stream.Collectors;
 @Service
 @Transactional
 public class ParkingLotService {
+    private final PostalCodeRepository postalCodeRepository;
+    private final ContactPersonRepository contactPersonRepository;
+    private final DivisionRepository divisionRepository;
+    private final ParkingLotRepository parkingLotRepository;
+    private final ParkingLotValidation parkingLotValidation;
+    private final ParkingLotMapper parkingLotMapper;
 
-    ParkingLotRepository parkingLotRepository;
-    ParkingLotValidation parkingLotValidation;
-    ParkingLotMapper parkingLotMapper;
-
-    public ParkingLotService(ParkingLotRepository parkingLotRepository, ParkingLotValidation parkingLotValidation, ParkingLotMapper parkingLotMapper) {
+    public ParkingLotService(PostalCodeRepository postalCodeRepository, ContactPersonRepository contactPersonRepository, DivisionRepository divisionRepository, ParkingLotRepository parkingLotRepository, ParkingLotValidation parkingLotValidation, ParkingLotMapper parkingLotMapper) {
+        this.postalCodeRepository = postalCodeRepository;
+        this.contactPersonRepository = contactPersonRepository;
+        this.divisionRepository = divisionRepository;
         this.parkingLotRepository = parkingLotRepository;
         this.parkingLotValidation = parkingLotValidation;
         this.parkingLotMapper = parkingLotMapper;

@@ -55,4 +55,8 @@ public class DivisionService {
         divisionRepository.findById(divisionDTO.id()).ifPresent(division -> division.setParentDivision(parentDivision));
         return divisionMapper.toSubdivisionDTO(divisionRepository.findById(divisionDTO.id()).get());
     }
+
+    public Division findDivisionById(Long divisionId) {
+        return divisionRepository.findById(divisionId).orElseThrow(()-> new IllegalArgumentException("Invalid division id"));
+    }
 }
