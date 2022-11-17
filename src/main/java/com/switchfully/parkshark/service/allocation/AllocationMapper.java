@@ -7,11 +7,14 @@ import com.switchfully.parkshark.service.member.MemberService;
 import com.switchfully.parkshark.service.parkinglot.ParkingLotService;
 import org.springframework.stereotype.Component;
 
+import java.time.format.DateTimeFormatter;
+
 @Component
 public class AllocationMapper {
     private final MemberService memberService;
     private final ParkingLotService parkingLotService;
 
+    private final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
     public AllocationMapper(MemberService memberService, ParkingLotService parkingLotService) {
         this.memberService = memberService;
         this.parkingLotService = parkingLotService;
@@ -31,7 +34,7 @@ public class AllocationMapper {
                 allocation.getMember().getId(),
                 allocation.getLicensePlateNumber(),
                 allocation.getParkingLot().getId(),
-                allocation.getStartingTime()
+                allocation.getStartingTime().format(dateTimeFormatter)
         );
     }
 }

@@ -7,7 +7,7 @@ public record AllocationDTO(
         Long memberId,
         String licencePlateNumber,
         Long parkingLotId,
-        LocalDateTime startingTime
+        String startingTime
 ) {
 
 }

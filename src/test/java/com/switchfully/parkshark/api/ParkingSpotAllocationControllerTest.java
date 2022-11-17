@@ -12,6 +12,7 @@ import com.switchfully.parkshark.service.member.MemberService;
 import com.switchfully.parkshark.service.parkinglot.ParkingLotService;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
+import org.hamcrest.Matchers;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,7 +54,7 @@ class ParkingSpotAllocationControllerTest {
             "SILVER"
     );
 
-    private static final NewParkingLotDTO newParkingLotDTO=new NewParkingLotDTO(
+    private static final NewParkingLotDTO newParkingLotDTO = new NewParkingLotDTO(
             "testParkingLot",
             "UNDERGROUND",
             100,
@@ -84,12 +85,11 @@ class ParkingSpotAllocationControllerTest {
 
     @Test
     void createNewParkingSpotAllocation_HappyPath() {
-        MemberDTO memberDTO= memberService.registerANewMember(createMemberDTO);
+        MemberDTO memberDTO = memberService.registerANewMember(createMemberDTO);
         parkingLotService.createParkingLot(newParkingLotDTO);
-        ParkingLot parkingLot=parkingLotService.findParkingLotId(1L);
-        StartAllocationDTO requestedBody = new StartAllocationDTO(memberDTO.id(),"123-abc", 1L);
+        StartAllocationDTO requestedBody = new StartAllocationDTO(memberDTO.id(), "123-abc", 1L);
 
-        AllocationDTO result= given()
+        AllocationDTO result = given()
                 .header("Authorization", "Bearer " + token)
                 .baseUri("http://localhost")
                 .port(port)
@@ -110,4 +110,63 @@ class ParkingSpotAllocationControllerTest {
         assertThat(result.startingTime()).isNotNull();
     }
 
+    @Test
+    void createNewParkingSpotAllocation_whenParkingLotIdIsInvalid() {
+        MemberDTO memberDTO = memberService.registerANewMember(createMemberDTO);
+        StartAllocationDTO requestedBody = new StartAllocationDTO(memberDTO.id(), "123-abc", 500L);
+
+        given()
+                .header("Authorization", "Bearer " + token)
+                .baseUri("http://localhost")
+                .port(port)
+                .when()
+                .accept(ContentType.JSON)
+                .body(requestedBody)
+                .contentType(ContentType.JSON)
+                .post("/allocations")
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.BAD_REQUEST.value())
+                .body("message", Matchers.is("Parking lot with the id 500 does not exist."));
+    }
+
+    @Test
+    void createNewParkingSpotAllocation_whenMemberIdIsInvalid() {
+        parkingLotService.createParkingLot(newParkingLotDTO);
+        StartAllocationDTO requestedBody = new StartAllocationDTO(10000L, "123-abc", 1L);
+        given()
+                .header("Authorization", "Bearer " + token)
+                .baseUri("http://localhost")
+                .port(port)
+                .when()
+                .accept(ContentType.JSON)
+                .body(requestedBody)
+                .contentType(ContentType.JSON)
+                .post("/allocations")
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.BAD_REQUEST.value())
+                .body("message", Matchers.is("Member id does not exist"));
+    }
+
+    @Test
+    void createNewParkingSpotAllocation_whenLicensePlateIsNotRegistered() {
+        MemberDTO memberDTO = memberService.registerANewMember(createMemberDTO);
+        parkingLotService.createParkingLot(newParkingLotDTO);
+        StartAllocationDTO requestedBody = new StartAllocationDTO(memberDTO.id(), "NotRegisteredPlate", 1L);
+
+        given()
+                .header("Authorization", "Bearer " + token)
+                .baseUri("http://localhost")
+                .port(port)
+                .when()
+                .accept(ContentType.JSON)
+                .body(requestedBody)
+                .contentType(ContentType.JSON)
+                .post("/allocations")
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.BAD_REQUEST.value())
+                .body("message", Matchers.is("The license plate NotRegisteredPlate does not registered to member with id 1"));
+    }
 }
