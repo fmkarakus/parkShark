@@ -55,6 +55,7 @@ public class ParkingLot {
         this.contactPerson = contactPerson;
         this.address = address;
         this.division= division;
+        this.availableCapacity = getMaxCapacity();
     }
 
     public long getId() {
@@ -87,5 +88,9 @@ public class ParkingLot {
 
     public Division getDivision() {
         return division;
+    }
+
+    public int getAvailableCapacity() {
+        return availableCapacity;
     }
 }
