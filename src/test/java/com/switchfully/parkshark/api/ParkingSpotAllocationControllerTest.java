@@ -1,16 +1,12 @@
 package com.switchfully.parkshark.api;
 
-import com.switchfully.parkshark.domain.member.Member;
 import com.switchfully.parkshark.domain.parkinglot.NewParkingLotDTO;
-import com.switchfully.parkshark.domain.parkinglot.ParkingLot;
-import com.switchfully.parkshark.service.allocation.AllocationService;
 import com.switchfully.parkshark.service.allocation.DTO.AllocationDTO;
 import com.switchfully.parkshark.service.allocation.DTO.StartAllocationDTO;
 import com.switchfully.parkshark.service.member.CreateMemberDTO;
 import com.switchfully.parkshark.service.member.MemberDTO;
 import com.switchfully.parkshark.service.member.MemberService;
 import com.switchfully.parkshark.service.parkinglot.ParkingLotService;
-import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.BeforeAll;
@@ -23,14 +19,13 @@ import org.springframework.http.HttpStatus;
 
 import static io.restassured.RestAssured.given;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.Matchers.equalTo;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureTestDatabase
 class ParkingSpotAllocationControllerTest {
     @LocalServerPort
     private int port;
-    @Autowired
-    private AllocationService allocationService;
     @Autowired
     private MemberService memberService;
     @Autowired
@@ -127,7 +122,7 @@ class ParkingSpotAllocationControllerTest {
                 .then()
                 .assertThat()
                 .statusCode(HttpStatus.BAD_REQUEST.value())
-                .body("message", Matchers.is("Parking lot with the id 500 does not exist."));
+                .body("message", equalTo("Parking lot with the id 500 does not exist."));
     }
 
     @Test
@@ -146,7 +141,7 @@ class ParkingSpotAllocationControllerTest {
                 .then()
                 .assertThat()
                 .statusCode(HttpStatus.BAD_REQUEST.value())
-                .body("message", Matchers.is("Member id does not exist"));
+                .body("message", equalTo("Member id does not exist"));
     }
 
     @Test
@@ -167,6 +162,6 @@ class ParkingSpotAllocationControllerTest {
                 .then()
                 .assertThat()
                 .statusCode(HttpStatus.BAD_REQUEST.value())
-                .body("message", Matchers.is("The license plate NotRegisteredPlate does not registered to member with id 1"));
+                .body("message", equalTo("The license plate NotRegisteredPlate does not registered to member with id 1"));
     }
 }
