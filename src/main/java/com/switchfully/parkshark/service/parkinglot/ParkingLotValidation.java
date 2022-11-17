@@ -5,7 +5,7 @@ import com.switchfully.parkshark.domain.parkinglot.Category;
 import com.switchfully.parkshark.domain.parkinglot.NewParkingLotDTO;
 import com.switchfully.parkshark.domain.parkinglot.ParkingLotRepository;
 import com.switchfully.parkshark.domain.postalcode.PostalCodeRepository;
-import com.switchfully.parkshark.service.exceptions.MissingArgumentException;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -29,20 +29,20 @@ public class ParkingLotValidation {
     public void checkRequiredFields(NewParkingLotDTO newParkingLotDTO) {
         if (newParkingLotDTO.getName() == null || newParkingLotDTO.getName().equals("")) {
             logger.error("No Parking lot name provided");
-            throw new MissingArgumentException("Parking lot name not provided");
+            throw new IllegalArgumentException("Parking lot name not provided");
         }
         if (newParkingLotDTO.getCategory() == null) {
             logger.error("No Category name provided");
-            throw new MissingArgumentException("Category name not provided");
+            throw new IllegalArgumentException("Category name not provided");
         }
 
         if (newParkingLotDTO.getMaxCapacity() < 0 ) {
             logger.error("Capacity can't be negative");
-            throw new MissingArgumentException("Capacity can't be negative");
+            throw new IllegalArgumentException("Capacity can't be negative");
         }
         if (newParkingLotDTO.getPricePerHour() < 0 ) {
             logger.error("Price per hour can't be negative");
-            throw new MissingArgumentException("Price per hour can't be negative");
+            throw new IllegalArgumentException("Price per hour can't be negative");
         }
         if (!contactPersonRepository.existsById(newParkingLotDTO.getContactPersonId())){
             logger.error("This contact person doesn't exist");
@@ -50,11 +50,11 @@ public class ParkingLotValidation {
         }
         if (newParkingLotDTO.getStreetName() == null || newParkingLotDTO.getStreetName().equals("")) {
             logger.error("Street name not provided");
-            throw new MissingArgumentException("Street name not provided");
+            throw new IllegalArgumentException("Street name not provided");
         }
         if (newParkingLotDTO.getStreetNumber() == null || newParkingLotDTO.getStreetNumber().equals("")) {
             logger.error("Street number not provided");
-            throw new MissingArgumentException("Street number not provided");
+            throw new IllegalArgumentException("Street number not provided");
         }
         if (!postalCodeRepository.existsById(newParkingLotDTO.getPostalCode())){
             logger.error("This Postal Code  doesn't exist");

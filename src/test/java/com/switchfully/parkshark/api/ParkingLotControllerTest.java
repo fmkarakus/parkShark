@@ -63,7 +63,7 @@ class ParkingLotControllerTest {
 
     @Test
    void createNewParkingLot_HappyPath(){
-       String requestedBody= "{\"name\":\"name\",\"category\":\"UNDERGROUND\",\"maxCapacity\":100,\"pricePerHour\":10,\"contactPersonId\":1,\"streetName\":\"street\",\"streetNumber\":\"5\",\"postalCode\":\"1111\"}";
+       String requestedBody= "{\"name\":\"nae\",\"category\":\"UNDERGROUND\",\"maxCapacity\":100,\"pricePerHour\":10,\"contactPersonId\":1,\"streetName\":\"street\",\"streetNumber\":\"5\",\"postalCode\":\"1111\"}";
         RestAssured
                 .given()
                 .header("Authorization", "Bearer " + response)
