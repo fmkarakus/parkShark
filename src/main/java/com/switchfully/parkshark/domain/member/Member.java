@@ -27,6 +27,7 @@ public class Member {
     @Column(name = "registration_date")
     private LocalDate registrationDate;
     @Column(name = "role")
+    @Enumerated(value = EnumType.STRING)
     private Role role;
 
     public Member() {
