@@ -25,7 +25,7 @@ public class MemberMapper {
                         createMemberDTO.licensePlateNumber(),
                         createMemberDTO.licensePlateCountry()
                 ),
-                createMemberDTO.memberShipLevel()
+                createMemberDTO.membershipLevel()
         );
     }
 

@@ -12,7 +12,7 @@ public record CreateMemberDTO (
     String password,
     String licensePlateNumber,
     String licensePlateCountry,
-    String memberShipLevel
+    String membershipLevel
 ) {
 
 }
