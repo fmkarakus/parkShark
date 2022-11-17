@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
 
@@ -37,5 +38,9 @@ public class DivisionService {
         return divisionRepository.findAll().stream()
                 .map(division -> divisionMapper.toDivisionDTO(division))
                 .collect(Collectors.toList());
+    }
+
+    public DivisionDTO getADivisionById(Long divisionId) {
+        return divisionMapper.toDivisionDTO(divisionRepository.findById(divisionId).orElseThrow(() -> new NoSuchElementException("Division by id " + divisionId + " was not found")));
     }
 }

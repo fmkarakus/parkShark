@@ -3,7 +3,7 @@ package com.switchfully.parkshark.service.member;
 import com.switchfully.parkshark.domain.member.Address;
 import com.switchfully.parkshark.domain.member.LicensePlate;
 import com.switchfully.parkshark.domain.member.Member;
-import com.switchfully.parkshark.domain.postalcode.PostalCode;
+import com.switchfully.parkshark.domain.member.PostalCode;
 
 public class MemberMapper {
     public Member mapDTOToMember(CreateMemberDTO createMemberDTO) {

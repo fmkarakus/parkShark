@@ -38,4 +38,12 @@ public class DivisionController {
         logger.info("Getting all divisions");
         return divisionService.getAllDivisions();
     }
+
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping(params = {"divisionId"}, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasAuthority('GET_A_DIVISION_BY_ID')")
+    public DivisionDTO getADivision(@RequestParam(required = false) Long divisionId) {
+        logger.info("Getting division " + divisionId);
+        return divisionService.getADivisionById(divisionId);
+    }
 }
