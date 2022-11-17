@@ -7,7 +7,7 @@ import java.util.List;
 import static com.switchfully.parkshark.security.Feature.*;
 
 public enum Role {
-    MANAGER("manager", CREATE_DIVISION, GET_ALL_DIVISIONS, GET_A_DIVISION_BY_ID, CREATE_PARKING_LOT),
+    MANAGER("manager", CREATE_DIVISION, GET_ALL_DIVISIONS, GET_A_DIVISION_BY_ID, CREATE_PARKING_LOT, VIEW_ALL_PARKINGLOTS),
     MEMBER("member");
 
     private final String label;

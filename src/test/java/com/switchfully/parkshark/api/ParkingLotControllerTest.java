@@ -2,6 +2,7 @@ package com.switchfully.parkshark.api;
 
 import com.switchfully.parkshark.domain.contactperson.ContactPerson;
 import com.switchfully.parkshark.domain.contactperson.ContactPersonRepository;
+import com.switchfully.parkshark.domain.division.DivisionRepository;
 import com.switchfully.parkshark.domain.parkinglot.Category;
 import com.switchfully.parkshark.domain.parkinglot.NewParkingLotDTO;
 import com.switchfully.parkshark.domain.postalcode.PostalCodeRepository;
@@ -34,6 +35,8 @@ class ParkingLotControllerTest {
     PostalCodeRepository postalCodeRepository;
     @Autowired
     ContactPersonRepository contactPersonRepository;
+    @Autowired
+    DivisionRepository divisionRepository;
 
     ParkingLotValidation parkingLotValidation;
 
@@ -63,7 +66,7 @@ class ParkingLotControllerTest {
 
     @Test
    void createNewParkingLot_HappyPath(){
-       String requestedBody= "{\"name\":\"nae\",\"category\":\"UNDERGROUND\",\"maxCapacity\":100,\"pricePerHour\":10,\"contactPersonId\":1,\"streetName\":\"street\",\"streetNumber\":\"5\",\"postalCode\":\"1111\"}";
+       String requestedBody= "{\"name\":\"nae\",\"category\":\"UNDERGROUND\",\"maxCapacity\":100,\"pricePerHour\":10,\"contactPersonId\":1,\"streetName\":\"street\",\"streetNumber\":\"5\",\"postalCode\":\"1111\",\"divisionId\":1}";
         RestAssured
                 .given()
                 .header("Authorization", "Bearer " + response)
@@ -82,57 +85,65 @@ class ParkingLotControllerTest {
 
     @Test
     void validateNameOfParkingLot(){
-        ContactPerson contactPerson = contactPersonRepository.findById(1L).orElseThrow();
-        NewParkingLotDTO newParkingLotDTO = new NewParkingLotDTO("", "ABOVE_GROUND",100,10,contactPerson.getId(),"street","5","1111");
+        NewParkingLotDTO newParkingLotDTO = new NewParkingLotDTO("", "ABOVE_GROUND",100,10,1L,"street","5","1111",1L);
         Assertions.assertThrows(IllegalArgumentException.class, () -> parkingLotService.createParkingLot(newParkingLotDTO));
     }
 
     @Test
     void validateCategoryOfParkingLot(){
-        ContactPerson contactPerson = contactPersonRepository.findById(1L).orElseThrow();
-        NewParkingLotDTO newParkingLotDTO = new NewParkingLotDTO("name", null,100,10,contactPerson.getId(),"street","5","1111");
+        NewParkingLotDTO newParkingLotDTO = new NewParkingLotDTO("name", null,100,10,1L,"street","5","1111",1L);
         Assertions.assertThrows(IllegalArgumentException.class, () -> parkingLotService.createParkingLot(newParkingLotDTO));
     }
     @Test
     void validateCategoryRandomOfParkingLot(){
-        ContactPerson contactPerson = contactPersonRepository.findById(1L).orElseThrow();
-        NewParkingLotDTO newParkingLotDTO = new NewParkingLotDTO("name", "random",100,10,contactPerson.getId(),"street","5","1111");
+        NewParkingLotDTO newParkingLotDTO = new NewParkingLotDTO("name", "random",100,10,1L,"street","5","1111",1L);
         Assertions.assertThrows(NoSuchElementException.class, () -> parkingLotService.createParkingLot(newParkingLotDTO));
     }
     @Test
     void validateCapacityNotNegativeOfParkingLot(){
-        ContactPerson contactPerson = contactPersonRepository.findById(1L).orElseThrow();
-        NewParkingLotDTO newParkingLotDTO = new NewParkingLotDTO("name", "ABOVE_GROUND",-1,10,contactPerson.getId(),"street","5","1111");
+        NewParkingLotDTO newParkingLotDTO = new NewParkingLotDTO("name", "ABOVE_GROUND",-1,10,1L,"street","5","1111",1L);
         Assertions.assertThrows(IllegalArgumentException.class, () -> parkingLotService.createParkingLot(newParkingLotDTO));
     }
     @Test
     void validatePricePerHourNotNegativeOfParkingLot(){
-        ContactPerson contactPerson = contactPersonRepository.findById(1L).orElseThrow();
-        NewParkingLotDTO newParkingLotDTO = new NewParkingLotDTO("name", "ABOVE_GROUND",100,-10,contactPerson.getId(),"street","5","1111");
+        NewParkingLotDTO newParkingLotDTO = new NewParkingLotDTO("name", "ABOVE_GROUND",100,-10,1L,"street","5","1111",1L);
         Assertions.assertThrows(IllegalArgumentException.class, () -> parkingLotService.createParkingLot(newParkingLotDTO));
     }
     @Test
     void validateContactPersonExistInParkingLot(){
-        NewParkingLotDTO newParkingLotDTO = new NewParkingLotDTO("name", "ABOVE_GROUND",100,10,5L,"street","5","1111");
+        NewParkingLotDTO newParkingLotDTO = new NewParkingLotDTO("name", "ABOVE_GROUND",100,10,5016L,"street","5","1111",1L);
         Assertions.assertThrows(IllegalArgumentException.class, () -> parkingLotService.createParkingLot(newParkingLotDTO));
     }
     @Test
     void validateStreetNameOfParkingLot(){
-        ContactPerson contactPerson = contactPersonRepository.findById(1L).orElseThrow();
-        NewParkingLotDTO newParkingLotDTO = new NewParkingLotDTO("name", "ABOVE_GROUND",100,10,contactPerson.getId(),"","5","1111");
+        NewParkingLotDTO newParkingLotDTO = new NewParkingLotDTO("name", "ABOVE_GROUND",100,10,1L,"","5","1111",1L);
         Assertions.assertThrows(IllegalArgumentException.class, () -> parkingLotService.createParkingLot(newParkingLotDTO));
     }
     @Test
     void validateStreetNumberOfParkingLot(){
-        ContactPerson contactPerson = contactPersonRepository.findById(1L).orElseThrow();
-        NewParkingLotDTO newParkingLotDTO = new NewParkingLotDTO("name", "ABOVE_GROUND",100,10,contactPerson.getId(),"street",null,"1111");
+        NewParkingLotDTO newParkingLotDTO = new NewParkingLotDTO("name", "ABOVE_GROUND",100,10,1L,"street",null,"1111",1L);
         Assertions.assertThrows(IllegalArgumentException.class, () -> parkingLotService.createParkingLot(newParkingLotDTO));
     }
 
     @Test
     void validatePostalCodeExistInParkingLot(){
-        ContactPerson contactPerson = contactPersonRepository.findById(1L).orElseThrow();
-        NewParkingLotDTO newParkingLotDTO = new NewParkingLotDTO("name", "ABOVE_GROUND",100,10,contactPerson.getId(),"street","5","6666");
+        NewParkingLotDTO newParkingLotDTO = new NewParkingLotDTO("name", "ABOVE_GROUND",100,10,1L,"street","5","6666",1L);
         Assertions.assertThrows(IllegalArgumentException.class, () -> parkingLotService.createParkingLot(newParkingLotDTO));
+    }
+
+    @Test
+    void getAllParkingLot_HappyPath(){
+        RestAssured
+                .given()
+                .header("Authorization", "Bearer " + response)
+                .baseUri("http://localhost")
+                .port(port)
+                .when()
+                .accept(ContentType.JSON)
+                .contentType(ContentType.JSON)
+                .get("/parkinglots")
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.OK.value());
     }
 }
