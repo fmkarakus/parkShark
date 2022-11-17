@@ -1,5 +1,6 @@
 package com.switchfully.parkshark.api;
 
+import com.switchfully.parkshark.service.exceptions.EmailNotValidException;
 import com.switchfully.parkshark.service.member.CreateMemberDTO;
 import com.switchfully.parkshark.service.member.MemberDTO;
 import com.switchfully.parkshark.service.member.MemberService;
@@ -13,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureTestDatabase
@@ -62,5 +64,95 @@ class MemberControllerIntegrationTest {
         assertThat(result.telephoneNumber()).isEqualTo(createMemberDTO.telephoneNumber());
         assertThat(result.address()).isEqualTo(String.format("%s %s, %s %s", createMemberDTO.streetName(), createMemberDTO.streetNumber(), createMemberDTO.postalCode(), createMemberDTO.label()));
         assertThat(result.licensePlate()).isEqualTo(String.format("%s %s", createMemberDTO.licensePlateCountry(), createMemberDTO.licensePlateNumber()));
+    }
+
+    @Test
+    void addNewMember_givenInvalidEmail() {
+        CreateMemberDTO createMemberDTO = new CreateMemberDTO(
+                "first",
+                "last",
+                "streetname",
+                "1",
+                "1111",
+                "city",
+                "012 34 56 78",
+                "testemail.be",
+                "password",
+                "123-abc",
+                "B"
+        );
+
+        RestAssured
+                .given()
+                .baseUri(BASE_URI)
+                .port(port)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .accept(MediaType.APPLICATION_JSON_VALUE)
+                .body(createMemberDTO)
+                .when()
+                .post("members")
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.BAD_REQUEST.value());
+    }
+
+    @Test
+    void addNewMember_givenNullFields() {
+        CreateMemberDTO createMemberDTO = new CreateMemberDTO(
+                "first",
+                "last",
+                "streetName",
+                "1",
+                "1111",
+                "city",
+                "012 34 56 78",
+                "test@email.be",
+                "password",
+                "123-abc",
+                null
+        );
+
+        RestAssured
+                .given()
+                .baseUri(BASE_URI)
+                .port(port)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .accept(MediaType.APPLICATION_JSON_VALUE)
+                .body(createMemberDTO)
+                .when()
+                .post("members")
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.BAD_REQUEST.value());
+    }
+
+    @Test
+    void addNewMember_givenEmptyFields() {
+        CreateMemberDTO createMemberDTO = new CreateMemberDTO(
+                "first",
+                "last",
+                "streetName",
+                "1",
+                "1111",
+                "city",
+                "012 34 56 78",
+                "test@email.be",
+                "password",
+                "123-abc",
+                " "
+        );
+
+        RestAssured
+                .given()
+                .baseUri(BASE_URI)
+                .port(port)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .accept(MediaType.APPLICATION_JSON_VALUE)
+                .body(createMemberDTO)
+                .when()
+                .post("members")
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.BAD_REQUEST.value());
     }
 }
