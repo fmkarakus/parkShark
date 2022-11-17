@@ -4,5 +4,6 @@ public record DivisionDTO
         (Long id,
          String name,
          String originalName,
-         String director) {
+         String director
+        ) {
 }

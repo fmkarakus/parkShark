@@ -6,12 +6,12 @@ public class CreateDivisionDTO {
     private final String director;
 
 
-
     public CreateDivisionDTO(String name, String originalName, String director) {
         this.name = name;
         this.originalName = originalName;
         this.director = director;
     }
+
 
     public String getName() {
         return name;

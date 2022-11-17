@@ -2,6 +2,7 @@ package com.switchfully.parkshark.api;
 
 import com.switchfully.parkshark.service.division.DTO.CreateDivisionDTO;
 import com.switchfully.parkshark.service.division.DTO.DivisionDTO;
+import com.switchfully.parkshark.service.division.DTO.SubdivisionDTO;
 import com.switchfully.parkshark.service.division.DivisionService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -45,5 +46,13 @@ public class DivisionController {
     public DivisionDTO getADivision(@RequestParam(required = false) Long divisionId) {
         logger.info("Getting division " + divisionId);
         return divisionService.getADivisionById(divisionId);
+    }
+
+    @ResponseStatus(HttpStatus.CREATED)
+    @PostMapping(path="{parentId}",consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasAuthority('CREATE_SUBDIVISION')")
+    public SubdivisionDTO createSubdivision(@PathVariable long parentId, @RequestBody CreateDivisionDTO createDivisionDTO) {
+        logger.info("Adding new subdivision to database");
+        return divisionService.createSubdivision(parentId,createDivisionDTO);
     }
 }

@@ -17,6 +17,9 @@ public class Division {
     @Column(name = "director")
     private String director;
 
+    @ManyToOne
+    @JoinColumn(name="parent_id")
+    private Division parentDivision;
     public Division() {
     }
 
@@ -40,5 +43,13 @@ public class Division {
 
     public String getDirector() {
         return director;
+    }
+
+    public Division getParentDivision() {
+        return parentDivision;
+    }
+
+    public void setParentDivision(Division parentDivision) {
+        this.parentDivision = parentDivision;
     }
 }
