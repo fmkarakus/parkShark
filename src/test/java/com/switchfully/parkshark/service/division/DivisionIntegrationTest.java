@@ -114,9 +114,7 @@ public class DivisionIntegrationTest {
 
     @Test
     void getADivisionByManager_HappyPath() {
-        divisionService.createDivision(new CreateDivisionDTO("testDivision", "Qpark", "me"));
-
-        String expected = "testDivision";
+        String expected = "NameTest1";
 
         DivisionDTO actual = RestAssured
                 .given()
@@ -126,7 +124,7 @@ public class DivisionIntegrationTest {
                 .when()
                 .accept(ContentType.JSON)
                 .contentType(ContentType.JSON)
-                .get("/divisions?divisionId=5")
+                .get("/divisions?divisionId=1")
                 .then()
                 .extract()
                 .as(DivisionDTO.class);

@@ -4,14 +4,10 @@ import com.switchfully.parkshark.domain.member.Member;
 import com.switchfully.parkshark.domain.member.MemberRepository;
 import com.switchfully.parkshark.security.KeycloakService;
 import com.switchfully.parkshark.security.KeycloakUserDTO;
-import com.switchfully.parkshark.security.Role;
-import com.switchfully.parkshark.service.exceptions.EmailNotValidException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import javax.mail.internet.AddressException;
-import javax.mail.internet.InternetAddress;
 import javax.transaction.Transactional;
 
 @Service

@@ -30,10 +30,14 @@ public class Member {
     @Enumerated(value = EnumType.STRING)
     private Role role;
 
+    @Column(name = "membership_level")
+    @Enumerated(value =EnumType.STRING)
+    private MembershipLevel memberShipLevel;
+
     public Member() {
     }
 
-    public Member(String firstName, String lastName, Address address, String telephoneNumber, String email, LicensePlate licensePlate) {
+    public Member(String firstName, String lastName, Address address, String telephoneNumber, String email, LicensePlate licensePlate, String membershipLevel) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.address = address;
@@ -42,6 +46,7 @@ public class Member {
         this.licensePlate = licensePlate;
         registrationDate = LocalDate.now();
         role = Role.MEMBER;
+        this.memberShipLevel = setMembershipLevel(membershipLevel);
     }
 
     public long getId() {
@@ -86,5 +91,16 @@ public class Member {
 
     public Role getRole() {
         return role;
+    }
+
+    public MembershipLevel getMemberShipLevel() {
+        return memberShipLevel;
+    }
+
+    private MembershipLevel setMembershipLevel(String membershipLevel) {
+        if (membershipLevel == null) {
+            return MembershipLevel.BRONZE;
+        }
+        return MembershipLevel.findMembershipLevelByName(membershipLevel);
     }
 }

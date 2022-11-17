@@ -3,6 +3,7 @@ package com.switchfully.parkshark.service.member;
 import com.switchfully.parkshark.domain.member.Address;
 import com.switchfully.parkshark.domain.member.LicensePlate;
 import com.switchfully.parkshark.domain.member.Member;
+import com.switchfully.parkshark.domain.member.MembershipLevel;
 import com.switchfully.parkshark.domain.postalcode.PostalCode;
 
 public class MemberMapper {
@@ -23,7 +24,8 @@ public class MemberMapper {
                 new LicensePlate(
                         createMemberDTO.licensePlateNumber(),
                         createMemberDTO.licensePlateCountry()
-                )
+                ),
+                createMemberDTO.memberShipLevel()
         );
     }
 
@@ -35,7 +37,8 @@ public class MemberMapper {
                 member.getAddressAsString(),
                 member.getTelephoneNumber(),
                 member.getEmail(),
-                member.getLicensePlateAsString()
+                member.getLicensePlateAsString(),
+                member.getMemberShipLevel().name()
         );
     }
 }
