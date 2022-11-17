@@ -5,7 +5,10 @@ import com.switchfully.parkshark.domain.contactperson.ContactPersonRepository;
 import com.switchfully.parkshark.domain.division.DivisionRepository;
 import com.switchfully.parkshark.domain.parkinglot.Category;
 import com.switchfully.parkshark.domain.parkinglot.NewParkingLotDTO;
+import com.switchfully.parkshark.domain.parkinglot.ReturnParkingLotDTO;
 import com.switchfully.parkshark.domain.postalcode.PostalCodeRepository;
+import com.switchfully.parkshark.service.division.DTO.DivisionDTO;
+import com.switchfully.parkshark.service.division.DivisionMapper;
 import com.switchfully.parkshark.service.parkinglot.ParkingLotService;
 import com.switchfully.parkshark.service.parkinglot.ParkingLotValidation;
 import io.restassured.RestAssured;
@@ -22,6 +25,8 @@ import org.springframework.http.HttpStatus;
 
 import java.util.NoSuchElementException;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureTestDatabase
 class ParkingLotControllerTest {
@@ -37,8 +42,7 @@ class ParkingLotControllerTest {
     ContactPersonRepository contactPersonRepository;
     @Autowired
     DivisionRepository divisionRepository;
-
-    ParkingLotValidation parkingLotValidation;
+    DivisionMapper divisionMapper = new DivisionMapper();
 
     private final static String URL = "https://keycloak.switchfully.com/auth/realms/parkShark-babyshark/protocol/openid-connect/token";
     private static String response;
@@ -152,11 +156,11 @@ class ParkingLotControllerTest {
     }
 
     @Test
-    void getAllParkingLotById_HappyPath() {
+    void getParkingLotById_HappyPath() {
         NewParkingLotDTO newParkingLotDTO = new NewParkingLotDTO("test", "underground", 100, 10.0, 1L, "streetName", "1", "1111", 1L);
         parkingLotService.createParkingLot(newParkingLotDTO);
 
-        RestAssured
+        ReturnParkingLotDTO result = RestAssured
                 .given()
                 .header("Authorization", "Bearer " + response)
                 .baseUri("http://localhost")
@@ -166,6 +170,16 @@ class ParkingLotControllerTest {
                 .get("/parkinglots/1")
                 .then()
                 .assertThat()
-                .statusCode(HttpStatus.OK.value());
+                .statusCode(HttpStatus.OK.value())
+                .extract()
+                .as(ReturnParkingLotDTO.class);
+
+        assertThat(result.getName()).isEqualTo(newParkingLotDTO.getName());
+        assertThat(result.getCategory()).isEqualTo(newParkingLotDTO.getCategory().toUpperCase());
+        assertThat(result.getMaxCapacity()).isEqualTo(newParkingLotDTO.getMaxCapacity());
+        assertThat(result.getPricePerHour()).isEqualTo(newParkingLotDTO.getPricePerHour());
+        assertThat(result.getContactPersonId()).isEqualTo(newParkingLotDTO.getContactPersonId());
+        assertThat(result.getAddress()).isNotNull();
+        assertThat(result.getDivision()).isNotNull();
     }
 }
