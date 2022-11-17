@@ -35,10 +35,7 @@ public class ParkingLotValidation {
             logger.error("No Category name provided");
             throw new MissingArgumentException("Category name not provided");
         }
-//        if (!checkIfCategoryExist(newParkingLotDTO.getCategory())){
-//            logger.error("No Category name doesn't exist");
-//            throw new MissingArgumentException("No Category name doesn't exist");
-//        }
+
         if (newParkingLotDTO.getMaxCapacity() < 0 ) {
             logger.error("Capacity can't be negative");
             throw new MissingArgumentException("Capacity can't be negative");
@@ -66,12 +63,4 @@ public class ParkingLotValidation {
 
     }
 
-    private boolean checkIfCategoryExist(Category category) {
-        for (Category categoryName: Category.values()){
-            if (categoryName.toString().equals(category.toString())){
-                return true;
-            }
-        }
-        return false;
-    }
 }

@@ -9,8 +9,8 @@ public class NewParkingLotDTO {
 
     private String name;
 
-    @Enumerated(EnumType.STRING)
-    private Category category;
+
+    private String category;
 
 
     private int maxCapacity;
@@ -30,7 +30,7 @@ public class NewParkingLotDTO {
 
     private String postalCode;
 
-    public NewParkingLotDTO(String name, Category category, int maxCapacity, double pricePerHour, Long contactPersonId, String streetName, String streetNumber, String postalCode) {
+    public NewParkingLotDTO(String name, String category, int maxCapacity, double pricePerHour, Long contactPersonId, String streetName, String streetNumber, String postalCode) {
         this.name = name;
         this.category = category;
         this.maxCapacity = maxCapacity;
@@ -45,7 +45,7 @@ public class NewParkingLotDTO {
         return name;
     }
 
-    public Category getCategory() {
+    public String getCategory() {
         return category;
     }
 
