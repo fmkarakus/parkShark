@@ -37,7 +37,8 @@ public class MemberMapper {
                 member.getAddressAsString(),
                 member.getTelephoneNumber(),
                 member.getEmail(),
-                member.getLicensePlateAsString()
+                member.getLicensePlateAsString(),
+                member.getMemberShipLevel().name()
         );
     }
 }

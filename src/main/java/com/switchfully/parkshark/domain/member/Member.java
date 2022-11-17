@@ -30,7 +30,7 @@ public class Member {
     @Enumerated(value = EnumType.STRING)
     private Role role;
 
-    @Column(name = "membership_level") //TODO: add column membership_level to member table in V3
+    @Column(name = "membership_level")
     @Enumerated(value =EnumType.STRING)
     private MembershipLevel memberShipLevel;
 
@@ -92,7 +92,11 @@ public class Member {
     public Role getRole() {
         return role;
     }
-    
+
+    public MembershipLevel getMemberShipLevel() {
+        return memberShipLevel;
+    }
+
     private MembershipLevel setMembershipLevel(String membershipLevel) {
         if (membershipLevel == null) {
             return MembershipLevel.BRONZE;

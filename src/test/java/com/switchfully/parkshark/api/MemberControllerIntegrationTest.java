@@ -39,7 +39,8 @@ class MemberControllerIntegrationTest {
                 "test@email.be",
                 "password",
                 "123-abc",
-                "B"
+                "B",
+                "BRONZE"
         );
 
         MemberDTO result = RestAssured
@@ -64,6 +65,7 @@ class MemberControllerIntegrationTest {
         assertThat(result.telephoneNumber()).isEqualTo(createMemberDTO.telephoneNumber());
         assertThat(result.address()).isEqualTo(String.format("%s %s, %s %s", createMemberDTO.streetName(), createMemberDTO.streetNumber(), createMemberDTO.postalCode(), createMemberDTO.label()));
         assertThat(result.licensePlate()).isEqualTo(String.format("%s %s", createMemberDTO.licensePlateCountry(), createMemberDTO.licensePlateNumber()));
+        assertThat(result.membershipLevel()).isEqualTo(createMemberDTO.memberShipLevel());
     }
 
     @Test
@@ -79,7 +81,8 @@ class MemberControllerIntegrationTest {
                 "testemail.be",
                 "password",
                 "123-abc",
-                "B"
+                "B",
+                "BRONZE"
         );
 
         RestAssured
@@ -97,6 +100,48 @@ class MemberControllerIntegrationTest {
     }
 
     @Test
+    void addNewMember_givenWithMembershipNull() {
+        CreateMemberDTO createMemberDTO = new CreateMemberDTO(
+                "first",
+                "last",
+                "streetname",
+                "1",
+                "1111",
+                "city",
+                "012 34 56 78",
+                "test@email.be",
+                "password",
+                "123-abc",
+                "B",
+                null
+        );
+
+        MemberDTO result = RestAssured
+                .given()
+                .baseUri(BASE_URI)
+                .port(port)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .accept(MediaType.APPLICATION_JSON_VALUE)
+                .body(createMemberDTO)
+                .when()
+                .post("members")
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.CREATED.value())
+                .extract()
+                .as(MemberDTO.class);
+
+        assertThat(result.id()).isNotNull();
+        assertThat(result.firstName()).isEqualTo(createMemberDTO.firstName());
+        assertThat(result.lastName()).isEqualTo(createMemberDTO.lastName());
+        assertThat(result.emailAddress()).isEqualTo(createMemberDTO.emailAddress());
+        assertThat(result.telephoneNumber()).isEqualTo(createMemberDTO.telephoneNumber());
+        assertThat(result.address()).isEqualTo(String.format("%s %s, %s %s", createMemberDTO.streetName(), createMemberDTO.streetNumber(), createMemberDTO.postalCode(), createMemberDTO.label()));
+        assertThat(result.licensePlate()).isEqualTo(String.format("%s %s", createMemberDTO.licensePlateCountry(), createMemberDTO.licensePlateNumber()));
+        assertThat(result.membershipLevel()).isEqualTo("BRONZE");
+    }
+
+    @Test
     void addNewMember_givenEmailISNull() {
         CreateMemberDTO createMemberDTO = new CreateMemberDTO(
                 "first",
@@ -109,7 +154,8 @@ class MemberControllerIntegrationTest {
                 null,
                 "password",
                 "123-abc",
-                "B"
+                "B",
+                "BRONZE"
         );
 
         RestAssured
@@ -139,7 +185,8 @@ class MemberControllerIntegrationTest {
                 "test@email.be",
                 "password",
                 "123-abc",
-                null
+                null,
+                "BRONZE"
         );
 
         RestAssured
@@ -169,7 +216,8 @@ class MemberControllerIntegrationTest {
                 "test@email.be",
                 "password",
                 "123-abc",
-                " "
+                " ",
+                "BRONZE"
         );
 
         RestAssured

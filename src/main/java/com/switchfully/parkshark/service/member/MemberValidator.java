@@ -42,6 +42,9 @@ public class MemberValidator {
     }
 
     private void validateMembershipLevel(String membershipLevel) {
+        if (membershipLevel == null) {
+            return;
+        }
         for (MembershipLevel level : MembershipLevel.values()) {
             if (level.toString().equals(membershipLevel.toUpperCase())) {
                 return;
