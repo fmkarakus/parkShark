@@ -6,6 +6,7 @@ import com.switchfully.parkshark.domain.division.Division;
 import com.switchfully.parkshark.domain.division.DivisionRepository;
 import com.switchfully.parkshark.domain.member.Address;
 import com.switchfully.parkshark.domain.parkinglot.Category;
+import com.switchfully.parkshark.domain.parkinglot.ParkingLotSimplifiedDTO;
 import com.switchfully.parkshark.domain.postalcode.PostalCode;
 import com.switchfully.parkshark.domain.parkinglot.NewParkingLotDTO;
 import com.switchfully.parkshark.domain.parkinglot.ParkingLot;
@@ -32,5 +33,9 @@ public class ParkingLotMapper {
         Address newAddress = new Address(newParkingLotDTO.getStreetName(), newParkingLotDTO.getStreetNumber(),newPostalCode);
         Category category = Category.findCategoryByName(newParkingLotDTO.getCategory());
         return new ParkingLot(newParkingLotDTO.getName(),category,newParkingLotDTO.getMaxCapacity(), newParkingLotDTO.getPricePerHour(), newContactPerson,newAddress,division);
+    }
+
+    public ParkingLotSimplifiedDTO parkingLotToParkingLotSimplifiedDTO(ParkingLot parkingLot) {
+        return new ParkingLotSimplifiedDTO(parkingLot.getId(), parkingLot.getName(), parkingLot.getMaxCapacity(), parkingLot.getContactPerson().getEmail(),parkingLot.getContactPerson().getTelephoneNumber());
     }
 }

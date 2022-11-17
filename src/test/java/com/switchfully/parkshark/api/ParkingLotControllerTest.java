@@ -127,4 +127,20 @@ class ParkingLotControllerTest {
         NewParkingLotDTO newParkingLotDTO = new NewParkingLotDTO("name", "ABOVE_GROUND",100,10,1L,"street","5","6666",1L);
         Assertions.assertThrows(IllegalArgumentException.class, () -> parkingLotService.createParkingLot(newParkingLotDTO));
     }
+
+    @Test
+    void getAllParkingLot_HappyPath(){
+        RestAssured
+                .given()
+                .header("Authorization", "Bearer " + response)
+                .baseUri("http://localhost")
+                .port(port)
+                .when()
+                .accept(ContentType.JSON)
+                .contentType(ContentType.JSON)
+                .get("/parkinglots")
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.OK.value());
+    }
 }
