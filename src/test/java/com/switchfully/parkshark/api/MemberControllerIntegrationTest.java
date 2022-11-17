@@ -97,6 +97,36 @@ class MemberControllerIntegrationTest {
     }
 
     @Test
+    void addNewMember_givenEmailISNull() {
+        CreateMemberDTO createMemberDTO = new CreateMemberDTO(
+                "first",
+                "last",
+                "streetname",
+                "1",
+                "1111",
+                "city",
+                "012 34 56 78",
+                null,
+                "password",
+                "123-abc",
+                "B"
+        );
+
+        RestAssured
+                .given()
+                .baseUri(BASE_URI)
+                .port(port)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .accept(MediaType.APPLICATION_JSON_VALUE)
+                .body(createMemberDTO)
+                .when()
+                .post("members")
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.BAD_REQUEST.value());
+    }
+
+    @Test
     void addNewMember_givenNullFields() {
         CreateMemberDTO createMemberDTO = new CreateMemberDTO(
                 "first",
