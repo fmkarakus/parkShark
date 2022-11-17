@@ -1,9 +1,6 @@
 package com.switchfully.parkshark.service.parkinglot;
 
-import com.switchfully.parkshark.domain.parkinglot.NewParkingLotDTO;
-import com.switchfully.parkshark.domain.parkinglot.ParkingLot;
-import com.switchfully.parkshark.domain.parkinglot.ParkingLotRepository;
-import com.switchfully.parkshark.domain.parkinglot.ParkingLotSimplifiedDTO;
+import com.switchfully.parkshark.domain.parkinglot.*;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -26,10 +23,11 @@ public class ParkingLotService {
         this.parkingLotMapper = parkingLotMapper;
     }
 
-    public void createParkingLot(NewParkingLotDTO newParkingLotDTO) {
+    public ReturnParkingLotDTO createParkingLot(NewParkingLotDTO newParkingLotDTO) {
         parkingLotValidation.checkRequiredFields(newParkingLotDTO);
         ParkingLot parkingLot = parkingLotMapper.newParkingLotDTOToParkingLot(newParkingLotDTO);
         parkingLotRepository.save(parkingLot);
+        return parkingLotMapper.mapParkingLotToReturnParkingLotDTO(parkingLot);
 
     }
 

@@ -3,35 +3,23 @@ package com.switchfully.parkshark.domain.parkinglot;
 import com.switchfully.parkshark.domain.division.Division;
 import com.switchfully.parkshark.domain.member.Address;
 
-import java.io.DataInput;
-
 public class ReturnParkingLotDTO {
     private long id;
-
     private String name;
-
-
     private Category category;
-
-
     private int maxCapacity;
-
-
+    private int availableCapacity;
     private double pricePerHour;
-
-
     private Long contactPersonId;
-
-
     private Address address;
-
     private Division division;
 
-    public ReturnParkingLotDTO(long id, String name, Category category, int maxCapacity, double pricePerHour, Long contactPersonId, Address address,Division division) {
+    public ReturnParkingLotDTO(long id, String name, Category category, int maxCapacity, int availableCapacity, double pricePerHour, Long contactPersonId, Address address,Division division) {
         this.id = id;
         this.name = name;
         this.category = category;
         this.maxCapacity = maxCapacity;
+        this.availableCapacity = availableCapacity;
         this.pricePerHour = pricePerHour;
         this.contactPersonId = contactPersonId;
         this.address = address;
@@ -52,6 +40,10 @@ public class ReturnParkingLotDTO {
 
     public int getMaxCapacity() {
         return maxCapacity;
+    }
+
+    public int getAvailableCapacity() {
+        return availableCapacity;
     }
 
     public double getPricePerHour() {
