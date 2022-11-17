@@ -38,4 +38,10 @@ public class ParkingLotController {
     public List<ParkingLotSimplifiedDTO> returnAllParkingLots(){
        return parkingLotService.getAllParkingLotsSimplified();
     }
+
+    @GetMapping(path = "{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasAnyAuthority('VIEW_ALL_PARKINGLOTS')")
+    public ReturnParkingLotDTO getParkingLotById(@PathVariable Long id) {
+        return parkingLotService.getParkingLotById(id);
+    }
 }
