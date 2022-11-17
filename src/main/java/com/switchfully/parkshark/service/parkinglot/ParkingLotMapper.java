@@ -8,6 +8,7 @@ import com.switchfully.parkshark.domain.member.Address;
 import com.switchfully.parkshark.domain.parkinglot.*;
 import com.switchfully.parkshark.domain.postalcode.PostalCode;
 import com.switchfully.parkshark.domain.postalcode.PostalCodeRepository;
+import com.switchfully.parkshark.service.division.DTO.DivisionDTO;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -36,7 +37,7 @@ public class ParkingLotMapper {
         return new ParkingLotSimplifiedDTO(parkingLot.getId(), parkingLot.getName(), parkingLot.getMaxCapacity(), parkingLot.getContactPerson().getEmail(), parkingLot.getContactPerson().getTelephoneNumber());
     }
 
-    public ReturnParkingLotDTO mapParkingLotToReturnParkingLotDTO(ParkingLot parkingLot) {
-        return new ReturnParkingLotDTO(parkingLot.getId(), parkingLot.getName(), parkingLot.getCategory().toString(), parkingLot.getMaxCapacity(), parkingLot.getAvailableCapacity(), parkingLot.getPricePerHour(), parkingLot.getContactPersonId(), parkingLot.getAddress().toString(), parkingLot.getDivision().toString());
+    public ReturnParkingLotDTO mapParkingLotToReturnParkingLotDTO(ParkingLot parkingLot, DivisionDTO divisionDTO) {
+        return new ReturnParkingLotDTO(parkingLot.getId(), parkingLot.getName(), parkingLot.getCategory().toString(), parkingLot.getMaxCapacity(), parkingLot.getAvailableCapacity(), parkingLot.getPricePerHour(), parkingLot.getContactPersonId(), parkingLot.getAddress().toString(), divisionDTO);
     }
 }
