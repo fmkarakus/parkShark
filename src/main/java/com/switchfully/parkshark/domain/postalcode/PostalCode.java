@@ -8,8 +8,9 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "POSTAL_CODE")
 public class PostalCode {
+
     @Id
-    private String postal_code;
+    private String postalCode;
     @Column(name = "LABEL")
     private String label;
 
@@ -17,12 +18,12 @@ public class PostalCode {
     }
 
     public PostalCode(String postal_code, String label) {
-        this.postal_code = postal_code;
+        this.postalCode = postal_code;
         this.label = label;
     }
 
     public String getPostal_code() {
-        return postal_code;
+        return postalCode;
     }
 
     public String getLabel() {
@@ -31,6 +32,6 @@ public class PostalCode {
 
     @Override
     public String toString() {
-        return String.format("%s %s", postal_code, label);
+        return String.format("%s %s", postalCode, label);
     }
 }
