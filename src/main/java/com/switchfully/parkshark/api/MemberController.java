@@ -37,4 +37,12 @@ public class MemberController {
         log.info("Getting all members");
         return memberService.getAllMembers();
     }
+
+    @GetMapping(params = {"memberId"}, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    @PreAuthorize("hasAuthority('GET_A_MEMBER_BY_ID')")
+    public MemberDTO getAMemberById(@RequestParam(required = false) Long memberId) {
+        log.info("Getting a member");
+        return memberService.getAMemberById(memberId);
+    }
 }

@@ -40,7 +40,8 @@ public class MemberMapper {
                 member.getTelephoneNumber(),
                 member.getEmail(),
                 member.getLicensePlateAsString(),
-                member.getMemberShipLevel().name()
+                member.getMemberShipLevel().name(),
+                member.getRegistrationDate()
         );
     }
 

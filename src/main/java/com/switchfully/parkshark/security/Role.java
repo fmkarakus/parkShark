@@ -14,7 +14,8 @@ public enum Role {
             CREATE_PARKING_LOT,
             VIEW_ALL_PARKINGLOTS,
             CREATE_SUBDIVISION,
-            GET_ALL_MEMBERS),
+            GET_ALL_MEMBERS,
+            GET_A_MEMBER_BY_ID),
     MEMBER("member");
 
     private final String label;

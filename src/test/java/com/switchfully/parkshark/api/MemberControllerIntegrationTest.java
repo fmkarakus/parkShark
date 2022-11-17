@@ -13,14 +13,12 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.yaml.snakeyaml.scanner.ScannerImpl;
 
 import java.time.LocalDate;
 import java.util.Arrays;
-import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
+
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureTestDatabase
@@ -342,6 +340,62 @@ class MemberControllerIntegrationTest {
         assertThat(result.address()).isEqualTo(simplifiedMemberDTO.address());
         assertThat(result.licensePlateNumber()).isEqualTo(simplifiedMemberDTO.licensePlateNumber());
         assertThat(result.registrationDate()).isEqualTo(simplifiedMemberDTO.registrationDate());
+
+    }
+
+    @Test
+    void getAMemberById_happyPath() {
+        CreateMemberDTO createMemberDTO = new CreateMemberDTO(
+                "null",
+                "Van Eyken",
+                "first Street",
+                "1",
+                "1111",
+                "city",
+                "012 34 56 78",
+                "test@test.be",
+                "password",
+                "M-AKS-417",
+                "B",
+                "BRONZE");
+        memberService.registerANewMember(createMemberDTO);
+        MemberDTO memberDTO = new MemberDTO(
+                1L,
+                "null",
+                "Van Eyken",
+                "first Street 1, 1111 city",
+                "012 34 56 78",
+                "test@test.be",
+                "B M-AKS-417",
+                "BRONZE",
+                LocalDate.of(2022, 11, 17)
+        );
+
+        MemberDTO result = RestAssured
+                .given()
+                .header("Authorization", "Bearer " + response)
+                .baseUri("http://localhost")
+                .baseUri(BASE_URI)
+                .port(port)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .when()
+                .get("members?memberId=1")
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.OK.value())
+                .extract()
+                .as(MemberDTO.class);
+
+
+        assertThat(result.id()).isNotNull();
+        assertThat(result.firstName()).isEqualTo(memberDTO.firstName());
+        assertThat(result.lastName()).isEqualTo(memberDTO.lastName());
+        assertThat(result.emailAddress()).isEqualTo(memberDTO.emailAddress());
+        assertThat(result.telephoneNumber()).isEqualTo(memberDTO.telephoneNumber());
+        assertThat(result.address()).isEqualTo(memberDTO.address());
+        assertThat(result.licensePlate()).isEqualTo(memberDTO.licensePlate());
+        assertThat(result.membershipLevel()).isEqualTo(memberDTO.membershipLevel());
+        assertThat(result.registrationDate()).isEqualTo(memberDTO.registrationDate());
 
     }
 }
