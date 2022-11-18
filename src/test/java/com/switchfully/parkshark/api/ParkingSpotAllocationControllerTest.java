@@ -1,5 +1,6 @@
 package com.switchfully.parkshark.api;
 
+import com.switchfully.parkshark.domain.allocation.AllocationRepository;
 import com.switchfully.parkshark.domain.parkinglot.NewParkingLotDTO;
 import com.switchfully.parkshark.domain.parkinglot.ParkingLot;
 import com.switchfully.parkshark.service.allocation.DTO.AllocationDTO;
@@ -19,6 +20,9 @@ import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.annotation.DirtiesContext;
 
+import java.util.Arrays;
+
+import static com.switchfully.parkshark.api.MemberControllerIntegrationTest.BASE_URI;
 import static io.restassured.RestAssured.given;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.equalTo;
@@ -34,8 +38,12 @@ class ParkingSpotAllocationControllerTest {
     @Autowired
     private ParkingLotService parkingLotService;
 
+    @Autowired
+    private AllocationRepository allocationRepository;
+
     private final static String URL = "https://keycloak.switchfully.com/auth/realms/parkShark-babyshark/protocol/openid-connect/token";
     private static String token;
+    private static String tokenManager;
 
     private static final CreateMemberDTO createMemberDTO = new CreateMemberDTO(
             "first",
@@ -79,7 +87,23 @@ class ParkingSpotAllocationControllerTest {
                 .extract()
                 .path("access_token")
                 .toString();
+
+        tokenManager = given()
+                .contentType("application/x-www-form-urlencoded; charset=utf-8")
+                .formParam("grant_type", "password")
+                .formParam("username", "testManager")
+                .formParam("password", "password")
+                .formParam("client_id", "parkShark")
+                .formParam("client_secret", "d7692741-2a2f-42e3-8ac0-163ef4f247b9")
+                .when()
+                .post(URL)
+                .then()
+                .extract()
+                .path("access_token")
+                .toString();
     }
+
+
 
     @Test
     void createNewParkingSpotAllocation_HappyPath() {
@@ -169,5 +193,46 @@ class ParkingSpotAllocationControllerTest {
                 .assertThat()
                 .statusCode(HttpStatus.BAD_REQUEST.value())
                 .body("message", equalTo("The license plate NotRegisteredPlate does not registered to member with id 1"));
+    }
+    @Test
+    void getAllAllocations_HappyPath() {
+
+
+        AllocationDTO[] results = given()
+                .header("Authorization", "Bearer " + tokenManager)
+                .baseUri(BASE_URI)
+                .port(port)
+                .when()
+                .contentType(ContentType.JSON)
+                .get("/allocations")
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.OK.value())
+                .extract()
+                .as(AllocationDTO[].class);
+
+        assertThat(results.length).isEqualTo(allocationRepository.findAll().size());
+
+
+    }
+    @Test
+    void getAllAllocations_givenUnauthorisedMember() {
+
+
+        given()
+                .header("Authorization", "Bearer " + token)
+                .baseUri(BASE_URI)
+                .port(port)
+                .when()
+                .contentType(ContentType.JSON)
+                .get("/allocations")
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.FORBIDDEN.value());
+
+
+
+
+
     }
 }

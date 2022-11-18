@@ -322,7 +322,6 @@ class MemberControllerIntegrationTest {
         SimplifiedMemberDTO[] results = RestAssured
                 .given()
                 .header("Authorization", "Bearer " + response)
-                .baseUri("http://localhost")
                 .baseUri(BASE_URI)
                 .port(port)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)

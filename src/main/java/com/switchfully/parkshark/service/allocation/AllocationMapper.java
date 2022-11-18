@@ -8,6 +8,7 @@ import com.switchfully.parkshark.service.parkinglot.ParkingLotService;
 import org.springframework.stereotype.Component;
 
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 @Component
 public class AllocationMapper {
@@ -36,5 +37,10 @@ public class AllocationMapper {
                 allocation.getParkingLot().getId(),
                 allocation.getStartingTime().format(dateTimeFormatter)
         );
+    }
+
+
+    public List<AllocationDTO> mapAllocationToAllocationDTO(List<Allocation> allocationList){
+        return allocationList.stream().map(this::mapAllocationToAllocationDTO).toList();
     }
 }

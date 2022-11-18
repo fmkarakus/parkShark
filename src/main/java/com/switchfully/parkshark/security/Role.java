@@ -16,7 +16,8 @@ public enum Role {
             CREATE_SUBDIVISION,
             GET_ALL_MEMBERS,
             GET_A_MEMBER_BY_ID,
-            CREATE_SUBDIVISION),
+            CREATE_SUBDIVISION,
+            GET_ALL_ALLOCATIONS),
     MEMBER("member",
             START_PARKING);
 

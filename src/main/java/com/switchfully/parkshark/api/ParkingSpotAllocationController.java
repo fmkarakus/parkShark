@@ -8,6 +8,8 @@ import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping(path = "/allocations")
 public class ParkingSpotAllocationController {
@@ -22,5 +24,11 @@ public class ParkingSpotAllocationController {
         @PreAuthorize("hasAuthority('START_PARKING')")
         public AllocationDTO startParking(@RequestBody StartAllocationDTO startAllocationDTO) {
                return allocationService.createAllocation(startAllocationDTO);
+        }
+
+        @GetMapping( produces =MediaType.APPLICATION_JSON_VALUE)
+        @PreAuthorize("hasAuthority('GET_ALL_ALLOCATIONS')")
+        public List<AllocationDTO> getAllAllocations() {
+                return allocationService.getAllAllocations();
         }
 }

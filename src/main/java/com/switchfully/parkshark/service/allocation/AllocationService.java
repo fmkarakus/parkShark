@@ -8,6 +8,7 @@ import com.switchfully.parkshark.service.parkinglot.ParkingLotService;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.List;
 
 @Service
 @Transactional
@@ -28,5 +29,9 @@ public class AllocationService {
         Allocation allocation = allocationRepository.save(allocationMapper.mapStartAllocationDTOToAllocation(startAllocationDTO));
         allocation.getParkingLot().decreaseAvailableCapacity();
         return allocationMapper.mapAllocationToAllocationDTO(allocation);
+    }
+
+    public List<AllocationDTO> getAllAllocations() {
+        return allocationMapper.mapAllocationToAllocationDTO(allocationRepository.findAll());
     }
 }
