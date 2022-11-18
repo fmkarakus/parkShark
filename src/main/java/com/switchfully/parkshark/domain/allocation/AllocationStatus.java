@@ -1,5 +1,5 @@
 package com.switchfully.parkshark.domain.allocation;
 
 public enum AllocationStatus {
-    ACTIVE
+    ACTIVE,STOPPED
 }

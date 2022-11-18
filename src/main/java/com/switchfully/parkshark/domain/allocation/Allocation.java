@@ -4,11 +4,13 @@ import com.switchfully.parkshark.domain.member.Member;
 import com.switchfully.parkshark.domain.parkinglot.ParkingLot;
 
 import javax.persistence.*;
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
+import java.util.Date;
 
 @Entity
 @Table(name = "allocation")
-public class Allocation {
+public class Allocation implements Comparable<Allocation> {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "parking_lot_seq")
     @SequenceGenerator(name = "parking_lot_seq", sequenceName = "parking_lot_seq", allocationSize = 1)
@@ -66,5 +68,17 @@ public class Allocation {
 
     public AllocationStatus getStatus() {
         return status;
+    }
+
+    @Override
+    public int compareTo(Allocation o) {
+
+//        SimpleDateFormat format = new SimpleDateFormat("HH:mm:ss");
+//        Date date1 = format.parse(o.startingTime);
+//        Date date2 = format.parse(startingTime);
+//        long difference = date2.getTime() - date1.getTime();
+
+
+        return o.getStartingTime().compareTo(startingTime);
     }
 }
