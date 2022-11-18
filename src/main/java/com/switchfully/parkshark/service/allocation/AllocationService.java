@@ -40,7 +40,7 @@ public class AllocationService {
     }
 
     public StopAllocationDTO stopAllocation(long allocationId) {
-        Allocation allocation = allocationRepository.findById(allocationId).orElseThrow(() -> new IllegalArgumentException("No allocation exists with the id: " + allocationId));
+        Allocation allocation = getAllocationById(allocationId);
         assertTheAllocationIsActive(allocation);
         //verify member from KeyCloak
         allocation.setStoppingTime(LocalDateTime.now());
@@ -49,9 +49,15 @@ public class AllocationService {
         return allocationMapper.mapAllocationToStopAllocationDTO(allocation);
     }
 
+    public Allocation getAllocationById(long allocationId) {
+        Allocation allocation = allocationRepository.findById(allocationId).orElseThrow(() -> new IllegalArgumentException("No allocation exists with the id: " + allocationId));
+        return allocation;
+    }
+
 
     private void assertTheAllocationIsActive(Allocation allocation) {
         if (!allocation.getStatus().equals(AllocationStatus.ACTIVE))
             throw new IllegalArgumentException("The allocation is already stopped");
     }
+
 }

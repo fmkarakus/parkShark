@@ -1,9 +1,12 @@
 package com.switchfully.parkshark.api;
 
+import com.switchfully.parkshark.domain.allocation.AllocationStatus;
 import com.switchfully.parkshark.domain.parkinglot.NewParkingLotDTO;
 import com.switchfully.parkshark.domain.parkinglot.ParkingLot;
+import com.switchfully.parkshark.service.allocation.AllocationService;
 import com.switchfully.parkshark.service.allocation.DTO.AllocationDTO;
 import com.switchfully.parkshark.service.allocation.DTO.StartAllocationDTO;
+import com.switchfully.parkshark.service.allocation.DTO.StopAllocationDTO;
 import com.switchfully.parkshark.service.member.MemberService;
 import com.switchfully.parkshark.service.member.memberDTO.CreateMemberDTO;
 import com.switchfully.parkshark.service.member.memberDTO.MemberDTO;
@@ -33,6 +36,9 @@ class ParkingSpotAllocationControllerTest {
     private MemberService memberService;
     @Autowired
     private ParkingLotService parkingLotService;
+
+    @Autowired
+    private AllocationService allocationService;
 
     private final static String URL = "https://keycloak.switchfully.com/auth/realms/parkShark-babyshark/protocol/openid-connect/token";
     private static String token;
@@ -106,8 +112,8 @@ class ParkingSpotAllocationControllerTest {
         assertThat(result.memberId()).isEqualTo(memberDTO.id());
         assertThat(result.licencePlateNumber()).isEqualTo("123-abc");
         assertThat(result.startingTime()).isNotNull();
-        ParkingLot parkingLot=parkingLotService.findParkingLotId(1L);
-        assertThat(parkingLot.getAvailableCapacity()).isEqualTo(parkingLot.getMaxCapacity()-1);
+        ParkingLot parkingLot = parkingLotService.findParkingLotId(1L);
+        assertThat(parkingLot.getAvailableCapacity()).isEqualTo(parkingLot.getMaxCapacity() - 1);
 
     }
 
@@ -169,5 +175,67 @@ class ParkingSpotAllocationControllerTest {
                 .assertThat()
                 .statusCode(HttpStatus.BAD_REQUEST.value())
                 .body("message", equalTo("The license plate NotRegisteredPlate does not registered to member with id 1"));
+    }
+
+    @Test
+    void stopParkingAllocation_happyPath() {
+        MemberDTO memberDTO = memberService.registerANewMember(createMemberDTO);
+        parkingLotService.createParkingLot(newParkingLotDTO);
+        AllocationDTO allocationDTO = allocationService.createAllocation(new StartAllocationDTO(memberDTO.id(), "123-abc", 1L));
+        StopAllocationDTO result = given()
+                .header("Authorization", "Bearer " + token)
+                .baseUri("http://localhost")
+                .port(port)
+                .when()
+                .accept(ContentType.JSON)
+                .contentType(ContentType.JSON)
+                .put("/allocations/" + allocationDTO.id())
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.CREATED.value())
+                .extract()
+                .as(StopAllocationDTO.class);
+        assertThat(result.id()).isNotNull();
+        assertThat(result.startingTime()).isNotNull();
+        assertThat(result.stoppingTime()).isNotNull();
+        assertThat(allocationService.getAllocationById(result.id()).getStatus()).isEqualTo(AllocationStatus.STOPPED);
+    }
+
+    @Test
+    void stopParkingAllocation_whenAllocationIdIsInvalid() {
+        MemberDTO memberDTO = memberService.registerANewMember(createMemberDTO);
+        parkingLotService.createParkingLot(newParkingLotDTO);
+        given()
+                .header("Authorization", "Bearer " + token)
+                .baseUri("http://localhost")
+                .port(port)
+                .when()
+                .accept(ContentType.JSON)
+                .contentType(ContentType.JSON)
+                .put("/allocations/9999999999")
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.BAD_REQUEST.value())
+                .body("message", equalTo("No allocation exists with the id: 9999999999"));
+    }
+
+    @Test
+    void stopParkingAllocation_whenAllocationIsAlreadyStopped() {
+        MemberDTO memberDTO = memberService.registerANewMember(createMemberDTO);
+        parkingLotService.createParkingLot(newParkingLotDTO);
+        AllocationDTO allocationDTO = allocationService.createAllocation(new StartAllocationDTO(memberDTO.id(), "123-abc", 1L));
+        allocationService.stopAllocation(allocationDTO.id());
+        given()
+                .header("Authorization", "Bearer " + token)
+                .baseUri("http://localhost")
+                .port(port)
+                .when()
+                .accept(ContentType.JSON)
+                .contentType(ContentType.JSON)
+                .put("/allocations/" + allocationDTO.id())
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.BAD_REQUEST.value())
+                .body("message", equalTo("The allocation is already stopped"));
     }
 }
