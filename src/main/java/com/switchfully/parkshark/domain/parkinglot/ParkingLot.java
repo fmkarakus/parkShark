@@ -100,4 +100,7 @@ public class ParkingLot {
     public void decreaseAvailableCapacity(){
         this.availableCapacity--;
     }
+
+    public void increaseAvailableCapacity() {this.availableCapacity++;
+    }
 }

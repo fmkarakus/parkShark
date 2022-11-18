@@ -9,6 +9,7 @@ public enum Feature {
     START_PARKING,
     VIEW_PARKINGLOTS,
     GET_ALL_MEMBERS,
-    GET_A_MEMBER_BY_ID
+    GET_A_MEMBER_BY_ID,
+    STOP_PARKING
 
 }

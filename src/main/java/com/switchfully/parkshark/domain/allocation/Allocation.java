@@ -28,6 +28,9 @@ public class Allocation {
     @Column(name="starting_time")
     private LocalDateTime startingTime;
 
+    @Column(name="stopping_time")
+    private LocalDateTime stoppingTime;
+
     @Column(name="status")
     @Enumerated(value =EnumType.STRING)
     private AllocationStatus status;
@@ -66,5 +69,17 @@ public class Allocation {
 
     public AllocationStatus getStatus() {
         return status;
+    }
+
+    public LocalDateTime getStoppingTime() {
+        return stoppingTime;
+    }
+
+    public void setStoppingTime(LocalDateTime stoppingTime) {
+        this.stoppingTime = stoppingTime;
+    }
+
+    public void setStatus(AllocationStatus status) {
+        this.status = status;
     }
 }

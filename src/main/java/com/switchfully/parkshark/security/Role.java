@@ -18,7 +18,8 @@ public enum Role {
             GET_A_MEMBER_BY_ID,
             CREATE_SUBDIVISION),
     MEMBER("member",
-            START_PARKING);
+            START_PARKING,
+            STOP_PARKING);
 
     private final String label;
     private final List<Feature> featureList;
