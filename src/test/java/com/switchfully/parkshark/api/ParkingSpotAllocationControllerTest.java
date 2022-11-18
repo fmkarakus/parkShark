@@ -241,7 +241,7 @@ class ParkingSpotAllocationControllerTest {
 
 
         given()
-                .header("Authorization", "Bearer " + token)
+                .header("Authorization", "Bearer " + tokenNotValidMember)
                 .baseUri(BASE_URI)
                 .port(port)
                 .when()
