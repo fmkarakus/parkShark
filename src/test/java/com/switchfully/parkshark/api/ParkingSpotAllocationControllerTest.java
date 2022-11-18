@@ -1,6 +1,7 @@
 package com.switchfully.parkshark.api;
 
 import com.switchfully.parkshark.domain.parkinglot.NewParkingLotDTO;
+import com.switchfully.parkshark.domain.parkinglot.ParkingLot;
 import com.switchfully.parkshark.service.allocation.DTO.AllocationDTO;
 import com.switchfully.parkshark.service.allocation.DTO.StartAllocationDTO;
 import com.switchfully.parkshark.service.member.CreateMemberDTO;
@@ -16,12 +17,14 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
+import org.springframework.test.annotation.DirtiesContext;
 
 import static io.restassured.RestAssured.given;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 @AutoConfigureTestDatabase
 class ParkingSpotAllocationControllerTest {
     @LocalServerPort
@@ -103,6 +106,9 @@ class ParkingSpotAllocationControllerTest {
         assertThat(result.memberId()).isEqualTo(memberDTO.id());
         assertThat(result.licencePlateNumber()).isEqualTo("123-abc");
         assertThat(result.startingTime()).isNotNull();
+        ParkingLot parkingLot=parkingLotService.findParkingLotId(1L);
+        assertThat(parkingLot.getAvailableCapacity()).isEqualTo(parkingLot.getMaxCapacity()-1);
+
     }
 
     @Test
