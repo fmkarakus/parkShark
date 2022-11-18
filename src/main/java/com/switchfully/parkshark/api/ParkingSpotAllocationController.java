@@ -33,19 +33,19 @@ public class ParkingSpotAllocationController {
     @ResponseStatus(HttpStatus.CREATED)
     @PreAuthorize("hasAuthority('STOP_PARKING')")
     public StopAllocationDTO stopParking(@PathVariable Long allocationId, KeycloakAuthenticationToken authentication) {
-        SimpleKeycloakAccount account = (SimpleKeycloakAccount) authentication.getDetails();
-        AccessToken token = account.getKeycloakSecurityContext().getToken();
-        String userName = authentication.getPrincipal().toString();
-        return allocationService.stopAllocation(allocationId, userName);
+        String loggedInMember = authentication.getPrincipal().toString();
+        logger.info("stopping an allocation");
+        return allocationService.stopAllocation(allocationId, loggedInMember);
     }
 
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     @PreAuthorize("hasAuthority('START_PARKING')")
-    public AllocationDTO startParking(@RequestBody StartAllocationDTO startAllocationDTO) {
+    public AllocationDTO startParking(@RequestBody StartAllocationDTO startAllocationDTO, KeycloakAuthenticationToken authentication) {
+        String loggedInMember = authentication.getPrincipal().toString();
         logger.info("creating new allocation");
-        return allocationService.createAllocation(startAllocationDTO);
+        return allocationService.createAllocation(startAllocationDTO, loggedInMember);
     }
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)

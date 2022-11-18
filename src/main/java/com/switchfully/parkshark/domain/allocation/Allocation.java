@@ -75,13 +75,6 @@ public class Allocation implements Comparable<Allocation> {
 
     @Override
     public int compareTo(Allocation o) {
-
-//        SimpleDateFormat format = new SimpleDateFormat("HH:mm:ss");
-//        Date date1 = format.parse(o.startingTime);
-//        Date date2 = format.parse(startingTime);
-//        long difference = date2.getTime() - date1.getTime();
-
-
         return o.getStartingTime().compareTo(startingTime);
     }
 
@@ -95,5 +88,12 @@ public class Allocation implements Comparable<Allocation> {
 
     public void setStatus(AllocationStatus status) {
         this.status = status;
+    }
+
+    public void increaseParkingLotCapacity(){
+        parkingLot.increaseAvailableCapacity();
+    }
+    public void decreaseParkingLotCapacity(){
+        parkingLot.decreaseAvailableCapacity();
     }
 }

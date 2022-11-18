@@ -360,7 +360,7 @@ class ParkingSpotAllocationControllerTest {
     void stopParkingAllocation_happyPath() {
         MemberDTO memberDTO = memberService.registerANewMember(createMemberDTO);
         parkingLotService.createParkingLot(newParkingLotDTO);
-        AllocationDTO allocationDTO = allocationService.createAllocation(new StartAllocationDTO(memberDTO.id(), "123-abc", 1L));
+        AllocationDTO allocationDTO = allocationService.createAllocation(new StartAllocationDTO(memberDTO.id(), "123-abc", 1L),"test@email.be");
         StopAllocationDTO result = given()
                 .header("Authorization", "Bearer " + tokenValidMember)
                 .baseUri("http://localhost")
@@ -402,7 +402,7 @@ class ParkingSpotAllocationControllerTest {
     void stopParkingAllocation_whenAllocationIsAlreadyStopped() {
         MemberDTO memberDTO = memberService.registerANewMember(createMemberDTO);
         parkingLotService.createParkingLot(newParkingLotDTO);
-        AllocationDTO allocationDTO = allocationService.createAllocation(new StartAllocationDTO(memberDTO.id(), "123-abc", 1L));
+        AllocationDTO allocationDTO = allocationService.createAllocation(new StartAllocationDTO(memberDTO.id(), "123-abc", 1L),"test@email.be");
         allocationService.stopAllocation(allocationDTO.id(),"test@email.be");
         given()
                 .header("Authorization", "Bearer " + tokenValidMember)
@@ -422,7 +422,7 @@ class ParkingSpotAllocationControllerTest {
     void stopParkingAllocation_whenMemberIsNotValid() {
         MemberDTO memberDTO = memberService.registerANewMember(createMemberDTO);
         parkingLotService.createParkingLot(newParkingLotDTO);
-        AllocationDTO allocationDTO = allocationService.createAllocation(new StartAllocationDTO(memberDTO.id(), "123-abc", 1L));
+        AllocationDTO allocationDTO = allocationService.createAllocation(new StartAllocationDTO(memberDTO.id(), "123-abc", 1L),"test@email.be");
         given()
                 .header("Authorization", "Bearer " + tokenNotValidMember)
                 .baseUri("http://localhost")

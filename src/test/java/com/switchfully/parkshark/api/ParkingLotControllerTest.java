@@ -164,9 +164,7 @@ class ParkingLotControllerTest {
                 .as(ParkingLotSimplifiedDTO[].class);
         List<ParkingLotSimplifiedDTO> results = Arrays.stream(parkingLotSimplifiedDTOS).toList();
         ParkingLotSimplifiedDTO result = results.stream().findFirst().orElseThrow();
-
         assertThat(results.size()).isEqualTo(1);
-
         assertThat(result.getId()).isNotNull();
         assertThat(result.getName()).isEqualTo(parkingLotDTO.getName());
         assertThat(result.getCapacity()).isEqualTo(parkingLotDTO.getMaxCapacity());
