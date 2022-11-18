@@ -39,19 +39,22 @@ public class AllocationService {
         return allocationMapper.mapAllocationToAllocationDTO(allocation);
     }
 
-    public StopAllocationDTO stopAllocation(long allocationId) {
+    public StopAllocationDTO stopAllocation(long allocationId, String userName) {
         Allocation allocation = getAllocationById(allocationId);
         assertTheAllocationIsActive(allocation);
-        //verify member from KeyCloak
+        assertMember(allocation,userName);
         allocation.setStoppingTime(LocalDateTime.now());
         allocation.setStatus(AllocationStatus.STOPPED);
         allocation.getParkingLot().increaseAvailableCapacity();
         return allocationMapper.mapAllocationToStopAllocationDTO(allocation);
     }
 
+    private void assertMember(Allocation allocation, String userName) {
+        if(!allocation.getMember().getEmail().equals(userName)) throw new IllegalArgumentException("You have no authority to close this allocation.");
+    }
+
     public Allocation getAllocationById(long allocationId) {
-        Allocation allocation = allocationRepository.findById(allocationId).orElseThrow(() -> new IllegalArgumentException("No allocation exists with the id: " + allocationId));
-        return allocation;
+        return allocationRepository.findById(allocationId).orElseThrow(() -> new IllegalArgumentException("No allocation exists with the id: " + allocationId));
     }
 
 

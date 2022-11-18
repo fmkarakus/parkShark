@@ -224,7 +224,7 @@ class ParkingSpotAllocationControllerTest {
         MemberDTO memberDTO = memberService.registerANewMember(createMemberDTO);
         parkingLotService.createParkingLot(newParkingLotDTO);
         AllocationDTO allocationDTO = allocationService.createAllocation(new StartAllocationDTO(memberDTO.id(), "123-abc", 1L));
-        allocationService.stopAllocation(allocationDTO.id());
+        allocationService.stopAllocation(allocationDTO.id(),"test@email.be");
         given()
                 .header("Authorization", "Bearer " + token)
                 .baseUri("http://localhost")
@@ -238,4 +238,5 @@ class ParkingSpotAllocationControllerTest {
                 .statusCode(HttpStatus.BAD_REQUEST.value())
                 .body("message", equalTo("The allocation is already stopped"));
     }
+
 }
