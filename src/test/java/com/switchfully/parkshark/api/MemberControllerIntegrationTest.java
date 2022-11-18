@@ -314,7 +314,7 @@ class MemberControllerIntegrationTest {
                 "012 34 56 78",
                 "test@test.be",
                 "M-AKS-417",
-                LocalDate.of(2022, 11, 17)
+                LocalDate.now()
         );
 
         SimplifiedMemberDTO[] results = RestAssured
@@ -368,7 +368,7 @@ class MemberControllerIntegrationTest {
                 "test@test.be",
                 "B M-AKS-417",
                 "BRONZE",
-                LocalDate.of(2022, 11, 17)
+                LocalDate.now()
         );
 
         MemberDTO result = RestAssured
