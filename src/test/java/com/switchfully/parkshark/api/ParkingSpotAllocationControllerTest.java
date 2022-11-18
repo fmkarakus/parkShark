@@ -213,7 +213,7 @@ class ParkingSpotAllocationControllerTest {
                 .then()
                 .assertThat()
                 .statusCode(HttpStatus.BAD_REQUEST.value())
-                .body("message", equalTo("The license plate NotRegisteredPlate does not registered to member with id 1"));
+                .body("message", equalTo("The license plate NotRegisteredPlate does not registered to member with id "+ memberDTO.id()));
     }
     @Test
     void getAllAllocations_HappyPath() {
