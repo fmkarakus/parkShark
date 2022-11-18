@@ -31,14 +31,6 @@ public class AllocationService {
         this.memberService = memberService;
     }
 
-    public AllocationDTO createAllocation(StartAllocationDTO startAllocationDTO, String userName) {
-        allocationValidation.validateAllocation(startAllocationDTO);
-        Member member=memberService.findMemberById(startAllocationDTO.memberId());
-        assertMemberHasAuthority(member.getEmail(),userName);
-        Allocation allocation = allocationRepository.save(allocationMapper.mapStartAllocationDTOToAllocation(startAllocationDTO));
-        allocation.decreaseParkingLotCapacity();
-        return allocationMapper.mapAllocationToAllocationDTO(allocation);
-    }
 
     public List<AllocationDTO> getAllAllocations() {
         return allocationMapper.mapAllocationToAllocationDTO(allocationRepository.findAll());
@@ -57,7 +49,6 @@ public class AllocationService {
                     .toList());
         }
 
-
         return allocationMapper.mapAllocationToAllocationDTO(allocationList.stream()
                 .filter(allocation -> allocation.getStatus().name().equals(status))
                 .limit(resolvedLimit)
@@ -71,6 +62,14 @@ public class AllocationService {
         return limit;
     }
 
+    public AllocationDTO createAllocation(StartAllocationDTO startAllocationDTO, String loggedInMember) {
+        allocationValidation.validateAllocation(startAllocationDTO);
+        Member member=memberService.findMemberById(startAllocationDTO.memberId());
+        assertMemberHasAuthority(member.getEmail(),loggedInMember);
+        Allocation allocation = allocationRepository.save(allocationMapper.mapStartAllocationDTOToAllocation(startAllocationDTO));
+        allocation.decreaseParkingLotCapacity();
+        return allocationMapper.mapAllocationToAllocationDTO(allocation);
+    }
 
     public StopAllocationDTO stopAllocation(long allocationId, String loggedInMember) {
         Allocation allocation = getAllocationById(allocationId);
@@ -78,7 +77,7 @@ public class AllocationService {
         assertMemberHasAuthority(allocation.getMember().getEmail(),loggedInMember);
         allocation.setStoppingTime(LocalDateTime.now());
         allocation.setStatus(AllocationStatus.STOPPED);
-        allocation.decreaseParkingLotCapacity();
+        allocation.increaseParkingLotCapacity();
         return allocationMapper.mapAllocationToStopAllocationDTO(allocation);
     }
 
