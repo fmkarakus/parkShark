@@ -45,7 +45,7 @@ public class ParkingLotService {
     }
 
     public ReturnParkingLotDTO getParkingLotById(Long id) {
-        ParkingLot parkingLot = parkingLotRepository.findById(id).orElseThrow(() -> new NoSuchElementException("Parking lot with id " + " does not exist"));
+        ParkingLot parkingLot = parkingLotRepository.findById(id).orElseThrow(() -> new NoSuchElementException("Parking lot with id " + id +  " does not exist"));
         DivisionDTO divisionDTO = divisionMapper.toDivisionDTO(parkingLot.getDivision());
         return parkingLotMapper.mapParkingLotToReturnParkingLotDTO(parkingLot, divisionDTO);
     }

@@ -26,6 +26,8 @@ import org.springframework.http.HttpStatus;
 import java.util.NoSuchElementException;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.hamcrest.Matchers.equalTo;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureTestDatabase
@@ -181,5 +183,21 @@ class ParkingLotControllerTest {
         assertThat(result.getContactPersonId()).isEqualTo(newParkingLotDTO.getContactPersonId());
         assertThat(result.getAddress()).isNotNull();
         assertThat(result.getDivision()).isNotNull();
+    }
+
+    @Test
+    void getParkingLotById_IdDoesNotExist() {
+        RestAssured
+                .given()
+                .header("Authorization", "Bearer " + response)
+                .baseUri("http://localhost")
+                .port(port)
+                .when()
+                .accept(ContentType.JSON)
+                .get("/parkinglots/9999999999")
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.BAD_REQUEST.value())
+                .body("message", equalTo("Parking lot with id 9999999999 does not exist"));
     }
 }
