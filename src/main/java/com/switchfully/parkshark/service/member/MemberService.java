@@ -49,7 +49,7 @@ public class MemberService {
                 .collect(Collectors.toList());
     }
 
-    public MemberDTO getAMemberById(Long memberId) {
+    public MemberDTO getAMemberDTOById(Long memberId) {
         return memberMapper.mapMemberToDTO(memberRepository.findById(memberId).orElseThrow(() -> new NoSuchElementException("No member by that id")));
     }
 }

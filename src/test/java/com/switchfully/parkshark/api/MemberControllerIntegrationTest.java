@@ -5,6 +5,7 @@ import com.switchfully.parkshark.service.member.memberDTO.MemberDTO;
 import com.switchfully.parkshark.service.member.MemberService;
 import com.switchfully.parkshark.service.member.memberDTO.SimplifiedMemberDTO;
 import io.restassured.RestAssured;
+import io.restassured.http.ContentType;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,7 @@ import java.time.LocalDate;
 import java.util.Arrays;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.Matchers.equalTo;
 
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -379,7 +381,7 @@ class MemberControllerIntegrationTest {
                 .port(port)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .when()
-                .get("members?memberId=1")
+                .get("members/1")
                 .then()
                 .assertThat()
                 .statusCode(HttpStatus.OK.value())
@@ -397,5 +399,21 @@ class MemberControllerIntegrationTest {
         assertThat(result.membershipLevel()).isEqualTo(memberDTO.membershipLevel());
         assertThat(result.registrationDate()).isEqualTo(memberDTO.registrationDate());
 
+    }
+
+    @Test
+    void getAMember_MemberIdDoeNotExist() {
+        RestAssured
+                .given()
+                .header("Authorization", "Bearer " + response)
+                .baseUri("http://localhost")
+                .port(port)
+                .when()
+                .accept(ContentType.JSON)
+                .get("/members/9999999")
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.BAD_REQUEST.value())
+                .body("message", equalTo("No member by that id"));
     }
 }

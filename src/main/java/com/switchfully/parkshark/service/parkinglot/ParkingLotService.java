@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 
@@ -44,7 +43,7 @@ public class ParkingLotService {
                 .collect(Collectors.toList());
     }
 
-    public ReturnParkingLotDTO getParkingLotById(Long id) {
+    public ReturnParkingLotDTO getParkingLotDTOById(Long id) {
         ParkingLot parkingLot = parkingLotRepository.findById(id).orElseThrow(() -> new NoSuchElementException("Parking lot with id " + id +  " does not exist"));
         DivisionDTO divisionDTO = divisionMapper.toDivisionDTO(parkingLot.getDivision());
         return parkingLotMapper.mapParkingLotToReturnParkingLotDTO(parkingLot, divisionDTO);

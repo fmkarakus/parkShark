@@ -38,11 +38,11 @@ public class MemberController {
         return memberService.getAllMembers();
     }
 
-    @GetMapping(params = {"memberId"}, produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(path = "/{memberId}", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     @PreAuthorize("hasAuthority('GET_A_MEMBER_BY_ID')")
-    public MemberDTO getAMemberById(@RequestParam(required = false) Long memberId) {
+    public MemberDTO getAMemberById(@PathVariable Long memberId) {
         log.info("Getting a member");
-        return memberService.getAMemberById(memberId);
+        return memberService.getAMemberDTOById(memberId);
     }
 }
