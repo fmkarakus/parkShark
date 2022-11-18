@@ -59,7 +59,7 @@ public class AllocationService {
         );
     }
     private int setLimit(int limit){
-        if(limit<0){
+        if(limit<=0){
             return allocationRepository.findAll().size();
         }
         return limit;
