@@ -1,16 +1,12 @@
 package com.switchfully.parkshark.api;
 
-import com.switchfully.parkshark.domain.contactperson.ContactPerson;
 import com.switchfully.parkshark.domain.contactperson.ContactPersonRepository;
 import com.switchfully.parkshark.domain.division.DivisionRepository;
-import com.switchfully.parkshark.domain.parkinglot.Category;
 import com.switchfully.parkshark.domain.parkinglot.NewParkingLotDTO;
 import com.switchfully.parkshark.domain.parkinglot.ReturnParkingLotDTO;
 import com.switchfully.parkshark.domain.postalcode.PostalCodeRepository;
-import com.switchfully.parkshark.service.division.DTO.DivisionDTO;
 import com.switchfully.parkshark.service.division.DivisionMapper;
 import com.switchfully.parkshark.service.parkinglot.ParkingLotService;
-import com.switchfully.parkshark.service.parkinglot.ParkingLotValidation;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import org.junit.jupiter.api.Assertions;
