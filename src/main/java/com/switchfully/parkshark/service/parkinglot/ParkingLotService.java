@@ -1,5 +1,15 @@
 package com.switchfully.parkshark.service.parkinglot;
 
+import com.switchfully.parkshark.domain.contactperson.ContactPerson;
+import com.switchfully.parkshark.domain.contactperson.ContactPersonRepository;
+import com.switchfully.parkshark.domain.division.Division;
+import com.switchfully.parkshark.domain.division.DivisionRepository;
+import com.switchfully.parkshark.domain.parkinglot.NewParkingLotDTO;
+import com.switchfully.parkshark.domain.parkinglot.ParkingLot;
+import com.switchfully.parkshark.domain.parkinglot.ParkingLotRepository;
+import com.switchfully.parkshark.domain.parkinglot.ParkingLotSimplifiedDTO;
+import com.switchfully.parkshark.domain.postalcode.PostalCode;
+import com.switchfully.parkshark.domain.postalcode.PostalCodeRepository;
 import com.switchfully.parkshark.domain.parkinglot.*;
 import com.switchfully.parkshark.service.division.DTO.DivisionDTO;
 import com.switchfully.parkshark.service.division.DivisionMapper;
@@ -14,13 +24,12 @@ import java.util.stream.Collectors;
 @Service
 @Transactional
 public class ParkingLotService {
-
     private final ParkingLotRepository parkingLotRepository;
     private final ParkingLotValidation parkingLotValidation;
     private final ParkingLotMapper parkingLotMapper;
     private final DivisionMapper divisionMapper;
 
-    public ParkingLotService(ParkingLotRepository parkingLotRepository, ParkingLotValidation parkingLotValidation, ParkingLotMapper parkingLotMapper) {
+    public ParkingLotService( ParkingLotRepository parkingLotRepository, ParkingLotValidation parkingLotValidation, ParkingLotMapper parkingLotMapper) {
         this.parkingLotRepository = parkingLotRepository;
         this.parkingLotValidation = parkingLotValidation;
         this.parkingLotMapper = parkingLotMapper;

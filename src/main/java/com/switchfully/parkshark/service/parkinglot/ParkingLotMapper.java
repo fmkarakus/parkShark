@@ -9,28 +9,41 @@ import com.switchfully.parkshark.domain.parkinglot.*;
 import com.switchfully.parkshark.domain.postalcode.PostalCode;
 import com.switchfully.parkshark.domain.postalcode.PostalCodeRepository;
 import com.switchfully.parkshark.service.division.DTO.DivisionDTO;
+import com.switchfully.parkshark.domain.parkinglot.Category;
+import com.switchfully.parkshark.domain.parkinglot.NewParkingLotDTO;
+import com.switchfully.parkshark.domain.parkinglot.ParkingLot;
+import com.switchfully.parkshark.domain.parkinglot.ParkingLotSimplifiedDTO;
+import com.switchfully.parkshark.service.contactperson.ContactPersonService;
+import com.switchfully.parkshark.service.division.DivisionService;
+import com.switchfully.parkshark.service.postalcode.PostalCodeService;
 import org.springframework.stereotype.Component;
 
 @Component
 public class ParkingLotMapper {
+    private final PostalCodeService postalCodeService;
+    private final ContactPersonService contactPersonService;
+    private final DivisionService divisionService;
 
-    PostalCodeRepository postalCodeRepository;
-    ContactPersonRepository contactPersonRepository;
-    DivisionRepository divisionRepository;
-
-    public ParkingLotMapper(PostalCodeRepository postalCodeRepository, ContactPersonRepository contactPersonRepository, DivisionRepository divisionRepository) {
-        this.postalCodeRepository = postalCodeRepository;
-        this.contactPersonRepository = contactPersonRepository;
-        this.divisionRepository = divisionRepository;
+    public ParkingLotMapper(PostalCodeService postalCodeService, ContactPersonService contactPersonService, DivisionService divisionService) {
+        this.postalCodeService = postalCodeService;
+        this.contactPersonService = contactPersonService;
+        this.divisionService = divisionService;
     }
 
     public ParkingLot newParkingLotDTOToParkingLot(NewParkingLotDTO newParkingLotDTO) {
-        PostalCode newPostalCode = postalCodeRepository.getReferenceById(newParkingLotDTO.getPostalCode());
-        ContactPerson newContactPerson = contactPersonRepository.getReferenceById(newParkingLotDTO.getContactPersonId());
-        Division division = divisionRepository.getReferenceById(newParkingLotDTO.getDivisionId());
-        Address newAddress = new Address(newParkingLotDTO.getStreetName(), newParkingLotDTO.getStreetNumber(), newPostalCode);
+
+        Address newAddress = new Address(newParkingLotDTO.getStreetName()
+                , newParkingLotDTO.getStreetNumber()
+                , postalCodeService.findPostalCodById(newParkingLotDTO.getPostalCode()));
+
         Category category = Category.findCategoryByName(newParkingLotDTO.getCategory());
-        return new ParkingLot(newParkingLotDTO.getName(), category, newParkingLotDTO.getMaxCapacity(), newParkingLotDTO.getPricePerHour(), newContactPerson, newAddress, division);
+        return new ParkingLot(newParkingLotDTO.getName()
+                , category
+                , newParkingLotDTO.getMaxCapacity()
+                , newParkingLotDTO.getPricePerHour()
+                , contactPersonService.findContactPersonByID(newParkingLotDTO.getContactPersonId())
+                , newAddress
+                , divisionService.findDivisionById(newParkingLotDTO.getDivisionId()));
     }
 
     public ParkingLotSimplifiedDTO parkingLotToParkingLotSimplifiedDTO(ParkingLot parkingLot) {
