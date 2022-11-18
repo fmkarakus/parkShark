@@ -3,6 +3,7 @@ package com.switchfully.parkshark.api;
 import com.switchfully.parkshark.domain.contactperson.ContactPersonRepository;
 import com.switchfully.parkshark.domain.division.DivisionRepository;
 import com.switchfully.parkshark.domain.parkinglot.NewParkingLotDTO;
+import com.switchfully.parkshark.domain.parkinglot.ParkingLotSimplifiedDTO;
 import com.switchfully.parkshark.domain.parkinglot.ReturnParkingLotDTO;
 import com.switchfully.parkshark.domain.postalcode.PostalCodeRepository;
 import com.switchfully.parkshark.service.division.DivisionMapper;
@@ -18,7 +19,10 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
+import org.springframework.test.annotation.DirtiesContext;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.NoSuchElementException;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -27,6 +31,7 @@ import static org.hamcrest.Matchers.equalTo;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureTestDatabase
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 class ParkingLotControllerTest {
 
     @LocalServerPort
@@ -138,8 +143,12 @@ class ParkingLotControllerTest {
     }
 
     @Test
+    @DirtiesContext
     void getAllParkingLot_HappyPath() {
-        RestAssured
+        NewParkingLotDTO parkingLotDTO = new NewParkingLotDTO("name", "ABOVE_GROUND", 100, 10, 1L, "street", "5", "9000", 1L);
+
+        parkingLotService.createParkingLot(new NewParkingLotDTO("name", "ABOVE_GROUND", 100, 10, 1L, "street", "5", "9000", 1L));
+        ParkingLotSimplifiedDTO[] parkingLotSimplifiedDTOS = RestAssured
                 .given()
                 .header("Authorization", "Bearer " + response)
                 .baseUri("http://localhost")
@@ -150,7 +159,18 @@ class ParkingLotControllerTest {
                 .get("/parkinglots")
                 .then()
                 .assertThat()
-                .statusCode(HttpStatus.OK.value());
+                .statusCode(HttpStatus.OK.value())
+                .extract()
+                .as(ParkingLotSimplifiedDTO[].class);
+        List<ParkingLotSimplifiedDTO> results = Arrays.stream(parkingLotSimplifiedDTOS).toList();
+        ParkingLotSimplifiedDTO result = results.stream().findFirst().orElseThrow();
+
+        assertThat(results.size()).isEqualTo(1);
+
+        assertThat(result.getId()).isNotNull();
+        assertThat(result.getName()).isEqualTo(parkingLotDTO.getName());
+        assertThat(result.getCapacity()).isEqualTo(parkingLotDTO.getMaxCapacity());
+        assertThat(result.getContactPersonEmail()).isNotNull();
     }
 
     @Test
