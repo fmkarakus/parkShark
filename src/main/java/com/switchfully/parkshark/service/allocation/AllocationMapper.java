@@ -3,6 +3,7 @@ package com.switchfully.parkshark.service.allocation;
 import com.switchfully.parkshark.domain.allocation.Allocation;
 import com.switchfully.parkshark.service.allocation.DTO.AllocationDTO;
 import com.switchfully.parkshark.service.allocation.DTO.StartAllocationDTO;
+import com.switchfully.parkshark.service.allocation.DTO.StopAllocationDTO;
 import com.switchfully.parkshark.service.member.MemberService;
 import com.switchfully.parkshark.service.parkinglot.ParkingLotService;
 import org.springframework.stereotype.Component;
@@ -42,5 +43,16 @@ public class AllocationMapper {
 
     public List<AllocationDTO> mapAllocationToAllocationDTO(List<Allocation> allocationList){
         return allocationList.stream().map(this::mapAllocationToAllocationDTO).toList();
+    }
+
+    public StopAllocationDTO mapAllocationToStopAllocationDTO(Allocation allocation){
+        return new StopAllocationDTO(
+                allocation.getId(),
+                allocation.getMember().getId(),
+                allocation.getLicensePlateNumber(),
+                allocation.getParkingLot().getId(),
+                allocation.getStartingTime().format(dateTimeFormatter),
+                allocation.getStoppingTime().format(dateTimeFormatter)
+        );
     }
 }

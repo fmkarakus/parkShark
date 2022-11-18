@@ -2,9 +2,16 @@ package com.switchfully.parkshark.service.allocation;
 
 import com.switchfully.parkshark.domain.allocation.Allocation;
 import com.switchfully.parkshark.domain.allocation.AllocationRepository;
+import com.switchfully.parkshark.domain.allocation.AllocationStatus;
 import com.switchfully.parkshark.service.allocation.DTO.AllocationDTO;
 import com.switchfully.parkshark.service.allocation.DTO.StartAllocationDTO;
+import com.switchfully.parkshark.service.allocation.DTO.StopAllocationDTO;
 import com.switchfully.parkshark.service.parkinglot.ParkingLotService;
+import org.keycloak.KeycloakPrincipal;
+import org.keycloak.KeycloakSecurityContext;
+import org.keycloak.adapters.springsecurity.token.KeycloakAuthenticationToken;
+import org.keycloak.representations.IDToken;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -12,6 +19,8 @@ import javax.transaction.Transactional;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.security.Principal;
+import java.time.LocalDateTime;
 
 @Service
 @Transactional
@@ -29,6 +38,7 @@ public class AllocationService {
 
     public AllocationDTO createAllocation(StartAllocationDTO startAllocationDTO) {
         allocationValidation.validateAllocation(startAllocationDTO);
+
         Allocation allocation = allocationRepository.save(allocationMapper.mapStartAllocationDTOToAllocation(startAllocationDTO));
         allocation.getParkingLot().decreaseAvailableCapacity();
         return allocationMapper.mapAllocationToAllocationDTO(allocation);
@@ -63,6 +73,31 @@ public class AllocationService {
             return allocationRepository.findAll().size();
         }
         return limit;
+    }
+
+
+    public StopAllocationDTO stopAllocation(long allocationId, String userName) {
+        Allocation allocation = getAllocationById(allocationId);
+        assertTheAllocationIsActive(allocation);
+        assertMember(allocation.getMember().getEmail(),userName);
+        allocation.setStoppingTime(LocalDateTime.now());
+        allocation.setStatus(AllocationStatus.STOPPED);
+        allocation.getParkingLot().increaseAvailableCapacity();
+        return allocationMapper.mapAllocationToStopAllocationDTO(allocation);
+    }
+
+    private void assertMember(String eMail, String userName) {
+        if(!eMail.equals(userName)) throw new IllegalArgumentException("You have no authority to close this allocation.");
+    }
+
+    public Allocation getAllocationById(long allocationId) {
+        return allocationRepository.findById(allocationId).orElseThrow(() -> new IllegalArgumentException("No allocation exists with the id: " + allocationId));
+    }
+
+
+    private void assertTheAllocationIsActive(Allocation allocation) {
+        if (!allocation.getStatus().equals(AllocationStatus.ACTIVE))
+            throw new IllegalArgumentException("The allocation is already stopped");
     }
 
 }

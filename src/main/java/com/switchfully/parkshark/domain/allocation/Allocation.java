@@ -30,6 +30,9 @@ public class Allocation implements Comparable<Allocation> {
     @Column(name="starting_time")
     private LocalDateTime startingTime;
 
+    @Column(name="stopping_time")
+    private LocalDateTime stoppingTime;
+
     @Column(name="status")
     @Enumerated(value =EnumType.STRING)
     private AllocationStatus status;
@@ -80,5 +83,17 @@ public class Allocation implements Comparable<Allocation> {
 
 
         return o.getStartingTime().compareTo(startingTime);
+    }
+
+    public LocalDateTime getStoppingTime() {
+        return stoppingTime;
+    }
+
+    public void setStoppingTime(LocalDateTime stoppingTime) {
+        this.stoppingTime = stoppingTime;
+    }
+
+    public void setStatus(AllocationStatus status) {
+        this.status = status;
     }
 }
