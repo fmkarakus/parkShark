@@ -1,5 +1,6 @@
 package com.switchfully.parkshark.api;
 
+import com.switchfully.parkshark.domain.allocation.Allocation;
 import com.switchfully.parkshark.domain.allocation.AllocationRepository;
 import com.switchfully.parkshark.domain.parkinglot.NewParkingLotDTO;
 import com.switchfully.parkshark.domain.parkinglot.ParkingLot;
@@ -232,6 +233,105 @@ class ParkingSpotAllocationControllerTest {
 
 
 
+
+
+    }
+    @Test
+    void getAllAllocationsFiltered_HappyPath() {
+        memberService.registerANewMember(createMemberDTO);
+        memberService.registerANewMember(createMemberDTO);
+        memberService.registerANewMember(createMemberDTO);
+        parkingLotService.createParkingLot(newParkingLotDTO);
+
+
+        allocationRepository.save(new Allocation(memberService.findMemberById(1L),createMemberDTO.licensePlateNumber(),parkingLotService.findParkingLotId(1L)));
+        allocationRepository.save(new Allocation(memberService.findMemberById(1L),createMemberDTO.licensePlateNumber(),parkingLotService.findParkingLotId(1L)));
+        allocationRepository.save(new Allocation(memberService.findMemberById(1L),createMemberDTO.licensePlateNumber(),parkingLotService.findParkingLotId(1L)));
+        allocationRepository.save(new Allocation(memberService.findMemberById(1L),createMemberDTO.licensePlateNumber(),parkingLotService.findParkingLotId(1L)));
+
+        AllocationDTO[] results = given()
+                .header("Authorization", "Bearer " + tokenManager)
+                .baseUri(BASE_URI)
+                .port(port)
+                .when()
+                .contentType(ContentType.JSON)
+                .param("limit",1)
+                .param("status")
+                .param("order","DESC")
+                .get("/allocations")
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.OK.value())
+                .extract()
+                .as(AllocationDTO[].class);
+
+        assertThat(results.length).isEqualTo(1);
+
+
+    }
+    @Test
+    void getAllAllocationsFiltered_WithNegativeLimit_ShouldReturnAll() {
+        memberService.registerANewMember(createMemberDTO);
+        memberService.registerANewMember(createMemberDTO);
+        memberService.registerANewMember(createMemberDTO);
+        parkingLotService.createParkingLot(newParkingLotDTO);
+
+
+        allocationRepository.save(new Allocation(memberService.findMemberById(1L),createMemberDTO.licensePlateNumber(),parkingLotService.findParkingLotId(1L)));
+        allocationRepository.save(new Allocation(memberService.findMemberById(1L),createMemberDTO.licensePlateNumber(),parkingLotService.findParkingLotId(1L)));
+        allocationRepository.save(new Allocation(memberService.findMemberById(1L),createMemberDTO.licensePlateNumber(),parkingLotService.findParkingLotId(1L)));
+        allocationRepository.save(new Allocation(memberService.findMemberById(1L),createMemberDTO.licensePlateNumber(),parkingLotService.findParkingLotId(1L)));
+
+        AllocationDTO[] results = given()
+                .header("Authorization", "Bearer " + tokenManager)
+                .baseUri(BASE_URI)
+                .port(port)
+                .when()
+                .contentType(ContentType.JSON)
+                .param("limit",-1)
+                .param("status")
+                .param("order","DESC")
+                .get("/allocations")
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.OK.value())
+                .extract()
+                .as(AllocationDTO[].class);
+
+        assertThat(results.length).isEqualTo(4);
+
+
+    }
+    @Test
+    void getAllAllocationsFiltered_WithStoppedStatus_ShouldReturnStoppedOnes() {
+        memberService.registerANewMember(createMemberDTO);
+        memberService.registerANewMember(createMemberDTO);
+        memberService.registerANewMember(createMemberDTO);
+        parkingLotService.createParkingLot(newParkingLotDTO);
+
+
+        allocationRepository.save(new Allocation(memberService.findMemberById(1L),createMemberDTO.licensePlateNumber(),parkingLotService.findParkingLotId(1L)));
+        allocationRepository.save(new Allocation(memberService.findMemberById(1L),createMemberDTO.licensePlateNumber(),parkingLotService.findParkingLotId(1L)));
+        allocationRepository.save(new Allocation(memberService.findMemberById(1L),createMemberDTO.licensePlateNumber(),parkingLotService.findParkingLotId(1L)));
+        allocationRepository.save(new Allocation(memberService.findMemberById(1L),createMemberDTO.licensePlateNumber(),parkingLotService.findParkingLotId(1L)));
+
+        AllocationDTO[] results = given()
+                .header("Authorization", "Bearer " + tokenManager)
+                .baseUri(BASE_URI)
+                .port(port)
+                .when()
+                .contentType(ContentType.JSON)
+                .param("limit",-1)
+                .param("status","STOPPED")
+                .param("order","DESC")
+                .get("/allocations")
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.OK.value())
+                .extract()
+                .as(AllocationDTO[].class);
+
+        assertThat(results.length).isEqualTo(0);
 
 
     }
