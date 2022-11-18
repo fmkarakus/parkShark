@@ -34,6 +34,7 @@ public class AllocationService {
 
     public AllocationDTO createAllocation(StartAllocationDTO startAllocationDTO) {
         allocationValidation.validateAllocation(startAllocationDTO);
+
         Allocation allocation = allocationRepository.save(allocationMapper.mapStartAllocationDTOToAllocation(startAllocationDTO));
         allocation.getParkingLot().decreaseAvailableCapacity();
         return allocationMapper.mapAllocationToAllocationDTO(allocation);
@@ -42,15 +43,15 @@ public class AllocationService {
     public StopAllocationDTO stopAllocation(long allocationId, String userName) {
         Allocation allocation = getAllocationById(allocationId);
         assertTheAllocationIsActive(allocation);
-        assertMember(allocation,userName);
+        assertMember(allocation.getMember().getEmail(),userName);
         allocation.setStoppingTime(LocalDateTime.now());
         allocation.setStatus(AllocationStatus.STOPPED);
         allocation.getParkingLot().increaseAvailableCapacity();
         return allocationMapper.mapAllocationToStopAllocationDTO(allocation);
     }
 
-    private void assertMember(Allocation allocation, String userName) {
-        if(!allocation.getMember().getEmail().equals(userName)) throw new IllegalArgumentException("You have no authority to close this allocation.");
+    private void assertMember(String eMail, String userName) {
+        if(!eMail.equals(userName)) throw new IllegalArgumentException("You have no authority to close this allocation.");
     }
 
     public Allocation getAllocationById(long allocationId) {
