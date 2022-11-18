@@ -1,4 +1,6 @@
-package com.switchfully.parkshark.service.member;
+package com.switchfully.parkshark.service.member.memberDTO;
+
+import java.time.LocalDate;
 
 public record MemberDTO(
         long id,
@@ -8,7 +10,9 @@ public record MemberDTO(
         String telephoneNumber,
         String emailAddress,
         String licensePlate,
-        String membershipLevel
+        String membershipLevel,
+
+        LocalDate registrationDate
 ) {
 
 }

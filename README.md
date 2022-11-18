@@ -335,4 +335,9 @@ with status stopped should be collected and used (you don't have to check the cu
 ### story points
 **Sprint 1**
 - 62 story points
-- 6 stories and 1 additional implementation 
+- 6 stories, 1 additional implementation and initial setup
+- DONE: 43 story points
+- DONE: 6 stories, 1 additional implementation and initial setup
+**Sprint 2**
+- 92 story points
+- 8 must-have and 2 nice-to-have stories

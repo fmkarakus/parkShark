@@ -1,7 +1,9 @@
 package com.switchfully.parkshark.service.member;
 
+import com.sun.tools.jconsole.JConsoleContext;
 import com.switchfully.parkshark.domain.member.MembershipLevel;
 import com.switchfully.parkshark.service.exceptions.EmailNotValidException;
+import com.switchfully.parkshark.service.member.memberDTO.CreateMemberDTO;
 
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
@@ -20,7 +22,7 @@ public class MemberValidator {
         assertFieldNotNullOrEmpty("Password", createMemberDTO.password());
         assertFieldNotNullOrEmpty("License plate number", createMemberDTO.licensePlateNumber());
         assertFieldNotNullOrEmpty("License plate country", createMemberDTO.licensePlateCountry());
-        validateMembershipLevel(createMemberDTO.memberShipLevel());
+        validateMembershipLevel(createMemberDTO.membershipLevel());
     }
 
     private void assertFieldNotNullOrEmpty(String fieldName, String value) {

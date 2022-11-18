@@ -1,10 +1,12 @@
 package com.switchfully.parkshark.api;
 
-import com.switchfully.parkshark.service.exceptions.EmailNotValidException;
-import com.switchfully.parkshark.service.member.CreateMemberDTO;
-import com.switchfully.parkshark.service.member.MemberDTO;
+import com.switchfully.parkshark.service.member.memberDTO.CreateMemberDTO;
+import com.switchfully.parkshark.service.member.memberDTO.MemberDTO;
 import com.switchfully.parkshark.service.member.MemberService;
+import com.switchfully.parkshark.service.member.memberDTO.SimplifiedMemberDTO;
 import io.restassured.RestAssured;
+import io.restassured.http.ContentType;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -13,8 +15,12 @@ import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 
+import java.time.LocalDate;
+import java.util.Arrays;
+
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.hamcrest.Matchers.equalTo;
+
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureTestDatabase
@@ -23,8 +29,30 @@ class MemberControllerIntegrationTest {
     @LocalServerPort
     private int port;
 
+    private final static String URL = "https://keycloak.switchfully.com/auth/realms/parkShark-babyshark/protocol/openid-connect/token";
+    private static String response;
+
     @Autowired
     private MemberService memberService;
+
+    @BeforeAll
+    static void setUp() {
+
+        response = RestAssured
+                .given()
+                .contentType("application/x-www-form-urlencoded; charset=utf-8")
+                .formParam("grant_type", "password")
+                .formParam("username", "testManager")
+                .formParam("password", "password")
+                .formParam("client_id", "parkShark")
+                .formParam("client_secret", "d7692741-2a2f-42e3-8ac0-163ef4f247b9")
+                .when()
+                .post(URL)
+                .then()
+                .extract()
+                .path("access_token")
+                .toString();
+    }
 
     @Test
     void addNewMember_happyPath() {
@@ -65,7 +93,7 @@ class MemberControllerIntegrationTest {
         assertThat(result.telephoneNumber()).isEqualTo(createMemberDTO.telephoneNumber());
         assertThat(result.address()).isEqualTo(String.format("%s %s, %s %s", createMemberDTO.streetName(), createMemberDTO.streetNumber(), createMemberDTO.postalCode(), createMemberDTO.label()));
         assertThat(result.licensePlate()).isEqualTo(String.format("%s %s", createMemberDTO.licensePlateCountry(), createMemberDTO.licensePlateNumber()));
-        assertThat(result.membershipLevel()).isEqualTo(createMemberDTO.memberShipLevel());
+        assertThat(result.membershipLevel()).isEqualTo(createMemberDTO.membershipLevel());
     }
 
     @Test
@@ -263,5 +291,129 @@ class MemberControllerIntegrationTest {
                 .then()
                 .assertThat()
                 .statusCode(HttpStatus.BAD_REQUEST.value());
+    }
+
+    @Test
+    void getAllMembers_happyPath() {
+        CreateMemberDTO createMemberDTO = new CreateMemberDTO(
+                "null",
+                "Van Eyken",
+                "first Street",
+                "1",
+                "1111",
+                "city",
+                "012 34 56 78",
+                "test@test.be",
+                "password",
+                "M-AKS-417",
+                "B",
+                "BRONZE");
+        memberService.registerANewMember(createMemberDTO);
+        SimplifiedMemberDTO simplifiedMemberDTO = new SimplifiedMemberDTO(
+                1,
+                "null Van Eyken",
+                "first Street 1, 1111 city",
+                "012 34 56 78",
+                "test@test.be",
+                "M-AKS-417",
+                LocalDate.now()
+        );
+
+        SimplifiedMemberDTO[] results = RestAssured
+                .given()
+                .header("Authorization", "Bearer " + response)
+                .baseUri("http://localhost")
+                .baseUri(BASE_URI)
+                .port(port)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .when()
+                .get("members")
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.OK.value())
+                .extract()
+                .as(SimplifiedMemberDTO[].class);
+
+        SimplifiedMemberDTO result = Arrays.stream(results).findFirst().orElseThrow();
+        assertThat(result.id()).isNotNull();
+        assertThat(result.name()).isEqualTo(simplifiedMemberDTO.name());
+        assertThat(result.emailAddress()).isEqualTo(simplifiedMemberDTO.emailAddress());
+        assertThat(result.telephoneNumber()).isEqualTo(simplifiedMemberDTO.telephoneNumber());
+        assertThat(result.address()).isEqualTo(simplifiedMemberDTO.address());
+        assertThat(result.licensePlateNumber()).isEqualTo(simplifiedMemberDTO.licensePlateNumber());
+        assertThat(result.registrationDate()).isEqualTo(simplifiedMemberDTO.registrationDate());
+
+    }
+
+    @Test
+    void getAMemberById_happyPath() {
+        CreateMemberDTO createMemberDTO = new CreateMemberDTO(
+                "null",
+                "Van Eyken",
+                "first Street",
+                "1",
+                "1111",
+                "city",
+                "012 34 56 78",
+                "test@test.be",
+                "password",
+                "M-AKS-417",
+                "B",
+                "BRONZE");
+        memberService.registerANewMember(createMemberDTO);
+        MemberDTO memberDTO = new MemberDTO(
+                1L,
+                "null",
+                "Van Eyken",
+                "first Street 1, 1111 city",
+                "012 34 56 78",
+                "test@test.be",
+                "B M-AKS-417",
+                "BRONZE",
+                LocalDate.now()
+        );
+
+        MemberDTO result = RestAssured
+                .given()
+                .header("Authorization", "Bearer " + response)
+                .baseUri("http://localhost")
+                .baseUri(BASE_URI)
+                .port(port)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .when()
+                .get("members/1")
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.OK.value())
+                .extract()
+                .as(MemberDTO.class);
+
+
+        assertThat(result.id()).isNotNull();
+        assertThat(result.firstName()).isEqualTo(memberDTO.firstName());
+        assertThat(result.lastName()).isEqualTo(memberDTO.lastName());
+        assertThat(result.emailAddress()).isEqualTo(memberDTO.emailAddress());
+        assertThat(result.telephoneNumber()).isEqualTo(memberDTO.telephoneNumber());
+        assertThat(result.address()).isEqualTo(memberDTO.address());
+        assertThat(result.licensePlate()).isEqualTo(memberDTO.licensePlate());
+        assertThat(result.membershipLevel()).isEqualTo(memberDTO.membershipLevel());
+        assertThat(result.registrationDate()).isEqualTo(memberDTO.registrationDate());
+
+    }
+
+    @Test
+    void getAMember_MemberIdDoeNotExist() {
+        RestAssured
+                .given()
+                .header("Authorization", "Bearer " + response)
+                .baseUri("http://localhost")
+                .port(port)
+                .when()
+                .accept(ContentType.JSON)
+                .get("/members/9999999")
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.BAD_REQUEST.value())
+                .body("message", equalTo("No member by that id"));
     }
 }

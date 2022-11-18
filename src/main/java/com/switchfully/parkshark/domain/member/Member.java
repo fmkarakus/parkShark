@@ -31,7 +31,7 @@ public class Member {
     private Role role;
 
     @Column(name = "membership_level")
-    @Enumerated(value =EnumType.STRING)
+    @Enumerated(value = EnumType.STRING)
     private MembershipLevel memberShipLevel;
 
     public Member() {

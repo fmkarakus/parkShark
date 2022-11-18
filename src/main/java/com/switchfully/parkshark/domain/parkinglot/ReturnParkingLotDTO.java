@@ -1,41 +1,28 @@
 package com.switchfully.parkshark.domain.parkinglot;
 
-import com.switchfully.parkshark.domain.division.Division;
-import com.switchfully.parkshark.domain.member.Address;
-
-import java.io.DataInput;
+import com.switchfully.parkshark.service.division.DTO.DivisionDTO;
 
 public class ReturnParkingLotDTO {
     private long id;
-
     private String name;
-
-
-    private Category category;
-
-
+    private String category;
     private int maxCapacity;
-
-
+    private int availableCapacity;
     private double pricePerHour;
-
-
     private Long contactPersonId;
+    private String address;
+    private DivisionDTO division;
 
-
-    private Address address;
-
-    private Division division;
-
-    public ReturnParkingLotDTO(long id, String name, Category category, int maxCapacity, double pricePerHour, Long contactPersonId, Address address,Division division) {
+    public ReturnParkingLotDTO(long id, String name, String category, int maxCapacity, int availableCapacity, double pricePerHour, Long contactPersonId, String address, DivisionDTO division) {
         this.id = id;
         this.name = name;
         this.category = category;
         this.maxCapacity = maxCapacity;
+        this.availableCapacity = availableCapacity;
         this.pricePerHour = pricePerHour;
         this.contactPersonId = contactPersonId;
         this.address = address;
-        this.division=division;
+        this.division = division;
     }
 
     public long getId() {
@@ -46,12 +33,16 @@ public class ReturnParkingLotDTO {
         return name;
     }
 
-    public Category getCategory() {
+    public String getCategory() {
         return category;
     }
 
     public int getMaxCapacity() {
         return maxCapacity;
+    }
+
+    public int getAvailableCapacity() {
+        return availableCapacity;
     }
 
     public double getPricePerHour() {
@@ -62,11 +53,11 @@ public class ReturnParkingLotDTO {
         return contactPersonId;
     }
 
-    public Address getAddress() {
+    public String getAddress() {
         return address;
     }
 
-    public Division getDivision() {
+    public DivisionDTO getDivision() {
         return division;
     }
 }

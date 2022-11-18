@@ -12,16 +12,16 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class ParkingLotValidation {
-    private final ParkingLotRepository parkingLotRepository;
+
     private final PostalCodeRepository postalCodeRepository;
     private final ContactPersonRepository contactPersonRepository;
     private final DivisionRepository divisionRepository;
     private final Logger logger = LoggerFactory.getLogger(ParkingLotValidation.class);
 
 
-    public ParkingLotValidation(PostalCodeRepository postalCodeRepository, ParkingLotRepository parkingLotRepository, ContactPersonRepository contactPersonRepository, DivisionRepository divisionRepository) {
+    public ParkingLotValidation(PostalCodeRepository postalCodeRepository, ContactPersonRepository contactPersonRepository, DivisionRepository divisionRepository) {
         this.postalCodeRepository = postalCodeRepository;
-        this.parkingLotRepository = parkingLotRepository;
+
         this.contactPersonRepository = contactPersonRepository;
         this.divisionRepository = divisionRepository;
     }
@@ -29,6 +29,7 @@ public class ParkingLotValidation {
 
 
     public void checkRequiredFields(NewParkingLotDTO newParkingLotDTO) {
+
         if (newParkingLotDTO.getName() == null || newParkingLotDTO.getName().equals("")) {
             logger.error("No Parking lot name provided");
             throw new IllegalArgumentException("Parking lot name not provided");

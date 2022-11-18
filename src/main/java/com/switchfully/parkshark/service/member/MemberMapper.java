@@ -3,8 +3,10 @@ package com.switchfully.parkshark.service.member;
 import com.switchfully.parkshark.domain.member.Address;
 import com.switchfully.parkshark.domain.member.LicensePlate;
 import com.switchfully.parkshark.domain.member.Member;
-import com.switchfully.parkshark.domain.member.MembershipLevel;
 import com.switchfully.parkshark.domain.postalcode.PostalCode;
+import com.switchfully.parkshark.service.member.memberDTO.CreateMemberDTO;
+import com.switchfully.parkshark.service.member.memberDTO.MemberDTO;
+import com.switchfully.parkshark.service.member.memberDTO.SimplifiedMemberDTO;
 
 public class MemberMapper {
     public Member mapDTOToMember(CreateMemberDTO createMemberDTO) {
@@ -25,7 +27,7 @@ public class MemberMapper {
                         createMemberDTO.licensePlateNumber(),
                         createMemberDTO.licensePlateCountry()
                 ),
-                createMemberDTO.memberShipLevel()
+                createMemberDTO.membershipLevel()
         );
     }
 
@@ -38,7 +40,20 @@ public class MemberMapper {
                 member.getTelephoneNumber(),
                 member.getEmail(),
                 member.getLicensePlateAsString(),
-                member.getMemberShipLevel().name()
+                member.getMemberShipLevel().name(),
+                member.getRegistrationDate()
+        );
+    }
+
+    public SimplifiedMemberDTO mapMemberToSimplifiedDTO(Member member) {
+        return new SimplifiedMemberDTO(
+                member.getId(),
+                member.getFirstName() + " " + member.getLastName(),
+                member.getAddressAsString(),
+                member.getTelephoneNumber(),
+                member.getEmail(),
+                member.getLicensePlate().getLicensePlateNumber(),
+                member.getRegistrationDate()
         );
     }
 }

@@ -1,4 +1,4 @@
-package com.switchfully.parkshark.service.member;
+package com.switchfully.parkshark.service.member.memberDTO;
 
 public record CreateMemberDTO (
     String firstName,
@@ -12,7 +12,7 @@ public record CreateMemberDTO (
     String password,
     String licensePlateNumber,
     String licensePlateCountry,
-    String memberShipLevel
+    String membershipLevel
 ) {
 
 }

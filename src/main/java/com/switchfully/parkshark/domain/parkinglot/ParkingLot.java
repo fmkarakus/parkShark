@@ -81,6 +81,9 @@ public class ParkingLot {
     public ContactPerson getContactPerson() {
         return contactPerson;
     }
+    public Long getContactPersonId() {
+        return contactPerson.getId();
+    }
 
     public Address getAddress() {
         return address;

@@ -19,7 +19,7 @@ public enum MembershipLevel {
 
     public static MembershipLevel findMembershipLevelByName(String membershipLevelName) {
         for (MembershipLevel level : MembershipLevel.values()) {
-            if (level.toString().equals(membershipLevelName)) {
+            if (level.toString().equals(membershipLevelName.toUpperCase())) {
                 return level;
             }
         }
