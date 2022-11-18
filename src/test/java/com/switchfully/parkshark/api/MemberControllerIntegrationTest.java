@@ -91,7 +91,7 @@ class MemberControllerIntegrationTest {
         assertThat(result.telephoneNumber()).isEqualTo(createMemberDTO.telephoneNumber());
         assertThat(result.address()).isEqualTo(String.format("%s %s, %s %s", createMemberDTO.streetName(), createMemberDTO.streetNumber(), createMemberDTO.postalCode(), createMemberDTO.label()));
         assertThat(result.licensePlate()).isEqualTo(String.format("%s %s", createMemberDTO.licensePlateCountry(), createMemberDTO.licensePlateNumber()));
-        assertThat(result.membershipLevel()).isEqualTo(createMemberDTO.memberShipLevel());
+        assertThat(result.membershipLevel()).isEqualTo(createMemberDTO.membershipLevel());
     }
 
     @Test
