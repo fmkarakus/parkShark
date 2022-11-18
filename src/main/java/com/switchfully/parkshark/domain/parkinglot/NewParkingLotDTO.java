@@ -1,35 +1,14 @@
 package com.switchfully.parkshark.domain.parkinglot;
 
-
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-
 public class NewParkingLotDTO {
-
-
     private String name;
-
-
     private String category;
-
-
     private int maxCapacity;
-
-
     private double pricePerHour;
-
-
     private Long contactPersonId;
-
-
     private String streetName;
-
-
     private String streetNumber;
-
-
     private String postalCode;
-
     private Long divisionId;
 
     public NewParkingLotDTO(String name, String category, int maxCapacity, double pricePerHour, Long contactPersonId, String streetName, String streetNumber, String postalCode, Long divisionId) {

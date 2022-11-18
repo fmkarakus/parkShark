@@ -1,6 +1,14 @@
 package com.switchfully.parkshark.service.parkinglot;
 
+import com.switchfully.parkshark.domain.contactperson.ContactPerson;
+import com.switchfully.parkshark.domain.contactperson.ContactPersonRepository;
+import com.switchfully.parkshark.domain.division.Division;
+import com.switchfully.parkshark.domain.division.DivisionRepository;
 import com.switchfully.parkshark.domain.member.Address;
+import com.switchfully.parkshark.domain.parkinglot.*;
+import com.switchfully.parkshark.domain.postalcode.PostalCode;
+import com.switchfully.parkshark.domain.postalcode.PostalCodeRepository;
+import com.switchfully.parkshark.service.division.DTO.DivisionDTO;
 import com.switchfully.parkshark.domain.parkinglot.Category;
 import com.switchfully.parkshark.domain.parkinglot.NewParkingLotDTO;
 import com.switchfully.parkshark.domain.parkinglot.ParkingLot;
@@ -22,7 +30,6 @@ public class ParkingLotMapper {
         this.divisionService = divisionService;
     }
 
-
     public ParkingLot newParkingLotDTOToParkingLot(NewParkingLotDTO newParkingLotDTO) {
 
         Address newAddress = new Address(newParkingLotDTO.getStreetName()
@@ -40,6 +47,10 @@ public class ParkingLotMapper {
     }
 
     public ParkingLotSimplifiedDTO parkingLotToParkingLotSimplifiedDTO(ParkingLot parkingLot) {
-        return new ParkingLotSimplifiedDTO(parkingLot.getId(), parkingLot.getName(), parkingLot.getMaxCapacity(), parkingLot.getContactPerson().getEmail(),parkingLot.getContactPerson().getTelephoneNumber());
+        return new ParkingLotSimplifiedDTO(parkingLot.getId(), parkingLot.getName(), parkingLot.getMaxCapacity(), parkingLot.getContactPerson().getEmail(), parkingLot.getContactPerson().getTelephoneNumber());
+    }
+
+    public ReturnParkingLotDTO mapParkingLotToReturnParkingLotDTO(ParkingLot parkingLot, DivisionDTO divisionDTO) {
+        return new ReturnParkingLotDTO(parkingLot.getId(), parkingLot.getName(), parkingLot.getCategory().toString(), parkingLot.getMaxCapacity(), parkingLot.getAvailableCapacity(), parkingLot.getPricePerHour(), parkingLot.getContactPersonId(), parkingLot.getAddress().toString(), divisionDTO);
     }
 }

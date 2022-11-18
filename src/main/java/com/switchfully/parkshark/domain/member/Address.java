@@ -37,4 +37,9 @@ public class Address {
     public PostalCode getPostalCode() {
         return postalCode;
     }
+
+    @Override
+    public String toString() {
+        return String.format("%s %s, %s", streetName, streetNumber, postalCode.toString());
+    }
 }
