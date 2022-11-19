@@ -214,8 +214,6 @@ class ParkingSpotAllocationControllerTest {
 
     @Test
     void getAllAllocations_HappyPath() {
-
-
         AllocationDTO[] results = given()
                 .header("Authorization", "Bearer " + tokenManager)
                 .baseUri(BASE_URI)
@@ -230,14 +228,10 @@ class ParkingSpotAllocationControllerTest {
                 .as(AllocationDTO[].class);
 
         assertThat(results.length).isEqualTo(allocationRepository.findAll().size());
-
-
     }
 
     @Test
     void getAllAllocations_givenUnauthorisedMember() {
-
-
         given()
                 .header("Authorization", "Bearer " + tokenAnotherMember)
                 .baseUri(BASE_URI)
@@ -282,8 +276,6 @@ class ParkingSpotAllocationControllerTest {
                 .as(AllocationDTO[].class);
 
         assertThat(results.length).isEqualTo(1);
-
-
     }
 
     @Test
@@ -316,8 +308,6 @@ class ParkingSpotAllocationControllerTest {
                 .as(AllocationDTO[].class);
 
         assertThat(results.length).isEqualTo(4);
-
-
     }
 
     @Test
@@ -350,8 +340,6 @@ class ParkingSpotAllocationControllerTest {
                 .as(AllocationDTO[].class);
 
         assertThat(results.length).isEqualTo(0);
-
-
     }
 
     @Test
@@ -431,7 +419,7 @@ class ParkingSpotAllocationControllerTest {
                 .put("/allocations/" + allocationDTO.id())
                 .then()
                 .assertThat()
-                .statusCode(HttpStatus.BAD_REQUEST.value())
+                .statusCode(HttpStatus.UNAUTHORIZED.value())
                 .body("message", equalTo("You have no authority to start/stop this allocation."));
     }
 
@@ -452,7 +440,7 @@ class ParkingSpotAllocationControllerTest {
                 .post("/allocations")
                 .then()
                 .assertThat()
-                .statusCode(HttpStatus.BAD_REQUEST.value())
+                .statusCode(HttpStatus.UNAUTHORIZED.value())
                 .body("message", equalTo("You have no authority to start/stop this allocation."));
     }
 }

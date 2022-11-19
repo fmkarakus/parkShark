@@ -31,4 +31,9 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
         log.error(exception.getMessage());
         response.sendError(HttpStatus.CONFLICT.value(), exception.getMessage());
     }
+    @ExceptionHandler(SecurityException.class)
+    protected void PSQLExceptions(SecurityException exception, HttpServletResponse response) throws IOException {
+        log.error(exception.getMessage());
+        response.sendError(HttpStatus.UNAUTHORIZED.value(), exception.getMessage());
+    }
 }

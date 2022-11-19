@@ -82,7 +82,7 @@ public class AllocationService {
     }
 
     private void assertMemberHasAuthority(String memberNameInAllocation, String loggedInMember) {
-        if(!memberNameInAllocation.equals(loggedInMember)) throw new IllegalArgumentException("You have no authority to start/stop this allocation.");
+        if(!memberNameInAllocation.equals(loggedInMember)) throw new SecurityException("You have no authority to start/stop this allocation.");
     }
 
     public Allocation getAllocationById(long allocationId) {
