@@ -14,7 +14,6 @@ import com.switchfully.parkshark.service.member.memberDTO.CreateMemberDTO;
 import com.switchfully.parkshark.service.member.memberDTO.MemberDTO;
 import com.switchfully.parkshark.service.parkinglot.ParkingLotService;
 import io.restassured.http.ContentType;
-import org.hamcrest.Matchers;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,8 +22,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.annotation.DirtiesContext;
-
-import java.util.Arrays;
 
 import static com.switchfully.parkshark.api.MemberControllerIntegrationTest.BASE_URI;
 import static io.restassured.RestAssured.given;
@@ -49,8 +46,8 @@ class ParkingSpotAllocationControllerTest {
     private AllocationService allocationService;
 
     private final static String URL = "https://keycloak.switchfully.com/auth/realms/parkShark-babyshark/protocol/openid-connect/token";
-    private static String tokenNotValidMember;
-    private static String tokenValidMember;
+    private static String tokenLoggedInMember;
+    private static String tokenAnotherMember;
     private static String tokenManager;
 
     private static final CreateMemberDTO createMemberDTO = new CreateMemberDTO(
@@ -82,7 +79,7 @@ class ParkingSpotAllocationControllerTest {
 
     @BeforeAll
     static void setUp() {
-        tokenNotValidMember = given()
+        tokenAnotherMember = given()
                 .contentType("application/x-www-form-urlencoded; charset=utf-8")
                 .formParam("grant_type", "password")
                 .formParam("username", "testMember")
@@ -109,7 +106,7 @@ class ParkingSpotAllocationControllerTest {
                 .extract()
                 .path("access_token")
                 .toString();
-        tokenValidMember= given()
+        tokenLoggedInMember = given()
                 .contentType("application/x-www-form-urlencoded; charset=utf-8")
                 .formParam("grant_type", "password")
                 .formParam("username", "test@email.be")
@@ -125,7 +122,6 @@ class ParkingSpotAllocationControllerTest {
     }
 
 
-
     @Test
     void createNewParkingSpotAllocation_HappyPath() {
         MemberDTO memberDTO = memberService.registerANewMember(createMemberDTO);
@@ -133,7 +129,7 @@ class ParkingSpotAllocationControllerTest {
         StartAllocationDTO requestedBody = new StartAllocationDTO(memberDTO.id(), "123-abc", 1L);
 
         AllocationDTO result = given()
-                .header("Authorization", "Bearer " + tokenValidMember)
+                .header("Authorization", "Bearer " + tokenLoggedInMember)
                 .baseUri("http://localhost")
                 .port(port)
                 .when()
@@ -162,7 +158,7 @@ class ParkingSpotAllocationControllerTest {
         StartAllocationDTO requestedBody = new StartAllocationDTO(memberDTO.id(), "123-abc", 500L);
 
         given()
-                .header("Authorization", "Bearer " + tokenValidMember)
+                .header("Authorization", "Bearer " + tokenLoggedInMember)
                 .baseUri("http://localhost")
                 .port(port)
                 .when()
@@ -181,7 +177,7 @@ class ParkingSpotAllocationControllerTest {
         parkingLotService.createParkingLot(newParkingLotDTO);
         StartAllocationDTO requestedBody = new StartAllocationDTO(10000L, "123-abc", 1L);
         given()
-                .header("Authorization", "Bearer " + tokenValidMember)
+                .header("Authorization", "Bearer " + tokenLoggedInMember)
                 .baseUri("http://localhost")
                 .port(port)
                 .when()
@@ -202,7 +198,7 @@ class ParkingSpotAllocationControllerTest {
         StartAllocationDTO requestedBody = new StartAllocationDTO(memberDTO.id(), "NotRegisteredPlate", 1L);
 
         given()
-                .header("Authorization", "Bearer " + tokenValidMember)
+                .header("Authorization", "Bearer " + tokenLoggedInMember)
                 .baseUri("http://localhost")
                 .port(port)
                 .when()
@@ -213,8 +209,9 @@ class ParkingSpotAllocationControllerTest {
                 .then()
                 .assertThat()
                 .statusCode(HttpStatus.BAD_REQUEST.value())
-                .body("message", equalTo("The license plate NotRegisteredPlate does not registered to member with id "+ memberDTO.id()));
+                .body("message", equalTo("The license plate NotRegisteredPlate does not registered to member with id " + memberDTO.id()));
     }
+
     @Test
     void getAllAllocations_HappyPath() {
 
@@ -236,12 +233,13 @@ class ParkingSpotAllocationControllerTest {
 
 
     }
+
     @Test
     void getAllAllocations_givenUnauthorisedMember() {
 
 
         given()
-                .header("Authorization", "Bearer " + tokenNotValidMember)
+                .header("Authorization", "Bearer " + tokenAnotherMember)
                 .baseUri(BASE_URI)
                 .port(port)
                 .when()
@@ -252,10 +250,8 @@ class ParkingSpotAllocationControllerTest {
                 .statusCode(HttpStatus.FORBIDDEN.value());
 
 
-
-
-
     }
+
     @Test
     void getAllAllocationsFiltered_HappyPath() {
         memberService.registerANewMember(createMemberDTO);
@@ -264,10 +260,10 @@ class ParkingSpotAllocationControllerTest {
         parkingLotService.createParkingLot(newParkingLotDTO);
 
 
-        allocationRepository.save(new Allocation(memberService.findMemberById(1L),createMemberDTO.licensePlateNumber(),parkingLotService.findParkingLotId(1L)));
-        allocationRepository.save(new Allocation(memberService.findMemberById(1L),createMemberDTO.licensePlateNumber(),parkingLotService.findParkingLotId(1L)));
-        allocationRepository.save(new Allocation(memberService.findMemberById(1L),createMemberDTO.licensePlateNumber(),parkingLotService.findParkingLotId(1L)));
-        allocationRepository.save(new Allocation(memberService.findMemberById(1L),createMemberDTO.licensePlateNumber(),parkingLotService.findParkingLotId(1L)));
+        allocationRepository.save(new Allocation(memberService.findMemberById(1L), createMemberDTO.licensePlateNumber(), parkingLotService.findParkingLotId(1L)));
+        allocationRepository.save(new Allocation(memberService.findMemberById(1L), createMemberDTO.licensePlateNumber(), parkingLotService.findParkingLotId(1L)));
+        allocationRepository.save(new Allocation(memberService.findMemberById(1L), createMemberDTO.licensePlateNumber(), parkingLotService.findParkingLotId(1L)));
+        allocationRepository.save(new Allocation(memberService.findMemberById(1L), createMemberDTO.licensePlateNumber(), parkingLotService.findParkingLotId(1L)));
 
         AllocationDTO[] results = given()
                 .header("Authorization", "Bearer " + tokenManager)
@@ -275,9 +271,9 @@ class ParkingSpotAllocationControllerTest {
                 .port(port)
                 .when()
                 .contentType(ContentType.JSON)
-                .param("limit",1)
+                .param("limit", 1)
                 .param("status")
-                .param("order","DESC")
+                .param("order", "DESC")
                 .get("/allocations")
                 .then()
                 .assertThat()
@@ -289,6 +285,7 @@ class ParkingSpotAllocationControllerTest {
 
 
     }
+
     @Test
     void getAllAllocationsFiltered_WithNegativeLimit_ShouldReturnAll() {
         memberService.registerANewMember(createMemberDTO);
@@ -297,10 +294,10 @@ class ParkingSpotAllocationControllerTest {
         parkingLotService.createParkingLot(newParkingLotDTO);
 
 
-        allocationRepository.save(new Allocation(memberService.findMemberById(1L),createMemberDTO.licensePlateNumber(),parkingLotService.findParkingLotId(1L)));
-        allocationRepository.save(new Allocation(memberService.findMemberById(1L),createMemberDTO.licensePlateNumber(),parkingLotService.findParkingLotId(1L)));
-        allocationRepository.save(new Allocation(memberService.findMemberById(1L),createMemberDTO.licensePlateNumber(),parkingLotService.findParkingLotId(1L)));
-        allocationRepository.save(new Allocation(memberService.findMemberById(1L),createMemberDTO.licensePlateNumber(),parkingLotService.findParkingLotId(1L)));
+        allocationRepository.save(new Allocation(memberService.findMemberById(1L), createMemberDTO.licensePlateNumber(), parkingLotService.findParkingLotId(1L)));
+        allocationRepository.save(new Allocation(memberService.findMemberById(1L), createMemberDTO.licensePlateNumber(), parkingLotService.findParkingLotId(1L)));
+        allocationRepository.save(new Allocation(memberService.findMemberById(1L), createMemberDTO.licensePlateNumber(), parkingLotService.findParkingLotId(1L)));
+        allocationRepository.save(new Allocation(memberService.findMemberById(1L), createMemberDTO.licensePlateNumber(), parkingLotService.findParkingLotId(1L)));
 
         AllocationDTO[] results = given()
                 .header("Authorization", "Bearer " + tokenManager)
@@ -308,9 +305,9 @@ class ParkingSpotAllocationControllerTest {
                 .port(port)
                 .when()
                 .contentType(ContentType.JSON)
-                .param("limit",-1)
+                .param("limit", -1)
                 .param("status")
-                .param("order","DESC")
+                .param("order", "DESC")
                 .get("/allocations")
                 .then()
                 .assertThat()
@@ -322,6 +319,7 @@ class ParkingSpotAllocationControllerTest {
 
 
     }
+
     @Test
     void getAllAllocationsFiltered_WithStoppedStatus_ShouldReturnStoppedOnes() {
         memberService.registerANewMember(createMemberDTO);
@@ -330,10 +328,10 @@ class ParkingSpotAllocationControllerTest {
         parkingLotService.createParkingLot(newParkingLotDTO);
 
 
-        allocationRepository.save(new Allocation(memberService.findMemberById(1L),createMemberDTO.licensePlateNumber(),parkingLotService.findParkingLotId(1L)));
-        allocationRepository.save(new Allocation(memberService.findMemberById(1L),createMemberDTO.licensePlateNumber(),parkingLotService.findParkingLotId(1L)));
-        allocationRepository.save(new Allocation(memberService.findMemberById(1L),createMemberDTO.licensePlateNumber(),parkingLotService.findParkingLotId(1L)));
-        allocationRepository.save(new Allocation(memberService.findMemberById(1L),createMemberDTO.licensePlateNumber(),parkingLotService.findParkingLotId(1L)));
+        allocationRepository.save(new Allocation(memberService.findMemberById(1L), createMemberDTO.licensePlateNumber(), parkingLotService.findParkingLotId(1L)));
+        allocationRepository.save(new Allocation(memberService.findMemberById(1L), createMemberDTO.licensePlateNumber(), parkingLotService.findParkingLotId(1L)));
+        allocationRepository.save(new Allocation(memberService.findMemberById(1L), createMemberDTO.licensePlateNumber(), parkingLotService.findParkingLotId(1L)));
+        allocationRepository.save(new Allocation(memberService.findMemberById(1L), createMemberDTO.licensePlateNumber(), parkingLotService.findParkingLotId(1L)));
 
         AllocationDTO[] results = given()
                 .header("Authorization", "Bearer " + tokenManager)
@@ -341,9 +339,9 @@ class ParkingSpotAllocationControllerTest {
                 .port(port)
                 .when()
                 .contentType(ContentType.JSON)
-                .param("limit",-1)
-                .param("status","STOPPED")
-                .param("order","DESC")
+                .param("limit", -1)
+                .param("status", "STOPPED")
+                .param("order", "DESC")
                 .get("/allocations")
                 .then()
                 .assertThat()
@@ -360,9 +358,9 @@ class ParkingSpotAllocationControllerTest {
     void stopParkingAllocation_happyPath() {
         MemberDTO memberDTO = memberService.registerANewMember(createMemberDTO);
         parkingLotService.createParkingLot(newParkingLotDTO);
-        AllocationDTO allocationDTO = allocationService.createAllocation(new StartAllocationDTO(memberDTO.id(), "123-abc", 1L),"test@email.be");
+        AllocationDTO allocationDTO = allocationService.createAllocation(new StartAllocationDTO(memberDTO.id(), "123-abc", 1L), "test@email.be");
         StopAllocationDTO result = given()
-                .header("Authorization", "Bearer " + tokenValidMember)
+                .header("Authorization", "Bearer " + tokenLoggedInMember)
                 .baseUri("http://localhost")
                 .port(port)
                 .when()
@@ -385,7 +383,7 @@ class ParkingSpotAllocationControllerTest {
         MemberDTO memberDTO = memberService.registerANewMember(createMemberDTO);
         parkingLotService.createParkingLot(newParkingLotDTO);
         given()
-                .header("Authorization", "Bearer " + tokenValidMember)
+                .header("Authorization", "Bearer " + tokenLoggedInMember)
                 .baseUri("http://localhost")
                 .port(port)
                 .when()
@@ -402,10 +400,10 @@ class ParkingSpotAllocationControllerTest {
     void stopParkingAllocation_whenAllocationIsAlreadyStopped() {
         MemberDTO memberDTO = memberService.registerANewMember(createMemberDTO);
         parkingLotService.createParkingLot(newParkingLotDTO);
-        AllocationDTO allocationDTO = allocationService.createAllocation(new StartAllocationDTO(memberDTO.id(), "123-abc", 1L),"test@email.be");
-        allocationService.stopAllocation(allocationDTO.id(),"test@email.be");
+        AllocationDTO allocationDTO = allocationService.createAllocation(new StartAllocationDTO(memberDTO.id(), "123-abc", 1L), "test@email.be");
+        allocationService.stopAllocation(allocationDTO.id(), "test@email.be");
         given()
-                .header("Authorization", "Bearer " + tokenValidMember)
+                .header("Authorization", "Bearer " + tokenLoggedInMember)
                 .baseUri("http://localhost")
                 .port(port)
                 .when()
@@ -422,9 +420,9 @@ class ParkingSpotAllocationControllerTest {
     void stopParkingAllocation_whenMemberIsNotValid() {
         MemberDTO memberDTO = memberService.registerANewMember(createMemberDTO);
         parkingLotService.createParkingLot(newParkingLotDTO);
-        AllocationDTO allocationDTO = allocationService.createAllocation(new StartAllocationDTO(memberDTO.id(), "123-abc", 1L),"test@email.be");
+        AllocationDTO allocationDTO = allocationService.createAllocation(new StartAllocationDTO(memberDTO.id(), "123-abc", 1L), "test@email.be");
         given()
-                .header("Authorization", "Bearer " + tokenNotValidMember)
+                .header("Authorization", "Bearer " + tokenAnotherMember)
                 .baseUri("http://localhost")
                 .port(port)
                 .when()
@@ -434,6 +432,27 @@ class ParkingSpotAllocationControllerTest {
                 .then()
                 .assertThat()
                 .statusCode(HttpStatus.BAD_REQUEST.value())
-                .body("message", equalTo("You have no authority to close this allocation."));
+                .body("message", equalTo("You have no authority to start/stop this allocation."));
+    }
+
+    @Test
+    void createParkingAllocation_whenMemberIsNotValid() {
+        MemberDTO memberDTO = memberService.registerANewMember(createMemberDTO);
+        parkingLotService.createParkingLot(newParkingLotDTO);
+        StartAllocationDTO requestedBody = new StartAllocationDTO(memberDTO.id(), "123-abc", 1L);
+
+        given()
+                .header("Authorization", "Bearer " + tokenAnotherMember)
+                .baseUri("http://localhost")
+                .port(port)
+                .when()
+                .accept(ContentType.JSON)
+                .body(requestedBody)
+                .contentType(ContentType.JSON)
+                .post("/allocations")
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.BAD_REQUEST.value())
+                .body("message", equalTo("You have no authority to start/stop this allocation."));
     }
 }
