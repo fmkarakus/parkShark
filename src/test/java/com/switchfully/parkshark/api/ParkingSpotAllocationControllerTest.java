@@ -46,7 +46,7 @@ class ParkingSpotAllocationControllerTest {
     private AllocationService allocationService;
 
     private final static String URL = "https://keycloak.switchfully.com/auth/realms/parkShark-babyshark/protocol/openid-connect/token";
-    private static String tokenLoggedInMember;
+    private static String tokenMember;
     private static String tokenAnotherMember;
     private static String tokenManager;
 
@@ -106,7 +106,7 @@ class ParkingSpotAllocationControllerTest {
                 .extract()
                 .path("access_token")
                 .toString();
-        tokenLoggedInMember = given()
+        tokenMember = given()
                 .contentType("application/x-www-form-urlencoded; charset=utf-8")
                 .formParam("grant_type", "password")
                 .formParam("username", "test@email.be")
@@ -129,7 +129,7 @@ class ParkingSpotAllocationControllerTest {
         StartAllocationDTO requestedBody = new StartAllocationDTO(memberDTO.id(), "123-abc", 1L);
 
         AllocationDTO result = given()
-                .header("Authorization", "Bearer " + tokenLoggedInMember)
+                .header("Authorization", "Bearer " + tokenMember)
                 .baseUri("http://localhost")
                 .port(port)
                 .when()
@@ -158,7 +158,7 @@ class ParkingSpotAllocationControllerTest {
         StartAllocationDTO requestedBody = new StartAllocationDTO(memberDTO.id(), "123-abc", 500L);
 
         given()
-                .header("Authorization", "Bearer " + tokenLoggedInMember)
+                .header("Authorization", "Bearer " + tokenMember)
                 .baseUri("http://localhost")
                 .port(port)
                 .when()
@@ -177,7 +177,7 @@ class ParkingSpotAllocationControllerTest {
         parkingLotService.createParkingLot(newParkingLotDTO);
         StartAllocationDTO requestedBody = new StartAllocationDTO(10000L, "123-abc", 1L);
         given()
-                .header("Authorization", "Bearer " + tokenLoggedInMember)
+                .header("Authorization", "Bearer " + tokenMember)
                 .baseUri("http://localhost")
                 .port(port)
                 .when()
@@ -198,7 +198,7 @@ class ParkingSpotAllocationControllerTest {
         StartAllocationDTO requestedBody = new StartAllocationDTO(memberDTO.id(), "NotRegisteredPlate", 1L);
 
         given()
-                .header("Authorization", "Bearer " + tokenLoggedInMember)
+                .header("Authorization", "Bearer " + tokenMember)
                 .baseUri("http://localhost")
                 .port(port)
                 .when()
@@ -348,7 +348,7 @@ class ParkingSpotAllocationControllerTest {
         parkingLotService.createParkingLot(newParkingLotDTO);
         AllocationDTO allocationDTO = allocationService.createAllocation(new StartAllocationDTO(memberDTO.id(), "123-abc", 1L), "test@email.be");
         StopAllocationDTO result = given()
-                .header("Authorization", "Bearer " + tokenLoggedInMember)
+                .header("Authorization", "Bearer " + tokenMember)
                 .baseUri("http://localhost")
                 .port(port)
                 .when()
@@ -371,7 +371,7 @@ class ParkingSpotAllocationControllerTest {
         MemberDTO memberDTO = memberService.registerANewMember(createMemberDTO);
         parkingLotService.createParkingLot(newParkingLotDTO);
         given()
-                .header("Authorization", "Bearer " + tokenLoggedInMember)
+                .header("Authorization", "Bearer " + tokenMember)
                 .baseUri("http://localhost")
                 .port(port)
                 .when()
@@ -391,7 +391,7 @@ class ParkingSpotAllocationControllerTest {
         AllocationDTO allocationDTO = allocationService.createAllocation(new StartAllocationDTO(memberDTO.id(), "123-abc", 1L), "test@email.be");
         allocationService.stopAllocation(allocationDTO.id(), "test@email.be");
         given()
-                .header("Authorization", "Bearer " + tokenLoggedInMember)
+                .header("Authorization", "Bearer " + tokenMember)
                 .baseUri("http://localhost")
                 .port(port)
                 .when()
