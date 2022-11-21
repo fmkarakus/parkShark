@@ -1,4 +1,4 @@
-package com.switchfully.parkshark.domain.parkinglot;
+package com.switchfully.parkshark.service.parkinglot.dto;
 
 public class ParkingLotSimplifiedDTO {
     private Long id;

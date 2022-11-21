@@ -1,9 +1,9 @@
 package com.switchfully.parkshark.api;
 
-import com.switchfully.parkshark.service.member.memberDTO.CreateMemberDTO;
-import com.switchfully.parkshark.service.member.memberDTO.MemberDTO;
+import com.switchfully.parkshark.service.member.dto.CreateMemberDTO;
+import com.switchfully.parkshark.service.member.dto.MemberDTO;
 import com.switchfully.parkshark.service.member.MemberService;
-import com.switchfully.parkshark.service.member.memberDTO.SimplifiedMemberDTO;
+import com.switchfully.parkshark.service.member.dto.SimplifiedMemberDTO;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import org.junit.jupiter.api.BeforeAll;

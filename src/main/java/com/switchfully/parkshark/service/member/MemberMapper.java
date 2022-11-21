@@ -4,9 +4,9 @@ import com.switchfully.parkshark.domain.member.Address;
 import com.switchfully.parkshark.domain.member.LicensePlate;
 import com.switchfully.parkshark.domain.member.Member;
 import com.switchfully.parkshark.domain.postalcode.PostalCode;
-import com.switchfully.parkshark.service.member.memberDTO.CreateMemberDTO;
-import com.switchfully.parkshark.service.member.memberDTO.MemberDTO;
-import com.switchfully.parkshark.service.member.memberDTO.SimplifiedMemberDTO;
+import com.switchfully.parkshark.service.member.dto.CreateMemberDTO;
+import com.switchfully.parkshark.service.member.dto.MemberDTO;
+import com.switchfully.parkshark.service.member.dto.SimplifiedMemberDTO;
 
 public class MemberMapper {
     public Member mapDTOToMember(CreateMemberDTO createMemberDTO) {

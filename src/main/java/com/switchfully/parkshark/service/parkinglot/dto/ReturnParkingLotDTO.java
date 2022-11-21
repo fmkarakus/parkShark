@@ -1,6 +1,6 @@
-package com.switchfully.parkshark.domain.parkinglot;
+package com.switchfully.parkshark.service.parkinglot.dto;
 
-import com.switchfully.parkshark.service.division.DTO.DivisionDTO;
+import com.switchfully.parkshark.service.division.dto.DivisionDTO;
 
 public class ReturnParkingLotDTO {
     private long id;

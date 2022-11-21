@@ -1,9 +1,9 @@
 package com.switchfully.parkshark.api;
 
-import com.switchfully.parkshark.domain.parkinglot.NewParkingLotDTO;
+import com.switchfully.parkshark.service.parkinglot.dto.NewParkingLotDTO;
 
-import com.switchfully.parkshark.domain.parkinglot.ParkingLotSimplifiedDTO;
-import com.switchfully.parkshark.domain.parkinglot.ReturnParkingLotDTO;
+import com.switchfully.parkshark.service.parkinglot.dto.ParkingLotSimplifiedDTO;
+import com.switchfully.parkshark.service.parkinglot.dto.ReturnParkingLotDTO;
 import com.switchfully.parkshark.service.parkinglot.ParkingLotService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;

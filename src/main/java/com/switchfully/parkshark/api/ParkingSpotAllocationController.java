@@ -1,12 +1,10 @@
 package com.switchfully.parkshark.api;
 
 import com.switchfully.parkshark.service.allocation.AllocationService;
-import com.switchfully.parkshark.service.allocation.DTO.AllocationDTO;
-import com.switchfully.parkshark.service.allocation.DTO.StartAllocationDTO;
-import com.switchfully.parkshark.service.allocation.DTO.StopAllocationDTO;
-import org.keycloak.adapters.springsecurity.account.SimpleKeycloakAccount;
+import com.switchfully.parkshark.service.allocation.dto.AllocationDTO;
+import com.switchfully.parkshark.service.allocation.dto.StartAllocationDTO;
+import com.switchfully.parkshark.service.allocation.dto.StopAllocationDTO;
 import org.keycloak.adapters.springsecurity.token.KeycloakAuthenticationToken;
-import org.keycloak.representations.AccessToken;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;

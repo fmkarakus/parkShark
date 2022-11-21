@@ -1,8 +1,8 @@
 package com.switchfully.parkshark.service.division;
 
-import com.switchfully.parkshark.service.division.DTO.CreateDivisionDTO;
-import com.switchfully.parkshark.service.division.DTO.DivisionDTO;
-import com.switchfully.parkshark.service.division.DTO.SubdivisionDTO;
+import com.switchfully.parkshark.service.division.dto.CreateDivisionDTO;
+import com.switchfully.parkshark.service.division.dto.DivisionDTO;
+import com.switchfully.parkshark.service.division.dto.SubdivisionDTO;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -13,7 +13,6 @@ import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
-import org.springframework.test.annotation.DirtiesContext;
 
 
 import java.util.ArrayList;

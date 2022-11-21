@@ -1,9 +1,8 @@
 package com.switchfully.parkshark.service.member;
 
-import com.sun.tools.jconsole.JConsoleContext;
 import com.switchfully.parkshark.domain.member.MembershipLevel;
 import com.switchfully.parkshark.service.exceptions.EmailNotValidException;
-import com.switchfully.parkshark.service.member.memberDTO.CreateMemberDTO;
+import com.switchfully.parkshark.service.member.dto.CreateMemberDTO;
 
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;

@@ -1,20 +1,14 @@
 package com.switchfully.parkshark.service.parkinglot;
 
-import com.switchfully.parkshark.domain.contactperson.ContactPerson;
-import com.switchfully.parkshark.domain.contactperson.ContactPersonRepository;
-import com.switchfully.parkshark.domain.division.Division;
-import com.switchfully.parkshark.domain.division.DivisionRepository;
 import com.switchfully.parkshark.domain.member.Address;
-import com.switchfully.parkshark.domain.parkinglot.*;
-import com.switchfully.parkshark.domain.postalcode.PostalCode;
-import com.switchfully.parkshark.domain.postalcode.PostalCodeRepository;
-import com.switchfully.parkshark.service.division.DTO.DivisionDTO;
+import com.switchfully.parkshark.service.division.dto.DivisionDTO;
 import com.switchfully.parkshark.domain.parkinglot.Category;
-import com.switchfully.parkshark.domain.parkinglot.NewParkingLotDTO;
+import com.switchfully.parkshark.service.parkinglot.dto.NewParkingLotDTO;
 import com.switchfully.parkshark.domain.parkinglot.ParkingLot;
-import com.switchfully.parkshark.domain.parkinglot.ParkingLotSimplifiedDTO;
+import com.switchfully.parkshark.service.parkinglot.dto.ParkingLotSimplifiedDTO;
 import com.switchfully.parkshark.service.contactperson.ContactPersonService;
 import com.switchfully.parkshark.service.division.DivisionService;
+import com.switchfully.parkshark.service.parkinglot.dto.ReturnParkingLotDTO;
 import com.switchfully.parkshark.service.postalcode.PostalCodeService;
 import org.springframework.stereotype.Component;
 

@@ -3,7 +3,7 @@ package com.switchfully.parkshark.service.allocation;
 import com.switchfully.parkshark.domain.member.Member;
 import com.switchfully.parkshark.domain.member.MembershipLevel;
 import com.switchfully.parkshark.domain.parkinglot.ParkingLot;
-import com.switchfully.parkshark.service.allocation.DTO.StartAllocationDTO;
+import com.switchfully.parkshark.service.allocation.dto.StartAllocationDTO;
 import com.switchfully.parkshark.service.member.MemberService;
 import com.switchfully.parkshark.service.parkinglot.ParkingLotService;
 import org.springframework.stereotype.Component;

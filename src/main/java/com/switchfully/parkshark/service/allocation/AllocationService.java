@@ -4,9 +4,9 @@ import com.switchfully.parkshark.domain.allocation.Allocation;
 import com.switchfully.parkshark.domain.allocation.AllocationRepository;
 import com.switchfully.parkshark.domain.allocation.AllocationStatus;
 import com.switchfully.parkshark.domain.member.Member;
-import com.switchfully.parkshark.service.allocation.DTO.AllocationDTO;
-import com.switchfully.parkshark.service.allocation.DTO.StartAllocationDTO;
-import com.switchfully.parkshark.service.allocation.DTO.StopAllocationDTO;
+import com.switchfully.parkshark.service.allocation.dto.AllocationDTO;
+import com.switchfully.parkshark.service.allocation.dto.StartAllocationDTO;
+import com.switchfully.parkshark.service.allocation.dto.StopAllocationDTO;
 import com.switchfully.parkshark.service.member.MemberService;
 import org.springframework.stereotype.Service;
 

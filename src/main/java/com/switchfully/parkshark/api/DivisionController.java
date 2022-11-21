@@ -1,8 +1,8 @@
 package com.switchfully.parkshark.api;
 
-import com.switchfully.parkshark.service.division.DTO.CreateDivisionDTO;
-import com.switchfully.parkshark.service.division.DTO.DivisionDTO;
-import com.switchfully.parkshark.service.division.DTO.SubdivisionDTO;
+import com.switchfully.parkshark.service.division.dto.CreateDivisionDTO;
+import com.switchfully.parkshark.service.division.dto.DivisionDTO;
+import com.switchfully.parkshark.service.division.dto.SubdivisionDTO;
 import com.switchfully.parkshark.service.division.DivisionService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

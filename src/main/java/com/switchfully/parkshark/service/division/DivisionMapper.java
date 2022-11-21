@@ -1,9 +1,9 @@
 package com.switchfully.parkshark.service.division;
 
 import com.switchfully.parkshark.domain.division.Division;
-import com.switchfully.parkshark.service.division.DTO.CreateDivisionDTO;
-import com.switchfully.parkshark.service.division.DTO.DivisionDTO;
-import com.switchfully.parkshark.service.division.DTO.SubdivisionDTO;
+import com.switchfully.parkshark.service.division.dto.CreateDivisionDTO;
+import com.switchfully.parkshark.service.division.dto.DivisionDTO;
+import com.switchfully.parkshark.service.division.dto.SubdivisionDTO;
 
 public class DivisionMapper {
 

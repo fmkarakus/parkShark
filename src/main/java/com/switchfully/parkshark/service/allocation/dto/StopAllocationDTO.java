@@ -1,4 +1,4 @@
-package com.switchfully.parkshark.service.allocation.DTO;
+package com.switchfully.parkshark.service.allocation.dto;
 
 public record StopAllocationDTO(
         Long id,
