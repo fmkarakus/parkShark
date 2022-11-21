@@ -12,8 +12,8 @@ import java.util.Date;
 @Table(name = "allocation")
 public class Allocation implements Comparable<Allocation> {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "parking_lot_seq")
-    @SequenceGenerator(name = "parking_lot_seq", sequenceName = "parking_lot_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "allocation_seq")
+    @SequenceGenerator(name = "allocation_seq", sequenceName = "allocation_seq", allocationSize = 1)
     private long id;
 
     @ManyToOne
