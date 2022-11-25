@@ -96,4 +96,14 @@ public class Allocation implements Comparable<Allocation> {
     public void decreaseParkingLotCapacity(){
         parkingLot.decreaseAvailableCapacity();
     }
+
+    public void stop() {
+        setStoppingTime(LocalDateTime.now());
+        setStatus(AllocationStatus.STOPPED);
+        increaseParkingLotCapacity();
+    }
+
+    public boolean isActive() {
+        return status == AllocationStatus.ACTIVE;
+    }
 }

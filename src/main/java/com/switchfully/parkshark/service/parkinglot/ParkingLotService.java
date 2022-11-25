@@ -7,6 +7,7 @@ import com.switchfully.parkshark.service.parkinglot.dto.ParkingLotSimplifiedDTO;
 import com.switchfully.parkshark.service.division.dto.DivisionDTO;
 import com.switchfully.parkshark.service.division.DivisionMapper;
 import com.switchfully.parkshark.service.parkinglot.dto.ReturnParkingLotDTO;
+import com.switchfully.parkshark.service.postalcode.PostalCodeService;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -21,21 +22,20 @@ public class ParkingLotService {
     private final ParkingLotRepository parkingLotRepository;
     private final ParkingLotValidation parkingLotValidation;
     private final ParkingLotMapper parkingLotMapper;
-    private final DivisionMapper divisionMapper;
+    private final PostalCodeService postalCodeService;
 
-    public ParkingLotService( ParkingLotRepository parkingLotRepository, ParkingLotValidation parkingLotValidation, ParkingLotMapper parkingLotMapper) {
+    public ParkingLotService(ParkingLotRepository parkingLotRepository, ParkingLotValidation parkingLotValidation, ParkingLotMapper parkingLotMapper, PostalCodeService postalCodeService) {
         this.parkingLotRepository = parkingLotRepository;
         this.parkingLotValidation = parkingLotValidation;
         this.parkingLotMapper = parkingLotMapper;
-        divisionMapper = new DivisionMapper();
+        this.postalCodeService = postalCodeService;
     }
 
     public ReturnParkingLotDTO createParkingLot(NewParkingLotDTO newParkingLotDTO) {
         parkingLotValidation.checkRequiredFields(newParkingLotDTO);
-        ParkingLot parkingLot = parkingLotMapper.newParkingLotDTOToParkingLot(newParkingLotDTO);
+        ParkingLot parkingLot = parkingLotMapper.newParkingLotDTOToParkingLot(newParkingLotDTO, postalCodeService.findPostalCodById(newParkingLotDTO.getPostalCode()));
         parkingLotRepository.save(parkingLot);
-        DivisionDTO divisionDTO = divisionMapper.toDivisionDTO(parkingLot.getDivision());
-        return parkingLotMapper.mapParkingLotToReturnParkingLotDTO(parkingLot, divisionDTO);
+        return parkingLotMapper.mapParkingLotToReturnParkingLotDTO(parkingLot);
 
     }
 
@@ -48,8 +48,7 @@ public class ParkingLotService {
 
     public ReturnParkingLotDTO getParkingLotDTOById(Long id) {
         ParkingLot parkingLot = parkingLotRepository.findById(id).orElseThrow(() -> new NoSuchElementException("Parking lot with id " + id +  " does not exist"));
-        DivisionDTO divisionDTO = divisionMapper.toDivisionDTO(parkingLot.getDivision());
-        return parkingLotMapper.mapParkingLotToReturnParkingLotDTO(parkingLot, divisionDTO);
+        return parkingLotMapper.mapParkingLotToReturnParkingLotDTO(parkingLot);
     }
 
     public ParkingLot findParkingLotId(Long parkingLotId) {

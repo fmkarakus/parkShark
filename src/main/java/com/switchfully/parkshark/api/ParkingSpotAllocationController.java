@@ -1,5 +1,6 @@
 package com.switchfully.parkshark.api;
 
+import com.switchfully.parkshark.domain.allocation.AllocationStatus;
 import com.switchfully.parkshark.service.allocation.AllocationService;
 import com.switchfully.parkshark.service.allocation.dto.AllocationDTO;
 import com.switchfully.parkshark.service.allocation.dto.StartAllocationDTO;
@@ -55,7 +56,7 @@ public class ParkingSpotAllocationController {
 
     @GetMapping(params = {"limit", "status", "order"}, produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasAuthority('GET_ALL_ALLOCATIONS')")
-    public List<AllocationDTO> getAllAllocationsFiltered(@RequestParam(defaultValue = "0") int limit, @RequestParam(defaultValue = "") String status, @RequestParam(defaultValue = "ASC") String order) {
+    public List<AllocationDTO> getAllAllocationsFiltered(@RequestParam(defaultValue = "0") int limit, @RequestParam(defaultValue = "") AllocationStatus status, @RequestParam(defaultValue = "ASC") String order) {
         logger.info("getting requested allocations Filtered");
         return allocationService.getAllAllocationsFiltered(limit, status, order);
     }

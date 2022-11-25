@@ -37,9 +37,7 @@ public class MemberService {
         Member member = memberRepository.save(memberMapper.mapDTOToMember(createMemberDTO));
         //TODO: ask how we could do these tests without the if-statement
 //        For test purposes this line is add to avoid adding test members to keycloak
-        if (!member.getEmail().startsWith("test")) {
-            keycloakService.addUser(new KeycloakUserDTO(member.getEmail(), createMemberDTO.password(), member.getRole()));
-        }
+        keycloakService.addUser(new KeycloakUserDTO(member.getEmail(), createMemberDTO.password(), member.getRole()));
         return memberMapper.mapMemberToDTO(member);
     }
 

@@ -30,12 +30,12 @@ public class DivisionService {
     }
 
     public DivisionDTO createDivision(CreateDivisionDTO createDivisionDTO) {
-        divisionValidator.CheckRequiredFields(createDivisionDTO);
+        divisionValidator.checkRequiredFields(createDivisionDTO);
         if (divisionRepository.existsDivisionByName(createDivisionDTO.getName())) {
             logger.error("Division already exists");
             throw new ObjectAlreadyExistsException("This division name is already in use");
         }
-        Division division= divisionRepository.save(divisionMapper.toDivision(createDivisionDTO));
+        Division division = divisionRepository.save(divisionMapper.toDivision(createDivisionDTO));
         return divisionMapper.toDivisionDTO(division);
     }
 
@@ -50,13 +50,13 @@ public class DivisionService {
     }
 
     public SubdivisionDTO createSubdivision(Long parentId, CreateDivisionDTO createDivisionDTO) {
-        Division parentDivision=divisionRepository.findById(parentId).orElseThrow(()->new IllegalArgumentException("No division found with the id: "+parentId));
-        DivisionDTO divisionDTO=createDivision(createDivisionDTO);
+        Division parentDivision = divisionRepository.findById(parentId).orElseThrow(() -> new IllegalArgumentException("No division found with the id: " + parentId));
+        DivisionDTO divisionDTO = createDivision(createDivisionDTO);
         divisionRepository.findById(divisionDTO.id()).ifPresent(division -> division.setParentDivision(parentDivision));
         return divisionMapper.toSubdivisionDTO(divisionRepository.findById(divisionDTO.id()).get());
     }
 
     public Division findDivisionById(Long divisionId) {
-        return divisionRepository.findById(divisionId).orElseThrow(()-> new IllegalArgumentException("Invalid division id"));
+        return divisionRepository.findById(divisionId).orElseThrow(() -> new IllegalArgumentException("Invalid division id"));
     }
 }

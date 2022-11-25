@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
 
 @KeycloakConfiguration
 @EnableGlobalMethodSecurity(prePostEnabled = true)
-@Profile("!test")
+//@Profile("!test")
 class SecurityConfig extends KeycloakWebSecurityConfigurerAdapter {
 
     /**

@@ -9,7 +9,7 @@ public class DivisionValidator {
 
     private final Logger logger = LoggerFactory.getLogger(DivisionValidator.class);
 
-    public void CheckRequiredFields(CreateDivisionDTO createDivisionDTO) {
+    public void checkRequiredFields(CreateDivisionDTO createDivisionDTO) {
         if (createDivisionDTO.getName() == null || createDivisionDTO.getName().equals("")) {
             logger.error("No name provided");
             throw new IllegalArgumentException("Division name not provided");

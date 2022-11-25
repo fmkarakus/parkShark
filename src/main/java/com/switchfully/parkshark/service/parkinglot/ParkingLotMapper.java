@@ -1,6 +1,8 @@
 package com.switchfully.parkshark.service.parkinglot;
 
 import com.switchfully.parkshark.domain.member.Address;
+import com.switchfully.parkshark.domain.postalcode.PostalCode;
+import com.switchfully.parkshark.service.division.DivisionMapper;
 import com.switchfully.parkshark.service.division.dto.DivisionDTO;
 import com.switchfully.parkshark.domain.parkinglot.Category;
 import com.switchfully.parkshark.service.parkinglot.dto.NewParkingLotDTO;
@@ -18,17 +20,20 @@ public class ParkingLotMapper {
     private final ContactPersonService contactPersonService;
     private final DivisionService divisionService;
 
+    private final DivisionMapper divisionMapper;
+
     public ParkingLotMapper(PostalCodeService postalCodeService, ContactPersonService contactPersonService, DivisionService divisionService) {
         this.postalCodeService = postalCodeService;
         this.contactPersonService = contactPersonService;
         this.divisionService = divisionService;
+        this.divisionMapper = new DivisionMapper();
     }
 
-    public ParkingLot newParkingLotDTOToParkingLot(NewParkingLotDTO newParkingLotDTO) {
+    public ParkingLot newParkingLotDTOToParkingLot(NewParkingLotDTO newParkingLotDTO, PostalCode postalCodById) {
 
         Address newAddress = new Address(newParkingLotDTO.getStreetName()
                 , newParkingLotDTO.getStreetNumber()
-                , postalCodeService.findPostalCodById(newParkingLotDTO.getPostalCode()));
+                , postalCodById);
 
         Category category = Category.findCategoryByName(newParkingLotDTO.getCategory());
         return new ParkingLot(newParkingLotDTO.getName()
@@ -44,7 +49,8 @@ public class ParkingLotMapper {
         return new ParkingLotSimplifiedDTO(parkingLot.getId(), parkingLot.getName(), parkingLot.getMaxCapacity(), parkingLot.getContactPerson().getEmail(), parkingLot.getContactPerson().getTelephoneNumber());
     }
 
-    public ReturnParkingLotDTO mapParkingLotToReturnParkingLotDTO(ParkingLot parkingLot, DivisionDTO divisionDTO) {
+    public ReturnParkingLotDTO mapParkingLotToReturnParkingLotDTO(ParkingLot parkingLot) {
+        DivisionDTO divisionDTO = divisionMapper.toDivisionDTO(parkingLot.getDivision());
         return new ReturnParkingLotDTO(parkingLot.getId(), parkingLot.getName(), parkingLot.getCategory().toString(), parkingLot.getMaxCapacity(), parkingLot.getAvailableCapacity(), parkingLot.getPricePerHour(), parkingLot.getContactPersonId(), parkingLot.getAddress().toString(), divisionDTO);
     }
 }

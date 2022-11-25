@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.Collections;
 import java.util.List;
-import java.time.LocalDateTime;
 
 @Service
 @Transactional
@@ -35,28 +34,30 @@ public class AllocationService {
     public List<AllocationDTO> getAllAllocations() {
         return allocationMapper.mapAllocationToAllocationDTO(allocationRepository.findAll());
     }
-    public List<AllocationDTO> getAllAllocationsFiltered(int limit, String status, String order) {
+
+    public List<AllocationDTO> getAllAllocationsFiltered(int limit, AllocationStatus status, String order) {
 
         List<Allocation> allocationList = allocationRepository.findAll();
-        int resolvedLimit =setLimit(limit);
+        int resolvedLimit = setLimit(limit);
 
-        if (order.equals("DESC")){
-           Collections.reverse(allocationList);
+        if (order.equals("DESC")) {
+            Collections.reverse(allocationList);
         }
-        if (status.isEmpty()){
+        if (status != null) {
             return allocationMapper.mapAllocationToAllocationDTO(allocationList.stream()
                     .limit(resolvedLimit)
                     .toList());
         }
 
         return allocationMapper.mapAllocationToAllocationDTO(allocationList.stream()
-                .filter(allocation -> allocation.getStatus().name().equals(status))
+                .filter(allocation -> allocation.getStatus() == status)
                 .limit(resolvedLimit)
                 .toList()
         );
     }
-    private int setLimit(int limit){
-        if(limit<=0){
+
+    private int setLimit(int limit) {
+        if (limit <= 0) {
             return allocationRepository.findAll().size();
         }
         return limit;
@@ -64,8 +65,8 @@ public class AllocationService {
 
     public AllocationDTO createAllocation(StartAllocationDTO startAllocationDTO, String loggedInMember) {
         allocationValidation.validateAllocation(startAllocationDTO);
-        Member member=memberService.findMemberById(startAllocationDTO.memberId());
-        assertMemberHasAuthority(member.getEmail(),loggedInMember);
+        Member member = memberService.findMemberById(startAllocationDTO.memberId());
+        assertMemberHasAuthority(member.getEmail(), loggedInMember);
         Allocation allocation = allocationRepository.save(allocationMapper.mapStartAllocationDTOToAllocation(startAllocationDTO));
         allocation.decreaseParkingLotCapacity();
         return allocationMapper.mapAllocationToAllocationDTO(allocation);
@@ -74,15 +75,14 @@ public class AllocationService {
     public StopAllocationDTO stopAllocation(long allocationId, String loggedInMember) {
         Allocation allocation = getAllocationById(allocationId);
         assertTheAllocationIsActive(allocation);
-        assertMemberHasAuthority(allocation.getMember().getEmail(),loggedInMember);
-        allocation.setStoppingTime(LocalDateTime.now());
-        allocation.setStatus(AllocationStatus.STOPPED);
-        allocation.increaseParkingLotCapacity();
+        assertMemberHasAuthority(allocation.getMember().getEmail(), loggedInMember);
+        allocation.stop();
         return allocationMapper.mapAllocationToStopAllocationDTO(allocation);
     }
 
     private void assertMemberHasAuthority(String memberNameInAllocation, String loggedInMember) {
-        if(!memberNameInAllocation.equals(loggedInMember)) throw new SecurityException("You have no authority to start/stop this allocation.");
+        if (!memberNameInAllocation.equals(loggedInMember))
+            throw new SecurityException("You have no authority to start/stop this allocation.");
     }
 
     public Allocation getAllocationById(long allocationId) {
@@ -90,7 +90,7 @@ public class AllocationService {
     }
 
     private void assertTheAllocationIsActive(Allocation allocation) {
-        if (!allocation.getStatus().equals(AllocationStatus.ACTIVE))
+        if (!allocation.isActive())
             throw new IllegalArgumentException("The allocation is already stopped");
     }
 
